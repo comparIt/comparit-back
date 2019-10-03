@@ -25,7 +25,7 @@ steps:
     echo Build docker image
     docker build -t compit.azurecr.io/compare-it-back:latest .
     echo Login to docker repository
-    az acr login --name compit --username $username --password $password
+    az acr login --name compit
     echo Push docker image
     docker push compit.azurecr.io/compare-it-back:latest
   displayName: 'Build and Push Docker Image for CompareIT Back'
