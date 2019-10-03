@@ -1,0 +1,34 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: compare-it-back
+
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-Dspring.profiles.active=dev'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+
+- script: |
+    echo Build docker image
+    docker build -t compit.azurecr.io/compare-it-back:latest
+    echo Login to docker repository
+    docker login -u $username -p $password $username.azurecr.io
+    echo Push docker image
+    docker push compit.azurecr.io/compare-it-back:latest
+  displayName: 'Build and Push Docker Image for CompareIT Back'
+  env:
+    username: $(acrUsername)
+    password: $(acrPassword)
