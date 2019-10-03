@@ -23,7 +23,7 @@ steps:
 
 - script: |
     echo Build docker image
-    docker build -t compit.azurecr.io/compare-it-back:latest
+    docker build -t compit.azurecr.io/compare-it-back:latest .
     echo Login to docker repository
     docker login -u $username -p $password $username.azurecr.io
     echo Push docker image
