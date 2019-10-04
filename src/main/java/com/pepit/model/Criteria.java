@@ -1,6 +1,8 @@
 package com.pepit.model;
 
-import org.springframework.data.annotation.CreatedDate;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -8,10 +10,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Criteria")
+@Getter
+@Setter
+@Builder
 public class Criteria {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
 
@@ -30,10 +35,10 @@ public class Criteria {
     @Column(name = "isHidden")
     boolean isHidden;
 
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdat;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedat;
 }

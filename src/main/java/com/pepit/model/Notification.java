@@ -1,5 +1,8 @@
 package com.pepit.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,6 +12,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "Notification")
+@Getter
+@Setter
+@Builder
 public class Notification {
 
     @Id
@@ -27,11 +33,11 @@ public class Notification {
     //J'arrive pas a lire
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 

@@ -1,11 +1,17 @@
 package com.pepit.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@Builder
 public class Favorite {
 
     @Id
@@ -21,14 +27,12 @@ public class Favorite {
 
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdat;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedat;
-
-
 
 
 }

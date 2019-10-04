@@ -1,27 +1,31 @@
 package com.pepit.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Entity
 @Table(name = "Compagny")
-    public class Compagny extends User{
+@Getter
+@Setter
+@Builder
+public class Compagny extends User {
 
     //list des ses products
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 }

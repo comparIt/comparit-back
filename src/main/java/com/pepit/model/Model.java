@@ -1,5 +1,8 @@
 package com.pepit.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,6 +12,9 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "Model")
+@Getter
+@Setter
+@Builder
 public class Model {
 
     @Id
@@ -26,11 +32,11 @@ public class Model {
     private Collection<Criteria> criterias;
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 }

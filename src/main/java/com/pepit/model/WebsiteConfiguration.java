@@ -1,5 +1,8 @@
 package com.pepit.model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -8,10 +11,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "WebsiteConfiguration")
+@Getter
+@Setter
+@Builder
 public class WebsiteConfiguration {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
 
@@ -31,11 +37,11 @@ public class WebsiteConfiguration {
     private Model model;
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 }
