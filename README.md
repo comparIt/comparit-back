@@ -30,5 +30,3 @@ This will create:
 
 * A docker image called "compare-it-back"
 * A docker container called "compare-it-back" exposing the 8080 port of the localhost or the docker-machine
-
-## Deploying the application with Docker on Azure Registry
