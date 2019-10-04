@@ -1,6 +1,5 @@
 package com.pepit.model;
 
-import com.pepit.enumeration.TypeUserEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,35 +7,37 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id","email","lastName","firstName","filter","typeUser","createdAt","updatedAt"})
+@ToString(of = {"id", "filter", "listProductsId", "isConsulted", "isAlerteMail", "dateConsulted", "isAlerteMail", "dateConsulted", "createdAt", "updatedAt"})
 @Entity
-@Table(name = "User")
-public class User {
+@Table(name = "Alert")
+public class Alert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
 
-    @Column(name = "email")
-    String email;
+    @ManyToOne
+    private Filter filter;
 
-    @Column(name = "lastName")
-    String lastName;
+    @Column(name = "listProductsId")
+    List<String> listProductsId;
 
-    @Column(name = "firstName")
-    String firstName;
+    @Column(name = "isConsulted")
+    boolean isConsulted;
 
-    @OneToMany
-    Filter filter;
+    @Column(name = "isAlerteMail")
+    boolean isAlerteMail;
 
-    @Column(name = "typeUser")
-    String typeUser;
+    @Column(name = "dateConsulted")
+    LocalDateTime dateConsulted;
 
     @CreatedDate
     @Column(name = "createdat")
@@ -45,5 +46,4 @@ public class User {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
-
 }

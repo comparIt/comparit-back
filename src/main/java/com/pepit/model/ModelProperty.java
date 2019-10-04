@@ -5,20 +5,19 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.jws.WebParam;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "realName", "realTableName", "isActivated","websiteConfiguration","listModelProperty","createdAt", "updatedAt"})
+@ToString(of = {"id", "realName", "realTableName", "modelPropertyType","isFiltrable","isFiltrableAdvanced","isMandatory","model","createdAt", "updatedAt"})
 @Entity
-@Table(name = "Model")
-public class Model {
+@Table(name = "ModelProperty")
+public class ModelProperty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +30,20 @@ public class Model {
     @Column(name = "realTableName")
     String realTableName;
 
-    @Column(name = "isActivated")
-    boolean isActivated;
+    @Column(name = "ModelPropertyType")
+    String modelPropertyType;
+
+    @Column(name = "isFiltrable")
+    boolean isFiltrable;
+
+    @Column(name = "isFiltrableAdvanced")
+    boolean isFiltrableAdvanced;
+
+    @Column(name = "isMandatory")
+    boolean isMandatory;
 
     @OneToMany
-    WebsiteConfiguration websiteConfiguration;
-
-    @ManyToOne
-    List<ModelProperty> listModelProperty;
+    Model model;
 
     @CreatedDate
     @Column(name="createdat")
