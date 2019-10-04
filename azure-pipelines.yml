@@ -29,3 +29,9 @@ steps:
     echo Push docker image
     docker push compit.azurecr.io/compare-it-back:latest
   displayName: 'Build and Push Docker Image for CompareIT Back'
+
+- script: |
+    git clone https://compareIT@dev.azure.com/compareIT/COMPARE-IT/_git/CITTESTI
+    cd CITTESTI
+    mvn test
+  displayName: 'Run Integration tests'
