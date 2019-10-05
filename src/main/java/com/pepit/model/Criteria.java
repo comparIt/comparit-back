@@ -2,20 +2,17 @@ package com.pepit.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "users", "alertType", "criteria", "alert", "isEmail", "isAlert", "createdAt", "updatedAt"})
+@ToString(of = {"id", "criteria", "type", "isFilter", "isAvancedFilter", "isHidden", "createdAt", "updatedAt"})
 @Entity
 @Table(name = "Criteria")
 public class Criteria {
@@ -41,9 +38,9 @@ public class Criteria {
     boolean isHidden;
 
     @Column(name = "createdat")
-    LocalDateTime createdat;
+    LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updatedat")
-    LocalDateTime updatedat;
+    LocalDateTime updatedAt;
 }

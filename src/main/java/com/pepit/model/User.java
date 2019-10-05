@@ -1,6 +1,5 @@
 package com.pepit.model;
 
-import com.pepit.enumeration.TypeUserEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,12 +7,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id","email","lastName","firstName","filter","typeUser","createdAt","updatedAt"})
+@ToString(of = {"id", "email", "lastName", "firstName", "filter", "typeUser", "createdAt", "updatedAt"})
 @Entity
 @Table(name = "User")
 public class User {

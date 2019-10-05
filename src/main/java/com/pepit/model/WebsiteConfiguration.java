@@ -14,13 +14,13 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id","color1","color2","color3","analytic","listModel","createdAt","updatedAt"})
+@ToString(of = {"id", "color1", "color2", "color3", "analytic", "listModel", "createdAt", "updatedAt"})
 @Entity
 @Table(name = "WebsiteConfiguration")
 public class WebsiteConfiguration {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
 
@@ -40,11 +40,11 @@ public class WebsiteConfiguration {
     private List<Model> listModel;
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 }

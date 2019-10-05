@@ -7,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "realName", "realTableName", "isActivated","websiteConfiguration","listModelProperty","createdAt", "updatedAt"})
+@ToString(of = {"id", "realName", "realTableName", "isActivated", "websiteConfiguration", "listModelProperty", "createdAt", "updatedAt"})
 @Entity
 @Table(name = "Model")
 public class Model {
@@ -41,11 +40,11 @@ public class Model {
     List<ModelProperty> listModelProperty;
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 }

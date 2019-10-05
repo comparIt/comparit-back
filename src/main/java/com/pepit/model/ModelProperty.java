@@ -5,7 +5,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.jws.WebParam;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "realName", "realTableName", "modelPropertyType","isFiltrable","isFiltrableAdvanced","isMandatory","model","createdAt", "updatedAt"})
+@ToString(of = {"id", "realName", "realTableName", "modelPropertyType", "isFiltrable", "isFiltrableAdvanced", "isMandatory", "model", "createdAt", "updatedAt"})
 @Entity
 @Table(name = "ModelProperty")
 public class ModelProperty {
@@ -46,11 +45,11 @@ public class ModelProperty {
     Model model;
 
     @CreatedDate
-    @Column(name="createdat")
+    @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name="updatedat")
+    @Column(name = "updatedat")
     LocalDateTime updatedAt;
 
 }
