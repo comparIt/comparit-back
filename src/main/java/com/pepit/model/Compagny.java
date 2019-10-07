@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "providerName", "providerEmail", "site", "adress", "telephone", "presentation", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "Compagny")
 public class Compagny {

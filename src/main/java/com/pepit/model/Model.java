@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "realName", "realTableName", "isActivated", "websiteConfiguration", "listModelProperty", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "Model")
 public class Model {
@@ -32,9 +32,6 @@ public class Model {
 
     @Column(name = "isActivated")
     boolean isActivated;
-
-    @OneToMany
-    WebsiteConfiguration websiteConfiguration;
 
     @ManyToOne
     List<ModelProperty> listModelProperty;

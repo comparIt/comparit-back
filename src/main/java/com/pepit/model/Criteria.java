@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "criteria", "type", "isFilter", "isAvancedFilter", "isHidden", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "Criteria")
 public class Criteria {

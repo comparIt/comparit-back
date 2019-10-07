@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "users", "alertType", "criteria", "alert", "isEmail", "isAlert", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "Filter")
 public class Filter {

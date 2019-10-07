@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "filter", "listProductsId", "isConsulted", "isAlerteMail", "dateConsulted", "isAlerteMail", "dateConsulted", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "Alert")
 public class Alert {

@@ -7,14 +7,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "color1", "color2", "color3", "analytic", "listModel", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "WebsiteConfiguration")
 public class WebsiteConfiguration {
@@ -35,9 +34,6 @@ public class WebsiteConfiguration {
 
     @Column(name = "analytic")
     boolean analytic;
-
-    @ManyToOne
-    private List<Model> listModel;
 
     @CreatedDate
     @Column(name = "createdat")

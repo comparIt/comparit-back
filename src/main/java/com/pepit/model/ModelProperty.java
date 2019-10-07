@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(of = {"id", "realName", "realTableName", "modelPropertyType", "isFiltrable", "isFiltrableAdvanced", "isMandatory", "model", "createdAt", "updatedAt"})
+@ToString
 @Entity
 @Table(name = "ModelProperty")
 public class ModelProperty {
