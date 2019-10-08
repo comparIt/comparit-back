@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.pepit.enumeration.TypeUserEnum;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,9 +37,12 @@ public class User {
 
     @OneToMany
     List<Filter> filters;
+    
+    @ManyToOne
+    Company company;
 
     @Column(name = "typeUser")
-    String typeUser;
+    TypeUserEnum typeUser;
 
     @CreatedDate
     @Column(name = "createdat")

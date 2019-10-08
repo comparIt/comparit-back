@@ -24,17 +24,17 @@ public class Model {
     @Column(name = "id")
     int id;
 
-    @Column(name = "realName")
-    String realName;
+    @Column(name = "name")
+    String name;
 
-    @Column(name = "realTableName")
-    String realTableName;
+    @Column(name = "technicalName")
+    String technicalName;
 
     @Column(name = "isActivated")
     boolean isActivated;
 
     @OneToMany
-    List<ModelProperty> listModelProperty;
+    List<ModelProperty> modelProperties;
 
     @CreatedDate
     @Column(name = "createdat")

@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -15,8 +16,8 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
-@Table(name = "Compagny")
-public class Compagny {
+@Table(name = "Company")
+public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,9 @@ public class Compagny {
 
     @Column(name = "presentation")
     String presentation;
+    
+    @OneToMany
+    List<User> members;
 
     @CreatedDate
     @Column(name = "createdat")

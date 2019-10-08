@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.pepit.enumeration.TypeModelPropertyEnum;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,23 +25,23 @@ public class ModelProperty {
     @Column(name = "id")
     int id;
 
-    @Column(name = "realName")
-    String realName;
+    @Column(name = "name")
+    String name;
 
-    @Column(name = "realTableName")
-    String realTableName;
+    @Column(name = "technicalName")
+    String technicalName;
 
-    @Column(name = "ModelPropertyType")
-    String modelPropertyType;
+    @Column(name = "type")
+    TypeModelPropertyEnum type;
 
-    @Column(name = "isFiltrable")
-    boolean isFiltrable;
+    @Column(name = "filtrable")
+    boolean filtrable;
 
-    @Column(name = "isFiltrableAdvanced")
-    boolean isFiltrableAdvanced;
+    @Column(name = "filtrableAdvanced")
+    boolean filtrableAdvanced;
 
-    @Column(name = "isMandatory")
-    boolean isMandatory;
+    @Column(name = "mandatory")
+    boolean mandatory;
 
     @ManyToOne
     Model model;

@@ -32,8 +32,11 @@ public class WebsiteConfiguration {
     @Column(name = "color3")
     String color3;
 
-    @Column(name = "analytic")
-    boolean analytic;
+    @Column(name="logo")
+    String logo;
+    
+    @Column(name = "featAnalytic")
+    boolean featAnalytic;
 
     @CreatedDate
     @Column(name = "createdat")
