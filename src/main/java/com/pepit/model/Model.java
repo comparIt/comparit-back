@@ -33,7 +33,7 @@ public class Model {
     @Column(name = "isActivated")
     boolean isActivated;
 
-    @ManyToOne
+    @OneToMany
     List<ModelProperty> listModelProperty;
 
     @CreatedDate

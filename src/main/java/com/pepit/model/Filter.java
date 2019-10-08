@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -26,16 +27,17 @@ public class Filter {
     int id;
 
     @ManyToOne
-    private List<User> users;
+    private User users;
 
     @Column(name = "alertType")
     TypeAlertEnum alertType;
 
-    @Column(name = "criteria")
-    Criteria criteria;
+    @ElementCollection
+    @Column(name = "criterias")
+    Map<Criteria, String> criterias;
 
     @OneToMany
-    Alert alert;
+    List<Alert> alerts;
 
     @Column(name = "isEmail")
     boolean isEmail;

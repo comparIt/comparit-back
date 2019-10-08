@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -33,7 +34,7 @@ public class User {
     String firstName;
 
     @OneToMany
-    Filter filter;
+    List<Filter> filters;
 
     @Column(name = "typeUser")
     String typeUser;

@@ -27,7 +27,7 @@ public class Alert {
     @ManyToOne
     private Filter filter;
 
-    @Column(name = "listProductsId")
+    @ElementCollection
     List<String> listProductsId;
 
     @Column(name = "isConsulted")

@@ -41,7 +41,7 @@ public class ModelProperty {
     @Column(name = "isMandatory")
     boolean isMandatory;
 
-    @OneToMany
+    @ManyToOne
     Model model;
 
     @CreatedDate
