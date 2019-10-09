@@ -34,7 +34,7 @@ public class Filter {
 
     @ElementCollection
     @Column(name = "criterias")
-    Map<Criteria, String> criterias;
+    Map<ModelProperty, String> criterias;
 
     @OneToMany
     List<Alert> alerts;
