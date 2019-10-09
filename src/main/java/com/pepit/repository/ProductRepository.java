@@ -1,4 +1,4 @@
-package com.pepit.repositories;
+package com.pepit.repository;
 
 import com.mysql.cj.xdevapi.*;
 import lombok.NoArgsConstructor;
