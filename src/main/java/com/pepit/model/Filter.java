@@ -17,6 +17,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity
 @Table(name = "Filter")
 public class Filter {

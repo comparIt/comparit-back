@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WebsiteConfigurationRepository extends CrudRepository<WebsiteConfiguration,Integer> {
+public interface WebsiteConfigurationRepository extends CrudRepository<WebsiteConfiguration, Integer> {
 }
