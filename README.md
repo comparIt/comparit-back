@@ -17,7 +17,9 @@ DO NOT MODIFY THE application.properties, use environnement variable instead !
 
 You can use this exemple for dev
 ```
-DATABASE_HOST=[URL TO DB];DATABASE_PORT=3306;DATABASE_NAME=compareit;DATABASE_USERNAME=root;DATABASE_PASSWORD=root;CLIENT_URL=http://localhost:4200
+DATABASE_HOST=[URL TO DB];DATABASE_PORT=3306;DATABASE_NAME=compareIt;DATABASE_USERNAME=root;DATABASE_PASSWORD=root;CLIENT_URL=http://localhost:4200
+OR with XPORT
+DATABASE_HOST=0.0.0.0;DATABASE_PORT=3306;DATABASE_XPORT=33060;DATABASE_NAME=compareIt;DATABASE_USERNAME=root;DATABASE_PASSWORD=rootP@ssw0rd;CLIENT_URL=http://localhost:4200
 ```
 
 ## Running the application locally

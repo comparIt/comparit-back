@@ -9,13 +9,13 @@ import java.util.List;
 public class ProductRepository {
 
     public void testRequest(){
-        Session mySession = new SessionFactory().getSession("mysqlx://192.168.99.100:33060/compareIt?user=root&password=rootP@ssw0rd");
+        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=rootP@ssw0rd");
 
         Schema myDb = mySession.getSchema("compareIt");
 
         Collection myColl = myDb.getCollection("products");
 
-        DocResult docs = myColl.find("os like :os AND bluetooth like :bluetooth").fields("os")
+        DocResult docs = myColl.find("os like :os AND bluetooth like :bluetooth")
                 .bind("os", "Android 9.0%").bind("bluetooth", "5.0,%").execute();
 
         List<DbDoc> doc = docs.fetchAll();
