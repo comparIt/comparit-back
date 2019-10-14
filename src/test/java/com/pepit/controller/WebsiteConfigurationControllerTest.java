@@ -2,10 +2,11 @@ package com.pepit.controller;
 
 import com.pepit.business.WebsiteConfigurationBusiness;
 import com.pepit.controllers.WebsiteConfigurationController;
+import com.pepit.exception.DataProvidedException;
+import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.WebsiteConfiguration;
 import com.pepit.repository.WebsiteConfigurationRepository;
 import com.pepit.service.WebsiteConfigurationService;
-import lombok.Lombok;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +44,7 @@ public class WebsiteConfigurationControllerTest {
     private Integer websiteConfigurationId = 1;
 
     @Before
-    public void initTests() {
+    public void initTests() throws ReferentielRequestException, DataProvidedException {
         initDatas();
         initMocks();
     }
@@ -61,8 +62,8 @@ public class WebsiteConfigurationControllerTest {
                 .build();
     }
 
-    private void initMocks() {
-        Mockito.when(websiteConfigurationService.getWebsiteConfigById(websiteConfigurationId)).thenReturn(websiteConfiguration);
+    private void initMocks() throws ReferentielRequestException, DataProvidedException {
+        Mockito.when(websiteConfigurationService.findOneById(websiteConfigurationId)).thenReturn(websiteConfiguration);
     }
 
     @Test
@@ -72,7 +73,7 @@ public class WebsiteConfigurationControllerTest {
 
     @Test
     public void getWebsiteConfigByIdOk() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/websiteconfig/get?websiteConfigurationId="+websiteConfigurationId)
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/websiteconfig/get?websiteConfigurationId=" + websiteConfigurationId)
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         JSONAssert.assertEquals(websiteConfiguration.toString(), result.getResponse().getContentAsString(), true);
@@ -89,7 +90,7 @@ public class WebsiteConfigurationControllerTest {
 
     @Test
     public void getWebsiteConfigByIdButNoConfigExist() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/websiteconfig/get?websiteConfigurationId="+websiteConfigurationId)
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/websiteconfig/get?websiteConfigurationId=" + websiteConfigurationId)
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         String expected = "code erreur 2";

@@ -1,7 +1,9 @@
 package com.pepit.service;
 
+import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.WebsiteConfiguration;
 import com.pepit.repository.WebsiteConfigurationRepository;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.swing.text.html.Option;
 
 import java.util.Optional;
 
@@ -51,7 +51,7 @@ public class WebsiteConfigurationServiceTest {
     }
 
     private void initMocks() {
-        Mockito.when(websiteConfigurationRepository.findOneById(websiteConfigurationId)).thenReturn(websiteConfiguration);
+        Mockito.when(websiteConfigurationRepository.findById(websiteConfigurationId)).thenReturn(Optional.ofNullable(websiteConfiguration));
         Mockito.when(websiteConfigurationRepository.save(websiteConfiguration)).thenReturn(websiteConfiguration);
     }
 
@@ -61,27 +61,29 @@ public class WebsiteConfigurationServiceTest {
     }
 
     @Test
-    public void findOneByIdOk(){
+    public void findOneByIdOk() throws ReferentielRequestException {
+        Assert.assertEquals(websiteConfiguration, websiteConfigurationService.findOneById(websiteConfigurationId));
+    }
+
+    @Test(expected = Exception.class)
+    public void findOneByIdNotFound() throws ReferentielRequestException {
+        Mockito.when(websiteConfigurationRepository.findById(websiteConfigurationId)).thenReturn(null);
+        websiteConfigurationService.findOneById(websiteConfigurationId);
+    }
+
+    @Test
+    public void findOneByIdDbErr() throws ReferentielRequestException {
+        Mockito.when(websiteConfigurationRepository.findById(websiteConfigurationId)).thenThrow(new Exception());
+        websiteConfigurationService.findOneById(websiteConfigurationId);
+    }
+
+    @Test
+    public void saveOk() {
 
     }
 
     @Test
-    public void findOneByIdNotFound(){
-
-    }
-
-    @Test
-    public void findOneByIdDbErr(){
-
-    }
-
-    @Test
-    public void saveOk(){
-
-    }
-
-    @Test
-    public void saveDbErr(){
+    public void saveDbErr() {
 
     }
 

@@ -1,11 +1,14 @@
 package com.pepit.controllers;
 
 import com.pepit.business.WebsiteConfigurationBusiness;
+import com.pepit.exception.DataProvidedException;
+import com.pepit.exception.ReferentielRequestException;
+import com.pepit.model.WebsiteConfiguration;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "websiteconfig", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -18,5 +21,12 @@ public class WebsiteConfigurationController {
     public WebsiteConfigurationController(WebsiteConfigurationService websiteConfigurationService, WebsiteConfigurationBusiness websiteConfigurationBusiness) {
         this.websiteConfigurationService = websiteConfigurationService;
         this.websiteConfigurationBusiness = websiteConfigurationBusiness;
+    }
+
+    @CrossOrigin
+    @GetMapping("/get")
+    @ResponseBody
+    public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@RequestParam("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException, DataProvidedException {
+        return ResponseEntity.status(200).body(websiteConfigurationService.findOneById(websiteConfigurationId));
     }
 }
