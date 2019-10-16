@@ -1,6 +1,7 @@
 package com.pepit.bean;
 
 import com.mysql.cj.xdevapi.*;
+import com.pepit.util.Query;
 
 
 public class ProductDB {
@@ -11,11 +12,20 @@ public class ProductDB {
         Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=root");
         Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
         this.collection = myDb.getCollection("products");
-        System.out.println("poppin'");
     }
 
-    public DocResult runQuery(String query){
-        return collection.find(query).execute();
+    public DocResult runQuery(Query query){
+        System.out.println(query.toString());
+        FindStatement statement = collection.find(query.criteriasAsStatement());
+        statement.offset(query.getOffset());
+        statement.limit(query.getLimit());
+        statement.sort(query.getSort());
+        System.out.println(query.getSort());
+        statement.bind(query.getBoundParams());
+
+        // add sort ?
+
+        return statement.execute();
     }
 
 }

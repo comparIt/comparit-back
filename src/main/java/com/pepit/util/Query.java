@@ -1,6 +1,5 @@
 package com.pepit.util;
 
-import com.mysql.cj.xdevapi.FindStatement;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -29,22 +28,6 @@ public class Query {
             case "a" : addInterval(fieldName,unparsedValue); break;
             case "os" : addEnumeration(fieldName,unparsedValue); break;
         }
-    }
-
-    public Query addType(String unparsedType) {
-        if(unparsedType != null){
-            this.boundParams.put("type", unparsedType);
-            this.criterias.add("typeProduct = :type");
-        }
-        return this;
-    }
-
-    public Query addSupplier(String unparsedType) {
-        if(unparsedType != null){
-            this.boundParams.put("supplier", unparsedType);
-            this.criterias.add("Fournisseur = :supplier");
-        }
-        return this;
     }
 
     public Query addSorting(String sortingPredicate){
@@ -85,12 +68,12 @@ public class Query {
     private Query addInterval(String field, Integer min, Integer max){
         if(min != null){
             String paramMin = field+"min";
-            String criteriaMin = "properties."+field + " >= :" + paramMin;
+            String criteriaMin = field + " >= :" + paramMin;
             this.boundParams.put(paramMin, min);
             this.criterias.add(criteriaMin);
         }
 
-        if(max != null){
+        if(min != null){
             String paramMax = field +"max";
             String criteriaMax = field + " <= :" + paramMax;
             this.boundParams.put(paramMax, max);
@@ -116,7 +99,7 @@ public class Query {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("properties.").append(field).append(" in ").append("(");
+        sb.append(field).append(" in ").append("(");
         bindParams.stream().map(p -> ":"+p).reduce((x, y) -> x + ", " + y).map(sb::append);
         sb.append(")");
 
