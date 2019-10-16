@@ -1,7 +1,5 @@
 package com.pepit.model;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,8 +11,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor

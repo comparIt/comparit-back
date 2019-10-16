@@ -10,10 +10,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class WoopBackApplication {
 
     public static void main(String[] args) {
-        new ProductRepository().testRequest();
-
-
-
         SpringApplication.run(WoopBackApplication.class, args);
 
     }
