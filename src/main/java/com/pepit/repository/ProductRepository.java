@@ -15,7 +15,7 @@ import java.util.*;
 @Repository
 public class ProductRepository {
 
-    public List<Product> testRequest(String query){
+    public List<ProductDto> testRequest(String query){
         Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=root");
         Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
         Collection myColl = myDb.getCollection("products");
@@ -24,7 +24,7 @@ public class ProductRepository {
 
         List<DbDoc> docList = docs.fetchAll();
 
-        List<ProductDto> productDtos = new ArrayList<ProductDto>();
+        List<ProductDto> productDtos = new ArrayList<>();
 
         for ( DbDoc onedoc : docList) {
 
@@ -40,12 +40,6 @@ public class ProductRepository {
             }
         }
 
-        //System.out.println(product.getDetails());
-
-        String query1="Brand";
-        return null;
-        //String Brand = product.getDetails().get(query).toString();
-        //System.out.println(product.getName());
-        //System.out.println(product.getDetails().get("audioConnector"));
+        return productDtos;
     }
 }
