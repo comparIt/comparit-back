@@ -6,6 +6,7 @@ import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,10 @@ import java.util.Map;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    ProductRepositoryCustom productRepositoryCustom;
 
     @Override
     public List<ProductDto> search(Map<String, String> params) {
-        return null;
+        return productRepositoryCustom.testRequest(queryBuilder(params));
     }
 }
