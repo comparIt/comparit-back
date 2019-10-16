@@ -2,9 +2,9 @@ package com.pepit.repository.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
-import com.mysql.cj.xdevapi.Collection;
 import com.pepit.bean.ProductDB;
 import com.pepit.model.ProductDto;
+import com.pepit.util.Query;
 import com.pepit.repository.ProductRepositoryCustom;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Autowired
     ProductDB productDB;
 
-    public List<ProductDto> testRequest(String query){
+    public List<ProductDto> testRequest(Query query){
         List<DbDoc> docList = productDB.runQuery(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
