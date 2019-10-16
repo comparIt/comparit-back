@@ -37,14 +37,5 @@ public class Product {
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private String properties;
-
-
-   @CreatedDate
-    @Column(name = "createdat")
-    LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updatedat")
-    LocalDateTime updatedAt;
 }
 

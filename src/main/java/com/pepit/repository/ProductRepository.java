@@ -13,7 +13,7 @@ import java.util.*;
 public class ProductRepository {
 
     public void testRequest(){
-        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=rootP@ssw0rd");
+        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/"+System.getenv("DATABASE_NAME")+"?user="+System.getenv("DATABASE_USERNAME")+"&password="+System.getenv("DATABASE_PASSWORD")+"");
 
         Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
 
@@ -36,31 +36,21 @@ public class ProductRepository {
             Map.Entry<String, String> pair = (Map.Entry)it.next();
             String key = pair.getKey();
             String value = pair.getValue();
-            //StringBuilder?
             query+=key+" like '"+value+"'";
             if(it.hasNext())
                 query+=" AND ";
         }
-
         it.remove();
 
         DocResult docs = myColl.find(query).execute();
 
         List<DbDoc> docList = docs.fetchAll();
-        //System.out.println(doc);
-
-/*
-        JSONObject jsonP = new JSONObject();
-
-        jsonP.put("name", "test");
-        jsonP.put("category", "testcat");
-        jsonP.put("details", json);*/
 
         List<ProductDto> productDtos = new ArrayList<ProductDto>();
 
         for ( DbDoc onedoc : docList) {
 
-            String jsonP = "{\"name\": \"Pear yPhone 72\",\"category\": \"cellphone\",\"details\": " + onedoc.toString() + "}";
+            String jsonP = "{\"details\": " + onedoc.toString() + "}";
             System.out.println(jsonP);
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -71,13 +61,5 @@ public class ProductRepository {
                 e.printStackTrace();
             }
         }
-
-        //System.out.println(product.getDetails());
-
-        String query1="Brand";
-
-        //String Brand = product.getDetails().get(query).toString();
-        //System.out.println(product.getName());
-        //System.out.println(product.getDetails().get("audioConnector"));
     }
 }

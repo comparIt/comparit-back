@@ -18,37 +18,14 @@ import java.util.Map;
 @Setter
 @ToString
 @Builder
-//@Entity
-//@Table(name = "Product")
 public class ProductDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
 
-    @Column(name = "name")
-    private String name;
-/*
-    public String getName() {
-        return name;
-    }*/
-/*
-    @Column(name = "fournid")
-    private String fournId;
-*/
-    @Column(name = "category")
-    private String category;
-
     @ElementCollection
-    @Column(name = "data")
+    @Column(name = "properties")
     private Map<String, Object> details = new LinkedHashMap<>();
 
-
-/*    @CreatedDate
-    @Column(name = "createdat")
-    LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updatedat")
-    LocalDateTime updatedAt;*/
 }
