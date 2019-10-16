@@ -1,7 +1,6 @@
 package com.pepit.controllers;
 
-
-import com.pepit.model.Product;
+import com.pepit.model.ProductDto;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,7 +23,7 @@ public class ProductController {
 
     @CrossOrigin
     @GetMapping(value = "/search")
-    public ResponseEntity<List<Product>> search(@RequestParam Map<String, String> params){
+    public ResponseEntity<List<ProductDto>> search(@RequestParam Map<String, String> params){
         return ResponseEntity.status(200).body(productService.search(params));
     }
 
