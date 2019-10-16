@@ -32,14 +32,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    //WARNING PUT NOT WORKING AT THE MOMENT
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors();
+       /* http.cors();
         JwtWebSecurityConfigurer
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated();*/
     }
 
 }
