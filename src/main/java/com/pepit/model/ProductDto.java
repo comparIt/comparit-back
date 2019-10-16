@@ -1,13 +1,8 @@
 package com.pepit.model;
-
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes;
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -23,28 +18,37 @@ import java.util.Map;
 @Setter
 @ToString
 @Builder
-@Entity
-@TypeDefs({
-        @TypeDef(name = "json", typeClass = JsonStringType.class)
-})
-@Table(name = "Product")
-public class Product {
+//@Entity
+//@Table(name = "Product")
+public class ProductDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     int id;
 
-    @Type(type = "json")
-    @Column(columnDefinition = "json")
-    private String properties;
+    @Column(name = "name")
+    private String name;
+/*
+    public String getName() {
+        return name;
+    }*/
+/*
+    @Column(name = "fournid")
+    private String fournId;
+*/
+    @Column(name = "category")
+    private String category;
+
+    @ElementCollection
+    @Column(name = "data")
+    private Map<String, Object> details = new LinkedHashMap<>();
 
 
-   @CreatedDate
+/*    @CreatedDate
     @Column(name = "createdat")
     LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updatedat")
-    LocalDateTime updatedAt;
+    LocalDateTime updatedAt;*/
 }
-

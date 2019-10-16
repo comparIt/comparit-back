@@ -2,11 +2,12 @@ package com.pepit.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
-import com.pepit.model.Product;
+import com.mysql.cj.xdevapi.Collection;
+import com.pepit.model.ProductDto;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor
 public class ProductRepository {
@@ -18,25 +19,64 @@ public class ProductRepository {
 
         Collection myColl = myDb.getCollection("products");
 
-        DocResult docs = myColl.find("os like :os AND bluetooth like :bluetooth")
-                .bind("os", "Android 9.0%").bind("bluetooth", "5.0,%").execute();
+        String fromFront="os=%Oreo%&bluetooth=5.0,%";
+        List<String> argList = Arrays.asList(fromFront.split("&"));
+        Map<String,String> getArgs = new HashMap<>();
 
-        List<DbDoc> doc = docs.fetchAll();
-        System.out.println(doc);
-
-
-        String json = "{\"name\": \"Pear yPhone 72\",\"category\": \"cellphone\",\"details\": {\"displayAspectRatio\": \"97:3\",\"audioConnector\": \"none\"}}";
-        System.out.println(json.toString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Product product = null;
-        try {
-            product = objectMapper.readValue(json, Product.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (String oneArg : argList) {
+            String[] table = oneArg.split("=");
+            getArgs.put(table[0], table[1]);
         }
 
-        System.out.println(product.getName());
+        String query = "";
+
+        Iterator it = getArgs.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry<String, String> pair = (Map.Entry)it.next();
+            String key = pair.getKey();
+            String value = pair.getValue();
+            //StringBuilder?
+            query+=key+" like '"+value+"'";
+            if(it.hasNext())
+                query+=" AND ";
+        }
+
+        it.remove();
+
+        DocResult docs = myColl.find(query).execute();
+
+        List<DbDoc> docList = docs.fetchAll();
+        //System.out.println(doc);
+
+/*
+        JSONObject jsonP = new JSONObject();
+
+        jsonP.put("name", "test");
+        jsonP.put("category", "testcat");
+        jsonP.put("details", json);*/
+
+        List<ProductDto> productDtos = new ArrayList<ProductDto>();
+
+        for ( DbDoc onedoc : docList) {
+
+            String jsonP = "{\"name\": \"Pear yPhone 72\",\"category\": \"cellphone\",\"details\": " + onedoc.toString() + "}";
+            System.out.println(jsonP);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            ProductDto productDto = null;
+            try {
+                productDtos.add(objectMapper.readValue(jsonP.toString(), ProductDto.class));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //System.out.println(product.getDetails());
+
+        String query1="Brand";
+
+        //String Brand = product.getDetails().get(query).toString();
         //System.out.println(product.getName());
         //System.out.println(product.getDetails().get("audioConnector"));
     }
