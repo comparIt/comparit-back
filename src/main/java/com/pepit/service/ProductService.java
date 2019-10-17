@@ -1,12 +1,12 @@
 package com.pepit.service;
 
-import com.pepit.model.Product;
+import com.pepit.model.ProductDto;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ProductService {
 
-    List<Product> search(Map<String, String> params);
+    List<ProductDto> search(Map<String, String> params);
 
 }

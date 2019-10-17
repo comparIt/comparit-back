@@ -1,11 +1,10 @@
 package com.pepit.model;
 
+import com.pepit.enumeration.TypeUserEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import com.pepit.enumeration.TypeUserEnum;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

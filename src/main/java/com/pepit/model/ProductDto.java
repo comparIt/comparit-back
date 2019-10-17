@@ -1,13 +1,9 @@
 package com.pepit.model;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,6 +22,6 @@ public class ProductDto {
 
     @ElementCollection
     @Column(name = "properties")
-    private Map<String, Object> details = new LinkedHashMap<>();
+    private Map<String, Object> properties = new LinkedHashMap<>();
 
 }

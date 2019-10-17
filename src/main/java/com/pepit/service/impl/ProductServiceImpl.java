@@ -1,13 +1,11 @@
 package com.pepit.service.impl;
 
-import com.pepit.model.Product;
+import com.pepit.model.ProductDto;
 import com.pepit.repository.ProductRepository;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public List<Product> search(Map<String, String> params) {
-        return productRepository.testRequest(queryBuilder(params));
+    public List<ProductDto> search(Map<String, String> params) {
+        return productRepository.find(queryBuilder(params));
     }
 
     private String queryBuilder(Map<String, String> params) {
