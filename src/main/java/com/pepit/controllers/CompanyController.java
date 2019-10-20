@@ -72,7 +72,7 @@ public class CompanyController {
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
 
-            System.out.println("REPONSE API: "+response);
+            //System.out.println("REPONSE API: "+response);
             ObjectMapper mapper = new ObjectMapper();
             //JsonNode root = null;
             JsonNode parsedArray = mapper.readTree(response.getBody());
@@ -88,16 +88,13 @@ public class CompanyController {
 
                 //output+= "output: "+outerObject.toString();
                 myJsonArray.add(outerObject);
-
             }
-
-
 
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
-        productRepository.importJson(myJsonArray.toJSONString());
+        productRepository.importJson(myJsonArray);
         return myJsonArray.toString();
     }
 }

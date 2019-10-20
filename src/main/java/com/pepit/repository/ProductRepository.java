@@ -1,9 +1,12 @@
 package com.pepit.repository;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.model.ProductDto;
 import lombok.NoArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -42,8 +45,13 @@ public class ProductRepository {
         return productDtos;
     }
 
-    public void importJson(String jsonArray){
-        myColl = myDb.getCollection("product");
-        //myColl.add(jsonArray);
+    public void importJson(JSONArray arr){
+        //myDb.createCollection("produit");
+        myColl = myDb.getCollection("produit");
+        for (int i=0; i < arr.size(); i++) {
+            String current = arr.get(i).toString();
+            //TODO faire fonctionner ce add qui ne produit rien !!!
+            myColl.add(current);
+        }
     }
 }
