@@ -2,13 +2,19 @@ package com.pepit.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pepit.business.CompanyBusiness;
 import com.pepit.model.Product;
 import com.pepit.model.ProductDto;
+import com.pepit.repository.ProductRepository;
 import com.pepit.service.CompanyService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,11 +28,13 @@ public class CompanyController {
 
     private CompanyBusiness companyBusiness;
     private CompanyService companyService;
+    private static ProductRepository productRepository;
 
     @Autowired
-    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService) {
+    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, ProductRepository productRepository) {
         this.companyBusiness = companyBusiness;
         this.companyService = companyService;
+        this.productRepository = productRepository;
     }
 
     @PostMapping(value = "/")
@@ -45,13 +53,15 @@ public class CompanyController {
     @CrossOrigin
     @GetMapping("/byUrl")
     @ResponseBody
-    public String sendUrlToGet(@RequestParam("url") String url){
+    public String sendUrlToGet(@RequestParam("url") String url, @RequestParam("fournId") String fournId){
         System.out.println(url);
-        getFromUrl(url);
-        return "OK";
+        return getFromUrl(url, fournId);
     }
 
-    private static void getFromUrl(String url) {
+    private static String getFromUrl(String url, String fournId) {
+
+        //String output="";
+        JSONArray myJsonArray = new JSONArray();
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -62,36 +72,32 @@ public class CompanyController {
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
 
-            System.out.println(response);
+            System.out.println("REPONSE API: "+response);
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = null;
-            root = mapper.readTree(response.getBody());
-            Iterator<String> fieldNames = root.fieldNames();
-            while (fieldNames.hasNext()) {
-                JsonNode productNodes = root.get("");
-                Iterator<JsonNode> elements = productNodes.iterator();
-                while (elements.hasNext()) {
-                    JsonNode element = elements.next();
-                    JsonNodeType nodeType = element.getNodeType();
+            //JsonNode root = null;
+            JsonNode parsedArray = mapper.readTree(response.getBody());
 
-                    if (nodeType == JsonNodeType.STRING) {
-                        System.out.println("Group: " + element.textValue());
-                    }
+            //pour tous les elements retournés par l'API on construit l'objet json enrichi
 
-                    if (nodeType == JsonNodeType.ARRAY) {
-                        Iterator<JsonNode> fields = element.iterator();
-                        while (fields.hasNext()) {
-                            System.out.println(fields.next());
-                        }
-                    }
-                }
-                fieldNames.next();
-            };
-            System.out.println(root.toString());
+            for (JsonNode parsedJson : parsedArray) {
+                ArrayNode outerArray = mapper.createArrayNode(); //le json de sortie
+                ObjectNode outerObject = mapper.createObjectNode(); //the object with the "data" array
+                outerObject.putPOJO("Fournisseur",fournId);
+                outerObject.putPOJO("properties",parsedJson);
+                outerArray.add(outerObject);
+
+                //output+= "output: "+outerObject.toString();
+                myJsonArray.add(outerObject);
+
+            }
+
+
 
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
+        productRepository.importJson(myJsonArray.toJSONString());
+        return myJsonArray.toString();
     }
 }

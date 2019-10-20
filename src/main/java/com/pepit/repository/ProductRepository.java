@@ -14,11 +14,11 @@ import java.util.List;
 @Repository
 public class ProductRepository {
 
-    public List<ProductDto> find(String query){
-        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=root");
-        Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
-        Collection myColl = myDb.getCollection("products");
+    static Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=" + System.getenv("DATABASE_PASSWORD") );
+    static Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
+    static Collection myColl = myDb.getCollection("products");
 
+    public List<ProductDto> find(String query){
         DocResult docs = myColl.find(query).execute();
 
         List<DbDoc> docList = docs.fetchAll();
@@ -40,5 +40,10 @@ public class ProductRepository {
         }
 
         return productDtos;
+    }
+
+    public void importJson(String jsonArray){
+        myColl = myDb.getCollection("product");
+        //myColl.add(jsonArray);
     }
 }
