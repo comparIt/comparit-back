@@ -49,8 +49,8 @@ public class CompanyController {
     @CrossOrigin
     @GetMapping("/byUrl")
     @ResponseBody
-    public String sendUrlToGet(@RequestParam("url") String url, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type){
+    public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type){
         //TODO S'assurer que type reçu est coherent avec un des Model existant
-        return companyService.getFromUrl(url, supplierId, type);
+        return new ResponseEntity<String>(companyService.getFromUrl(url, supplierId, type), HttpStatus.OK);
     }
 }
