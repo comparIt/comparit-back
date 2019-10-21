@@ -19,7 +19,7 @@ public class ProductRepository {
 
     static Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=" + System.getenv("DATABASE_PASSWORD") );
     static Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
-    static Collection myColl = myDb.getCollection("products");
+    static Collection myColl = myDb.getCollection("produit");
 
     public List<ProductDto> find(String query){
         DocResult docs = myColl.find(query).execute();
@@ -46,12 +46,16 @@ public class ProductRepository {
     }
 
     public void importJson(JSONArray arr){
-        //myDb.createCollection("produit");
-        myColl = myDb.getCollection("produit");
+        //TODO delete de la collection pour TEST mais il faudra seulement supprimer les object d'un founisseur a l'import
+        myDb.dropCollection("produit");
+        myDb.createCollection("produit");
+        myDb.getCollection("produit");
+        //Fin TODO a REVOIR
+
+        //Parcours du json array pour ajout oneByone dans la collection
         for (int i=0; i < arr.size(); i++) {
             String current = arr.get(i).toString();
-            //TODO faire fonctionner ce add qui ne produit rien !!!
-            myColl.add(current);
+            AddResult result = myColl.add(current).execute();
         }
     }
 }
