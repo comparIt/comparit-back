@@ -23,6 +23,19 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    @PostMapping(value = "/")
+    public ResponseEntity<ProductDto> post(@RequestBody ProductDto product) {
+
+        if (product != null) {
+            System.out.println(product.getProperties());
+        }
+
+        // TODO: call persistence layer to update
+        return new ResponseEntity<ProductDto>(product, HttpStatus.OK);
+    }
+
+
+
     @CrossOrigin
     @GetMapping("/byUrl/{typeProduit}")
     @ResponseBody
