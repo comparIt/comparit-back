@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class WoopBackApplication {
+public class CompareITBackApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WoopBackApplication.class, args);
+        SpringApplication.run(CompareITBackApplication.class, args);
     }
 
 }

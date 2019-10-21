@@ -1,6 +1,7 @@
 package com.pepit.controllers;
 
 import com.pepit.business.WebsiteConfigurationBusiness;
+import com.pepit.constants.Routes;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "websiteconfig", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(Routes.WEBSITECONFIG)
 public class WebsiteConfigurationController {
 
     private WebsiteConfigurationService websiteConfigurationService;

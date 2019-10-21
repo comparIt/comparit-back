@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class WoopBackApplicationTests {
+public class CompareITBackApplicationTests {
 
     @Test
     public void contextLoads() {
