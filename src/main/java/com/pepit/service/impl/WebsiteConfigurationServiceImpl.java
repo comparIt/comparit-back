@@ -17,11 +17,7 @@ public class WebsiteConfigurationServiceImpl implements WebsiteConfigurationServ
         this.websiteConfigurationRepository = websiteConfigurationRepository;
     }
 
-    public WebsiteConfiguration findOneById(Integer websitreConfigurationId) throws ReferentielRequestException {
-        return websiteConfigurationRepository.findById(websitreConfigurationId).orElseThrow(ReferentielRequestException::new);
-    }
-
-    private WebsiteConfiguration save(WebsiteConfiguration websiteConfiguration) {
-        return websiteConfigurationRepository.save(websiteConfiguration);
+    public WebsiteConfiguration findOneById(Integer websiteConfiguration) throws ReferentielRequestException {
+        return websiteConfigurationRepository.findById(websiteConfiguration).orElseThrow(ReferentielRequestException::new);
     }
 }

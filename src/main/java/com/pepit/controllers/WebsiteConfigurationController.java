@@ -1,7 +1,6 @@
 package com.pepit.controllers;
 
 import com.pepit.business.WebsiteConfigurationBusiness;
-import com.pepit.exception.DataProvidedException;
 import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.WebsiteConfiguration;
 import com.pepit.service.WebsiteConfigurationService;
@@ -24,9 +23,9 @@ public class WebsiteConfigurationController {
     }
 
     @CrossOrigin
-    @GetMapping("/get")
+    @GetMapping("/get/{websiteConfigurationId}")
     @ResponseBody
-    public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@RequestParam("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException, DataProvidedException {
+    public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@PathVariable("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationService.findOneById(websiteConfigurationId));
     }
 }
