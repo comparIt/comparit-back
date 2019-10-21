@@ -9,7 +9,7 @@ public class ProductDB {
     private Collection collection;
 
     public ProductDB(){
-        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=root");
+        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=rootP@ssw0rd");
         Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
         this.collection = myDb.getCollection("products");
     }
