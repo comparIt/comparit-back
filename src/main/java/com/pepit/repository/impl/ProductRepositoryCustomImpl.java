@@ -26,12 +26,12 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         List<ProductDto> productDtos = new ArrayList<>();
 
         for ( DbDoc doc : docList) {
-            String jsonP = "{\"details\": " + doc.toString() + "}";
-            System.out.println(jsonP);
+
+            System.out.println(doc.toString());
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                productDtos.add(objectMapper.readValue(jsonP, ProductDto.class));
+                productDtos.add(objectMapper.readValue(doc.toString(), ProductDto.class));
             } catch (IOException e) {
                 e.printStackTrace();
             }
