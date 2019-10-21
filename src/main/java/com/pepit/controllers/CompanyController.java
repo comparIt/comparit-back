@@ -79,7 +79,7 @@ public class CompanyController {
                 ArrayNode outerArray = mapper.createArrayNode(); //le json de sortie
                 ObjectNode outerObject = mapper.createObjectNode(); //the object with the "data" array
                 outerObject.putPOJO("Fournisseur",fournId);
-                outerObject.putPOJO("typeProdcut",typeProduct);
+                outerObject.putPOJO("typeProduct",typeProduct);
                 outerObject.putPOJO("properties",parsedJson);
                 outerArray.add(outerObject);
 
