@@ -17,9 +17,14 @@ public class ProductServiceImpl implements ProductService {
     ProductRepositoryCustom productRepositoryCustom;
 
     @Override
-    public List<ProductDto> search(Map<String, String> params, String order, Integer page) {
+    public List<ProductDto> search(Map<String, String> params, String order, Integer page, String supplier, String type) {
         Query query = new Query();
-        query.addAllCriterias(params).page(page).addSorting(order);
+        query
+                .addType(type)
+                .addSupplier(supplier)
+                .addAllCriterias(params)
+                .page(page)
+                .addSorting(order);
         return productRepositoryCustom.testRequest(query);
     }
 

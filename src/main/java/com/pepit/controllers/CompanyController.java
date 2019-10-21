@@ -26,7 +26,7 @@ public class CompanyController {
     public ResponseEntity<ProductDto> post(@RequestBody ProductDto product) {
 
         if (product != null) {
-            System.out.println(product.getDetails());
+            System.out.println(product.getProperties());
         }
 
         // TODO: call persistence layer to update
