@@ -57,5 +57,7 @@ public class ProductRepository {
             String current = arr.get(i).toString();
             AddResult result = myColl.add(current).execute();
         }
+
+        //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
     }
 }
