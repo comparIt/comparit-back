@@ -1,12 +1,10 @@
 package com.pepit.repository;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
-import com.pepit.model.ProductDto;
+import com.pepit.dto.ProductDto;
 import lombok.NoArgsConstructor;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;

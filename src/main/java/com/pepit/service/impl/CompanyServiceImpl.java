@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Random;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -45,11 +46,16 @@ public class CompanyServiceImpl implements CompanyService {
             //pour tous les elements retournés par l'API on construit l'objet json enrichi
 
             for (JsonNode parsedJson : parsedArray) {
+                ObjectNode parsedObject = parsedJson.deepCopy();
+                //TODO a voir si on laisse prix
+                Random random = new Random();
+                int min = 1; int max = 10;
+                parsedObject.putPOJO("prix", random.nextInt(max - min + 1) + min);
                 ArrayNode outerArray = mapper.createArrayNode(); //le json de sortie
-                ObjectNode outerObject = mapper.createObjectNode(); //the object with the "data" array
+                ObjectNode outerObject = mapper.createObjectNode(); //l'objet json que 'on surcharge
                 outerObject.putPOJO("supplierId",supplierId);
                 outerObject.putPOJO("type",type);
-                outerObject.putPOJO("properties",parsedJson);
+                outerObject.putPOJO("properties",parsedObject);
                 outerArray.add(outerObject);
 
                 myJsonArray.add(outerObject);

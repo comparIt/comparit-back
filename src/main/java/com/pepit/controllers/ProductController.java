@@ -1,8 +1,7 @@
 package com.pepit.controllers;
 
 
-import com.pepit.model.Product;
-import com.pepit.model.ProductDto;
+import com.pepit.dto.ProductDto;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

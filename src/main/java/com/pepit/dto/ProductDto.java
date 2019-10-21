@@ -1,4 +1,4 @@
-package com.pepit.model;
+package com.pepit.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
