@@ -73,7 +73,7 @@ public class Query {
             this.criterias.add(criteriaMin);
         }
 
-        if(min != null){
+        if(max != null){
             String paramMax = field +"max";
             String criteriaMax = field + " <= :" + paramMax;
             this.boundParams.put(paramMax, max);
