@@ -10,6 +10,7 @@ public class WoopBackApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WoopBackApplication.class, args);
+
     }
 
 }
