@@ -1,25 +1,17 @@
 package com.pepit.converters;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class GenericsConverter<Entity, Dto> {
     public abstract Dto entityToDto(Entity entity);
     public abstract Entity dtoToEntity(Dto dto);
 
     public List<Dto> entityListToDtoList(List<Entity> entityList){
-        List<Dto> dtoList = new ArrayList<>();
-        for(Entity entity : entityList){
-            dtoList.add(entityToDto(entity));
-        }
-        return dtoList;
+        return entityList.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
     public List<Entity> dtoListToEntityList(List<Dto> dtoList) {
-        List<Entity> entityList = new ArrayList<>();
-        for(Dto dto : dtoList){
-            entityList.add(dtoToEntity(dto));
-        }
-        return entityList;
+        return dtoList.stream().map(this::dtoToEntity).collect(Collectors.toList());
     }
 }

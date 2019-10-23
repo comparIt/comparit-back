@@ -5,7 +5,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.pepit.enumeration.TypeModelPropertyEnum;
+import com.pepit.constants.TypeModelPropertyEnum;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
