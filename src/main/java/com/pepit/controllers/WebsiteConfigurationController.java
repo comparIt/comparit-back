@@ -23,7 +23,7 @@ public class WebsiteConfigurationController {
     }
 
     @CrossOrigin
-    @GetMapping("/get/{websiteConfigurationId}")
+    @GetMapping("/{websiteConfigurationId}")
     @ResponseBody
     public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@PathVariable("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationService.findOneById(websiteConfigurationId));
