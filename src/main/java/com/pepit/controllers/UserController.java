@@ -1,20 +1,22 @@
 package com.pepit.controllers;
 
-import com.pepit.business.UserBusiness;
+import com.pepit.constants.Routes;
+import com.pepit.dto.UserDto;
 import com.pepit.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(Routes.USER)
 public class UserController {
 
-    private UserBusiness userBusiness;
+    @Autowired
     private UserService userService;
 
-    public UserController(UserBusiness userBusiness, UserService userService) {
-        this.userBusiness = userBusiness;
-        this.userService = userService;
+    @PostMapping(consumes={"application/json"})
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.status(201).body(this.userService.create(userDto));
     }
 }

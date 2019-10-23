@@ -1,4 +1,9 @@
 package com.pepit.service;
 
-public interface UserService {
+import com.pepit.dto.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface UserService extends UserDetailsService {
+
+    UserDto create(UserDto userDto);
 }

@@ -1,6 +1,7 @@
 package com.pepit.controllers;
 
 import com.pepit.business.ModelPropertyBusiness;
+import com.pepit.constants.Routes;
 import com.pepit.service.ModelPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "modelProperty", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(Routes.MODELPROPERTY)
 public class ModelPropertyController {
 
     private ModelPropertyBusiness modelPropertyBusiness;

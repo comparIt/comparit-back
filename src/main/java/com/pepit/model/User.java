@@ -1,13 +1,15 @@
 package com.pepit.model;
 
-import com.pepit.enumeration.TypeUserEnum;
+import com.pepit.constants.Roles;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
@@ -24,10 +26,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    Long id;
 
     @Column(name = "email")
     String email;
+
+    @Column(name = "password")
+    String password;
 
     @Column(name = "lastName")
     String lastName;
@@ -41,9 +46,6 @@ public class User {
     @ManyToOne
     Company company;
 
-    @Column(name = "typeUser")
-    TypeUserEnum typeUser;
-
     @CreatedDate
     @Column(name = "createdat")
     LocalDateTime createdAt;
@@ -51,5 +53,11 @@ public class User {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
+    @Cascade(value = org.hibernate.annotations.CascadeType.REMOVE)
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    public Collection<Roles> roles;
 
 }

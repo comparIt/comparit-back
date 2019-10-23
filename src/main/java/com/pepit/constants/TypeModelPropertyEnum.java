@@ -1,4 +1,4 @@
-package com.pepit.enumeration;
+package com.pepit.constants;
 
 public enum TypeModelPropertyEnum {
     NUMERIC, ENUMERATIVE

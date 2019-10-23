@@ -1,6 +1,6 @@
 package com.pepit.model;
 
-import com.pepit.enumeration.TypeAlertEnum;
+import com.pepit.constants.TypeAlertEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,7 +1,7 @@
 package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
-import com.pepit.repository.ProductRepository;
+import com.pepit.constants.Routes;
 import com.pepit.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "company", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(Routes.COMPAGNY)
 public class CompanyController {
 
     private CompanyBusiness companyBusiness;
