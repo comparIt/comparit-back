@@ -2,6 +2,7 @@ package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
+import com.pepit.repository.ProductRepository;
 import com.pepit.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
