@@ -1,6 +1,5 @@
 package com.pepit.model;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;

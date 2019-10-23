@@ -2,7 +2,6 @@ package com.pepit.business.impl;
 
 import com.pepit.business.WebsiteConfigurationBusiness;
 import com.pepit.exception.ReferentielRequestException;
-import com.pepit.model.Model;
 import com.pepit.model.WebsiteConfiguration;
 import com.pepit.service.ModelService;
 import com.pepit.service.WebsiteConfigurationService;
