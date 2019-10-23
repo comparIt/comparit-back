@@ -7,22 +7,24 @@ import com.pepit.util.Query;
 public class ProductDB {
 
     private Collection collection;
+    private Session session;
+    private Schema db;
 
     public ProductDB(){
-        Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=rootP@ssw0rd");
-        Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
-        this.collection = myDb.getCollection("produit");
+        this.session = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=rootP@ssw0rd");
+        this.db = this.session.getSchema(System.getenv("DATABASE_NAME"));
+        this.collection = this.db.getCollection("produit");
     }
 
     public DocResult runQuery(Query query){
-        System.out.println(query.toString());
-        FindStatement statement = collection.find(query.criteriasAsStatement());
-        statement.offset(query.getOffset());
-        statement.limit(query.getLimit());
-        statement.sort(query.getSort());
-        statement.bind(query.getBoundParams());
-
-        return statement.execute();
+        return query.toStatement(this.collection).execute();
     }
 
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public Schema getDb() {
+        return db;
+    }
 }

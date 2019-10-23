@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pepit.repository.CompanyRepository;
-import com.pepit.repository.ProductRepository;
+import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import java.util.Random;
 public class CompanyServiceImpl implements CompanyService {
 
     private CompanyRepository companyRepository;
-    private ProductRepository productRepository;
+    private ProductRepositoryCustom productRepository;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, ProductRepository productRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ProductRepositoryCustom productRepository) {
         this.companyRepository = companyRepository;
         this.productRepository = productRepository;
     }
@@ -36,6 +36,7 @@ public class CompanyServiceImpl implements CompanyService {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            // TODO : générer des headers
             headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
             HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
