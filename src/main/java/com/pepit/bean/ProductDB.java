@@ -17,6 +17,7 @@ public class ProductDB {
     }
 
     public DocResult runQuery(Query query){
+        System.out.println(query.toString());
         return query.toStatement(this.collection).execute();
     }
 

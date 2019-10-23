@@ -9,7 +9,6 @@ import java.util.*;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
-@Getter
 public class Query {
 
     private List<String> criterias = new ArrayList<>();
@@ -63,7 +62,7 @@ public class Query {
         return this;
     }
 
-    private Query addInterval(String field, String v) throws NumberFormatException {
+    private void addInterval(String field, String v) throws NumberFormatException {
         String[] interval = v.split("-");
         Integer min;
         Integer max;
@@ -80,10 +79,10 @@ public class Query {
             max = null;
         }
 
-        return this.addInterval(field, min, max);
+        this.addInterval(field, min, max);
     }
 
-    private Query addInterval(String field, Integer min, Integer max){
+    private void addInterval(String field, Integer min, Integer max){
         if(min != null){
             String paramMin = field+"min";
             String criteriaMin = "properties."+field + " >= :" + paramMin;
@@ -97,18 +96,16 @@ public class Query {
             this.boundParams.put(paramMax, max);
             this.criterias.add(criteriaMax);
         }
-
-        return this;
     }
 
-    private Query addEnumeration(String field, String v) {
+    private void addEnumeration(String field, String v) {
         String[] interval = v.split(",");
         List<String> values = Arrays.asList(interval);
 
-        return this.addEnumeration(field, values);
+        this.addEnumeration(field, values);
     }
 
-    private Query addEnumeration(String field, List<String> values){
+    private void addEnumeration(String field, List<String> values){
         List<String> bindParams = new ArrayList<>();
         for(int i = 0; i < values.size(); i++){
             String bindParam = field+i;
@@ -122,7 +119,6 @@ public class Query {
         sb.append(")");
 
         this.criterias.add(sb.toString());
-        return this;
     }
 
     private String criteriasAsStatement(){
