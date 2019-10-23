@@ -65,27 +65,21 @@ public class WebsiteConfigurationServiceTest {
         Assert.assertEquals(websiteConfiguration, websiteConfigurationService.findOneById(websiteConfigurationId));
     }
 
-    @Test(expected = Exception.class)
-    public void findOneByIdNotFound() throws ReferentielRequestException {
-        Mockito.when(websiteConfigurationRepository.findById(websiteConfigurationId)).thenReturn(null);
+    @Test(expected = ReferentielRequestException.class)
+    public void findOneByIdEmpty() throws ReferentielRequestException {
+        Mockito.when(websiteConfigurationRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
         websiteConfigurationService.findOneById(websiteConfigurationId);
     }
 
     @Test
-    public void findOneByIdDbErr() throws ReferentielRequestException {
-        Mockito.when(websiteConfigurationRepository.findById(websiteConfigurationId)).thenThrow(new Exception());
-        websiteConfigurationService.findOneById(websiteConfigurationId);
+    public void saveWebconfigurationOk(){
+        Assert.assertEquals(websiteConfiguration,websiteConfigurationService.save(websiteConfiguration));
     }
 
     @Test
-    public void saveOk() {
-
+    public void saveWebconfigurationKO(){
+        Mockito.when(websiteConfigurationRepository.save(Mockito.any())).thenThrow(new ReferentielRequestException());
+        websiteConfigurationService.save(websiteConfiguration);
     }
-
-    @Test
-    public void saveDbErr() {
-
-    }
-
 
 }
