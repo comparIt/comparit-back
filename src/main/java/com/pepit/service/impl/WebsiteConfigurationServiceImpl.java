@@ -20,4 +20,9 @@ public class WebsiteConfigurationServiceImpl implements WebsiteConfigurationServ
     public WebsiteConfiguration findOneById(Integer websiteConfiguration) throws ReferentielRequestException {
         return websiteConfigurationRepository.findById(websiteConfiguration).orElseThrow(ReferentielRequestException::new);
     }
+
+    @Override
+    public WebsiteConfiguration save(WebsiteConfiguration websiteConfiguration) {
+        return websiteConfigurationRepository.save(websiteConfiguration);
+    }
 }

@@ -1,5 +1,6 @@
 package com.pepit.service.impl;
 
+import com.pepit.model.Model;
 import com.pepit.repository.ModelRepository;
 import com.pepit.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,5 +14,10 @@ public class ModelServiceImpl implements ModelService {
     @Autowired
     public ModelServiceImpl(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;
+    }
+
+    @Override
+    public Model save(Model modelTosave) {
+        return modelRepository.save(modelTosave);
     }
 }

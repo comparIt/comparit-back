@@ -28,4 +28,10 @@ public class WebsiteConfigurationController {
     public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@PathVariable("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationService.findOneById(websiteConfigurationId));
     }
+
+    @CrossOrigin
+    @PostMapping("/saveWebsiteConfiguration")
+    public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestParam("websiteConfiguration") WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
+        return ResponseEntity.status(200).body(websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
+    }
 }

@@ -1,5 +1,6 @@
 package com.pepit.model;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -38,6 +40,9 @@ public class WebsiteConfiguration {
     
     @Column(name = "featAnalytic")
     boolean featAnalytic;
+
+    @OneToMany
+    private List<Model> modelList;
 
     @CreatedDate
     @Column(name = "createdat")
