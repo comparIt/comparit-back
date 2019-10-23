@@ -2,7 +2,8 @@ package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
-import com.pepit.repository.ProductRepository;
+import com.pepit.dto.ProductDto;
+import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     @Autowired
-    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, ProductRepository productRepository) {
+    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService) {
         this.companyBusiness = companyBusiness;
         this.companyService = companyService;
     }
