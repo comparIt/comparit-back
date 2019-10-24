@@ -1,5 +1,8 @@
 package com.pepit.controllers;
 
+import com.univocity.parsers.common.record.Record;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,18 @@ public class FileUploadController {
         logger.info("contentType: " + contentType);
         logger.info("size: " + size);
         //TODO Do processing with uploaded file data in Service layer
+        processCsv();
         return new ResponseEntity<String>(originalName, HttpStatus.OK);
+    }
+
+    private void processCsv() {
+        System.out.println("processCsv");
+        CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
+        settings.detectFormatAutomatically();
+        CsvParser parser = new CsvParser(settings);
+
+        for (Record record : parser.iterateRecords()) {
+            Short age = record.getShort("age");
+        }
     }
 }
