@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Controller
@@ -36,18 +39,36 @@ public class FileUploadController {
         logger.info("contentType: " + contentType);
         logger.info("size: " + size);
         //TODO Do processing with uploaded file data in Service layer
-        processCsv();
+        processCsv(inputStream);
         return new ResponseEntity<String>(originalName, HttpStatus.OK);
     }
 
-    private void processCsv() {
+    private void processCsv(InputStream inputStream) {
         System.out.println("processCsv");
         CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
         settings.detectFormatAutomatically();
+
+        /** v0 working
+        CsvParser parser = new CsvParser(settings);
+        parser.beginParsing(inputStream);
+
+        String[] row;
+        while ((row = parser.parseNext()) != null) {
+            System.out.println(row.toString());
+        }*/
+
+        // configure to grab headers from file. We want to use these names to get values from each record.
+        settings.setHeaderExtractionEnabled(true);
+        // creates a CSV parser
         CsvParser parser = new CsvParser(settings);
 
-        for (Record record : parser.iterateRecords()) {
-            Short age = record.getShort("age");
+        // parses all records in one go.
+        List<Record> allRecords = parser.parseAllRecords(inputStream);
+        for(Record record : allRecords){
+            //On retourne le resultat dans une map string string qui pourra s'intégrer dans properties d'un JSON
+            //Ce sont les fields du header qui sont les clés !!
+            Map<String, String> mymap = record.toFieldMap();
+            System.out.println(mymap.toString());
         }
     }
 }

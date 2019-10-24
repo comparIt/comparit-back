@@ -19,8 +19,7 @@ You can use this example for dev
 ```
 DATABASE_HOST=[URL TO DB];DATABASE_PORT=3306;DATABASE_NAME=compareIt;DATABASE_USERNAME=root;DATABASE_PASSWORD=root;CLIENT_URL=http://localhost:4200
 OR with XPORT
-DATABASE_HOST=0.0.0.0;DATABASE_PORT=3306;DATABASE_XPORT=33060;DATABASE_NAME=compareIt;DATABASE_USERNAME=root;DATABASE_PASSWORD=rootP@ssw0rd;CLIENT_URL=http://localhost:4200
-```
+cd docker   ```
 
 ## Running the application locally
 
