@@ -63,7 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         //TODO Utiliser le generateur de QUERY
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
-        productRepository.importJson(myJsonArray);
+        productRepository.addDoc(myJsonArray);
         return myJsonArray.toString();
     }
 
@@ -99,7 +99,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         //TODO Utiliser le generateur de QUERY
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
-        productRepository.importJson(myJsonArray);
+        productRepository.addDoc(myJsonArray);
         return myJsonArray.toString();
     }
 

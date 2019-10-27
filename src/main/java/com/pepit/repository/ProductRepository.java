@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @NoArgsConstructor
@@ -43,21 +44,21 @@ public class ProductRepository {
         return productDtos;
     }
 
-    public void importJson(JSONArray arr){
-        //TODO delete de la collection pour TEST mais il faudra seulement supprimer les object d'un founisseur a l'import
-        //myDb.dropCollection("produit");
-        //myDb.createCollection("produit");
-        //myDb.getCollection("produit");
-        //Fin TODO a REVOIR
+    public Iterator<Warning> addDoc(JSONArray arr){
+
+        AddResult result = null;
 
         //Parcours du json array pour ajout oneByone dans la collection
         for (int i=0; i < arr.size(); i++) {
             String current = arr.get(i).toString();
             //System.out.println(arr.get(i).toString());
-            AddResult result = myColl.add(current).execute();
+            result = myColl.add(current).execute();
+
         }
 
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
+        return result.getWarnings();
+
     }
 
     public void removeDoc(String query){
