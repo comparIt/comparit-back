@@ -16,9 +16,13 @@ public class ProductDB {
         this.collection = this.db.getCollection("produit");
     }
 
-    public DocResult runQuery(Query query){
+    public DocResult find(Query query){
         System.out.println(query.toString());
-        return query.toStatement(this.collection).execute();
+        return query.find(this.collection).execute();
+    }
+
+    public Result delete(Query query){
+        return query.delete(this.collection).execute();
     }
 
     public Collection getCollection() {

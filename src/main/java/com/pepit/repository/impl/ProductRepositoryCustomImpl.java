@@ -22,7 +22,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     ProductDB productDB;
 
     public List<ProductDto> testRequest(Query query){
-        List<DbDoc> docList = productDB.runQuery(query).fetchAll();
+        List<DbDoc> docList = productDB.find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
 
