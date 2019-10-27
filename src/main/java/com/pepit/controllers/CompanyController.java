@@ -2,8 +2,6 @@ package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
-import com.pepit.dto.ProductDto;
-import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,19 +21,6 @@ public class CompanyController {
         this.companyBusiness = companyBusiness;
         this.companyService = companyService;
     }
-
-    @PostMapping(value = "/")
-    public ResponseEntity<ProductDto> post(@RequestBody ProductDto product) {
-
-        if (product != null) {
-            System.out.println(product.getProperties());
-        }
-
-        // TODO: call persistence layer to update
-        return new ResponseEntity<ProductDto>(product, HttpStatus.OK);
-    }
-
-
 
     @CrossOrigin
     @GetMapping("/byUrl/{typeProduit}")
