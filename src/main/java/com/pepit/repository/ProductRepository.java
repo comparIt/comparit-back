@@ -45,17 +45,24 @@ public class ProductRepository {
 
     public void importJson(JSONArray arr){
         //TODO delete de la collection pour TEST mais il faudra seulement supprimer les object d'un founisseur a l'import
-        myDb.dropCollection("produit");
-        myDb.createCollection("produit");
-        myDb.getCollection("produit");
+        //myDb.dropCollection("produit");
+        //myDb.createCollection("produit");
+        //myDb.getCollection("produit");
         //Fin TODO a REVOIR
 
         //Parcours du json array pour ajout oneByone dans la collection
         for (int i=0; i < arr.size(); i++) {
             String current = arr.get(i).toString();
+            //System.out.println(arr.get(i).toString());
             AddResult result = myColl.add(current).execute();
         }
 
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
+    }
+
+    public void removeDoc(String query){
+        System.out.println("sending RemoveDoc Query: "+ query);
+        Result res = myColl.remove(query).execute();
+        System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 }

@@ -2,18 +2,23 @@ package com.pepit.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepository;
 import com.pepit.service.CompanyService;
+import com.univocity.parsers.common.record.Record;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -28,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
         this.productRepository = productRepository;
     }
 
-    public String getFromUrl(String url, String supplierId, String type) {
+    public String fromUrlToDb(String url, String supplierId, String type) {
 
         JSONArray myJsonArray = new JSONArray();
         try {
@@ -46,17 +51,7 @@ public class CompanyServiceImpl implements CompanyService {
             //pour tous les elements retournés par l'API on construit l'objet json enrichi
 
             for (JsonNode parsedJson : parsedArray) {
-                ObjectNode parsedObject = parsedJson.deepCopy();
-                //TODO a voir si on laisse prix
-                Random random = new Random();
-                int min = 1; int max = 10;
-                parsedObject.putPOJO("prix", random.nextInt(max - min + 1) + min);
-                ArrayNode outerArray = mapper.createArrayNode(); //le json de sortie
-                ObjectNode outerObject = mapper.createObjectNode(); //l'objet json que 'on surcharge
-                outerObject.putPOJO("supplierId",supplierId);
-                outerObject.putPOJO("type",type);
-                outerObject.putPOJO("properties",parsedObject);
-                outerArray.add(outerObject);
+                ObjectNode outerObject = updateJsonNode(supplierId, type, mapper, parsedJson);
 
                 myJsonArray.add(outerObject);
             }
@@ -65,7 +60,60 @@ public class CompanyServiceImpl implements CompanyService {
             ex.printStackTrace();
 
         }
+
+        //TODO Utiliser le generateur de QUERY
+        productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
         productRepository.importJson(myJsonArray);
         return myJsonArray.toString();
+    }
+
+
+    public String fromCsvToDb(InputStream inputStream, String supplierId, String type) {
+        System.out.println("processing Csv from supplierId "+ supplierId + " type= "+ type);
+        CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
+        settings.detectFormatAutomatically();
+
+        // configure to grab headers from file. We want to use these names to get values from each record.
+        settings.setHeaderExtractionEnabled(true);
+        // creates a CSV parser
+        CsvParser parser = new CsvParser(settings);
+
+        // parses all records in one go.
+        List<Record> allRecords = parser.parseAllRecords(inputStream);
+
+        //L'objet JSONArray de sortie a passer au productRepo
+        JSONArray myJsonArray = new JSONArray();
+
+        for(Record record : allRecords){
+            //On retourne le resultat dans une map string string qui pourra s'intégrer dans properties d'un JSON
+            //Ce sont les fields du header qui sont les clés !!
+            Map<String, String> mymap = record.toFieldMap();
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.valueToTree(mymap);
+
+            ObjectNode outerObject = updateJsonNode(supplierId, type, mapper, jsonNode);
+
+            myJsonArray.add(outerObject);
+        }
+
+        //TODO Utiliser le generateur de QUERY
+        productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
+        productRepository.importJson(myJsonArray);
+        return myJsonArray.toString();
+    }
+
+    private ObjectNode updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) {
+        ObjectNode parsedObject = jsonNode.deepCopy();
+        //TODO a voir si on laisse prix, pour l'instant on l'ajoute comme properties pour mocker les intervals de prix
+        Random random = new Random();
+        int min = 1;
+        int max = 10;
+        parsedObject.putPOJO("prix", random.nextInt(max - min + 1) + min);
+        ObjectNode outerObject = mapper.createObjectNode(); //l'objet json que 'on surcharge
+        outerObject.putPOJO("supplierId",supplierId);
+        outerObject.putPOJO("type",type);
+        outerObject.putPOJO("properties",jsonNode);
+        return outerObject;
     }
 }

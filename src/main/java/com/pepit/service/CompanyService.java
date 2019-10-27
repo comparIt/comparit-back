@@ -1,7 +1,10 @@
 package com.pepit.service;
 
+import java.io.InputStream;
+
 public interface CompanyService {
 
-    String getFromUrl(String url, String supplierId, String type);
+    String fromUrlToDb(String url, String supplierId, String type);
 
+    String fromCsvToDb(InputStream inputStream, String supplierId, String type);
 }
