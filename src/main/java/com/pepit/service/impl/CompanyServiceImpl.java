@@ -14,18 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Logger;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
     private CompanyRepository companyRepository;
     private ProductRepository productRepository;
+
+    private static final Logger logger = Logger.getLogger(CompanyServiceImpl.class.getName());
 
     @Autowired
     public CompanyServiceImpl(CompanyRepository companyRepository, ProductRepository productRepository) {
@@ -68,7 +73,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    public String fromCsvToDb(InputStream inputStream, String supplierId, String type) {
+    public String fromCsvToDb(MultipartFile file, String supplierId, String type) throws IOException {
+        if (file == null) {
+            throw new RuntimeException("You must select a file for uploading");
+        }
+        InputStream inputStream = file.getInputStream();
+        String originalName = file.getOriginalFilename();
+        String name = file.getName();
+        String contentType = file.getContentType();
+        long size = file.getSize();
+        logger.info("inputStream: " + inputStream + "\noriginalName: " + originalName + "\nname: " + name + "\ncontentType: " + contentType + "\nsize: " + size);
+
         System.out.println("processing Csv from supplierId "+ supplierId + " type= "+ type);
         CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
         settings.detectFormatAutomatically();
