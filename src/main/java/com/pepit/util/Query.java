@@ -1,7 +1,7 @@
 package com.pepit.util;
 
+import com.mysql.cj.xdevapi.*;
 import com.mysql.cj.xdevapi.Collection;
-import com.mysql.cj.xdevapi.FindStatement;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -125,13 +125,17 @@ public class Query {
         return this.criterias.stream().reduce((x,y) -> x + " AND " + y).orElse("");
     }
 
-    public FindStatement toStatement(Collection collection) {
+    public Statement<FindStatement, DocResult> find(Collection collection) {
         FindStatement statement = collection.find(this.criteriasAsStatement());
         statement.offset(this.offset);
         statement.limit(this.limit);
         statement.sort(this.sort);
         statement.bind(this.boundParams);
         return statement;
+    }
+
+    public Statement<RemoveStatement, Result> delete(Collection collection) {
+        return collection.remove(this.criteriasAsStatement());
     }
 
     public String toString(){
