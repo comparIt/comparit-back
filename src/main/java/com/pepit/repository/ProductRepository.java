@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.dto.ProductDto;
 import lombok.NoArgsConstructor;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -44,17 +43,11 @@ public class ProductRepository {
         return productDtos;
     }
 
-    public Iterator<Warning> addDoc(JSONArray arr){
+    public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
 
         AddResult result = null;
 
-        //Parcours du json array pour ajout oneByone dans la collection
-        for (int i=0; i < arr.size(); i++) {
-            String current = arr.get(i).toString();
-            //System.out.println(arr.get(i).toString());
-            result = myColl.add(current).execute();
-
-        }
+        result = myColl.add(dbDocs).execute();
 
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
         return result.getWarnings();

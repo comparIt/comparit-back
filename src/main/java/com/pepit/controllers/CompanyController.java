@@ -29,12 +29,12 @@ public class CompanyController {
     public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type){
         //TODO S'assurer que type reçu est coherent avec un des Model existant
         //TODO MAsquer le resultat qd c'est conforme result http only
-        return new ResponseEntity<String>(companyService.fromUrlToDb(url, supplierId, type), HttpStatus.OK);
+        return new ResponseEntity<String>(companyService.fromUrlToDb(url, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
     }
 
 
     @PostMapping("/byCsvUpload")
     public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type) throws Exception {
-        return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId, type), HttpStatus.OK);
+        return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
     }
 }
