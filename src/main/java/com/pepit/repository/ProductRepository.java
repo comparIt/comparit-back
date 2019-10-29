@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.dto.ProductDto;
 import lombok.NoArgsConstructor;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @NoArgsConstructor
@@ -43,19 +43,20 @@ public class ProductRepository {
         return productDtos;
     }
 
-    public void importJson(JSONArray arr){
-        //TODO delete de la collection pour TEST mais il faudra seulement supprimer les object d'un founisseur a l'import
-        myDb.dropCollection("produit");
-        myDb.createCollection("produit");
-        myDb.getCollection("produit");
-        //Fin TODO a REVOIR
+    public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
 
-        //Parcours du json array pour ajout oneByone dans la collection
-        for (int i=0; i < arr.size(); i++) {
-            String current = arr.get(i).toString();
-            AddResult result = myColl.add(current).execute();
-        }
+        AddResult result = null;
+
+        result = myColl.add(dbDocs).execute();
 
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
+        return result.getWarnings();
+
+    }
+
+    public void removeDoc(String query){
+        System.out.println("sending RemoveDoc Query: "+ query);
+        Result res = myColl.remove(query).execute();
+        System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 }

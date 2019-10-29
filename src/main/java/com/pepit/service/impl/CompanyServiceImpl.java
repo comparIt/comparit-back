@@ -2,19 +2,25 @@ package com.pepit.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mysql.cj.xdevapi.*;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepository;
 import com.pepit.service.CompanyService;
-import org.json.simple.JSONArray;
+import com.univocity.parsers.common.record.Record;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -22,15 +28,17 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyRepository companyRepository;
     private ProductRepository productRepository;
 
+    private static final Logger logger = Logger.getLogger(CompanyServiceImpl.class.getName());
+
     @Autowired
     public CompanyServiceImpl(CompanyRepository companyRepository, ProductRepository productRepository) {
         this.companyRepository = companyRepository;
         this.productRepository = productRepository;
     }
 
-    public String getFromUrl(String url, String supplierId, String type) {
-
-        JSONArray myJsonArray = new JSONArray();
+    public String fromUrlToDb(String url, String supplierId, String type) {
+        logger.info("DEB fromUrlToDb");
+        List<DbDoc> dbDocList = new ArrayList<>();
         try {
             //Ajout d'un header http
             RestTemplate restTemplate = new RestTemplate();
@@ -44,28 +52,88 @@ public class CompanyServiceImpl implements CompanyService {
             JsonNode parsedArray = mapper.readTree(response.getBody());
 
             //pour tous les elements retournés par l'API on construit l'objet json enrichi
-
             for (JsonNode parsedJson : parsedArray) {
-                ObjectNode parsedObject = parsedJson.deepCopy();
-                //TODO a voir si on laisse prix
-                Random random = new Random();
-                int min = 1; int max = 10;
-                parsedObject.putPOJO("prix", random.nextInt(max - min + 1) + min);
-                ArrayNode outerArray = mapper.createArrayNode(); //le json de sortie
-                ObjectNode outerObject = mapper.createObjectNode(); //l'objet json que 'on surcharge
-                outerObject.putPOJO("supplierId",supplierId);
-                outerObject.putPOJO("type",type);
-                outerObject.putPOJO("properties",parsedObject);
-                outerArray.add(outerObject);
-
-                myJsonArray.add(outerObject);
+                DbDoc outerObject = updateJsonNode(supplierId, type, mapper, parsedJson);
+                dbDocList.add(outerObject);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
-        productRepository.importJson(myJsonArray);
-        return myJsonArray.toString();
+
+        DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
+
+        //TODO Utiliser le generateur de QUERY
+        productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
+        productRepository.addDoc(docs);
+        logger.info("FIN fromUrlToDb");
+        return dbDocList.toString();
+    }
+
+
+    public String fromCsvToDb(MultipartFile file, String supplierId, String type) throws IOException {
+        logger.info("DEB fromCsvToDb");
+        if (file == null) {
+            throw new RuntimeException("You must select a file for uploading");
+        }
+        InputStream inputStream = file.getInputStream();
+        String originalName = file.getOriginalFilename();
+        String name = file.getName();
+        String contentType = file.getContentType();
+        long size = file.getSize();
+        logger.info("inputStream: " + inputStream + "\noriginalName: " + originalName + "\nname: " + name + "\ncontentType: " + contentType + "\nsize: " + size);
+
+        System.out.println("processing Csv from supplierId "+ supplierId + " type= "+ type);
+        CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
+        settings.detectFormatAutomatically();
+
+        // configure to grab headers from file. We want to use these names to get values from each record.
+        settings.setHeaderExtractionEnabled(true);
+        // creates a CSV parser
+        CsvParser parser = new CsvParser(settings);
+
+        // parses all records in one go.
+        List<Record> allRecords = parser.parseAllRecords(inputStream);
+
+        //L'objet dbDocList de sortie a passer au productRepo
+        List<DbDoc> dbDocList = new ArrayList<>();
+
+        for(Record record : allRecords){
+            //On retourne le resultat dans une map string string qui pourra s'intégrer dans properties d'un JSON
+            //Ce sont les fields du header qui sont les clés !!
+            Map<String, String> mymap = record.toFieldMap();
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.valueToTree(mymap);
+
+            DbDoc outerObject = updateJsonNode(supplierId, type, mapper, jsonNode);
+            dbDocList.add(outerObject);
+        }
+        //on le convertir en tableau car dependance du add mysql
+        DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
+
+        //TODO Utiliser le generateur de QUERY
+        productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
+        productRepository.addDoc(docs);
+
+        logger.info("FIN fromCsvToDb");
+        return dbDocList.toString();
+    }
+
+    private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {
+        ObjectNode parsedObject = jsonNode.deepCopy();
+        //TODO a voir si on laisse prix, pour l'instant on l'ajoute comme properties pour mocker les intervals de prix
+        Random random = new Random();
+        int min = 1;
+        int max = 10;
+        Integer randomInt = random.nextInt(max - min + 1) + min;
+
+        DbDoc properties = JsonParser.parseDoc(new StringReader(jsonNode.toString())).add("prix", new JsonNumber().setValue(randomInt.toString()));
+
+        DbDoc outerObject = new DbDocImpl().add("supplierId", new JsonNumber().setValue(supplierId))
+                .add("type", new JsonString().setValue(type))
+                .add("properties", properties);
+        return outerObject;
     }
 }

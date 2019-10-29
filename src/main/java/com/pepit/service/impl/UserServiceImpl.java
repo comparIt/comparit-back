@@ -3,13 +3,13 @@ package com.pepit.service.impl;
 import com.pepit.constants.Roles;
 import com.pepit.converters.UserConverter;
 import com.pepit.dto.UserDto;
+import com.pepit.model.User;
 import com.pepit.repository.UserRepository;
 import com.pepit.security.Hashing;
 import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import com.pepit.model .User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

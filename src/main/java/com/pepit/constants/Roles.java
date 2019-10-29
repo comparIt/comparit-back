@@ -1,6 +1,5 @@
 package com.pepit.constants;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
