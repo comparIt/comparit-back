@@ -38,7 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     public String fromUrlToDb(String url, String supplierId, String type) {
         logger.info("DEB fromUrlToDb");
-        List<DbDoc> dbDocList = null;
+        List<DbDoc> dbDocList = new ArrayList<>();
         try {
             //Ajout d'un header http
             RestTemplate restTemplate = new RestTemplate();
@@ -52,7 +52,6 @@ public class CompanyServiceImpl implements CompanyService {
             JsonNode parsedArray = mapper.readTree(response.getBody());
 
             //pour tous les elements retournés par l'API on construit l'objet json enrichi
-
             for (JsonNode parsedJson : parsedArray) {
                 DbDoc outerObject = updateJsonNode(supplierId, type, mapper, parsedJson);
                 dbDocList.add(outerObject);
