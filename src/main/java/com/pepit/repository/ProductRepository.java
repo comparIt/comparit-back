@@ -1,9 +1,9 @@
 package com.pepit.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.exceptions.WrongArgumentException;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.dto.ProductDto;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -11,13 +11,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@NoArgsConstructor
+//@NoArgsConstructor
 @Repository
 public class ProductRepository {
 
     static Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=" + System.getenv("DATABASE_PASSWORD") );
     static Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
-    static Collection myColl = myDb.getCollection("produit");
+    static Collection myColl;
+
+    public ProductRepository() {
+        try {
+            myColl = myDb.getCollection("produit", true);
+        } catch (WrongArgumentException e) {
+            myColl = myDb.createCollection("produit");
+        }
+    }
 
     public List<ProductDto> find(String query){
         DocResult docs = myColl.find(query).execute();
