@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface ProductService {
 
-    List<ProductDto> search(Map<String, String> params);
+    List<ProductDto> search(Map<String, String> params, String order, Integer page, String supplier, String type);
 
 }
