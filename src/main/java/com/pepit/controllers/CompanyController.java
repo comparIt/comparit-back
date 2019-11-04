@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(Routes.COMPAGNY)
+@RequestMapping(Routes.COMPANY)
 public class CompanyController {
 
     private CompanyBusiness companyBusiness;
@@ -28,7 +28,7 @@ public class CompanyController {
     public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type){
         //TODO S'assurer que type reçu est coherent avec un des Model existant
         //TODO MAsquer le resultat qd c'est conforme result http only
-        return new ResponseEntity<>(companyService.getFromUrl(url, supplierId, type), HttpStatus.OK);
+        return new ResponseEntity<String>(companyService.fromUrlToDb(url, supplierId, type), HttpStatus.OK);
     }
 
 

@@ -20,8 +20,8 @@ public class ProductDto {
     @Column(name = "id")
     String _id;
 
-    String Fournisseur;
-    String typeProduct;
+    String supplierId;
+    String type;
 
     @ElementCollection
     @Column(name = "properties")

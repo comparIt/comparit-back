@@ -1,6 +1,7 @@
 package com.pepit.controllers;
 
 
+import com.pepit.constants.Routes;
 import com.pepit.dto.ProductDto;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "product", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = Routes.PRODUCT, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 
     ProductService productService;
