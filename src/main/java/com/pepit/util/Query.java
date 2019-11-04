@@ -34,7 +34,7 @@ public class Query {
     public Query addType(String unparsedType) {
         if(unparsedType != null){
             this.boundParams.put("type", unparsedType);
-            this.criterias.add("typeProduct = :type");
+            this.criterias.add("type = :type");
         }
         return this;
     }
@@ -42,7 +42,7 @@ public class Query {
     public Query addSupplier(String unparsedType) {
         if(unparsedType != null){
             this.boundParams.put("supplier", unparsedType);
-            this.criterias.add("Fournisseur = :supplier");
+            this.criterias.add("supplierId = :supplier");
         }
         return this;
     }

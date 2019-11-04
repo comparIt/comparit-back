@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(Routes.COMPAGNY)
+@RequestMapping(Routes.COMPANY)
 public class CompanyController {
 
     private CompanyBusiness companyBusiness;

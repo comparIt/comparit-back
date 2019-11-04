@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(Routes.WEBSITECONFIG)
+@RequestMapping(Routes.WEBSITE_CONFIG)
 public class WebsiteConfigurationController {
 
     private WebsiteConfigurationService websiteConfigurationService;
