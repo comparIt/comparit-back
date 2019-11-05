@@ -12,7 +12,7 @@ steps:
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
-    options: '-Dspring.profiles.active=dev'
+    options: '-Dspring.profiles.active=dev -DskipTests'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
