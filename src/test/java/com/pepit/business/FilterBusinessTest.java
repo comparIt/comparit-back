@@ -1,5 +1,6 @@
 package com.pepit.business;
 
+import com.pepit.CompareITBackApplicationTests;
 import com.pepit.repository.FilterRepository;
 import com.pepit.service.FilterService;
 import org.junit.Before;
@@ -12,9 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(value = FilterBusiness.class)
-public class FilterBusinessTest {
+public class FilterBusinessTest extends CompareITBackApplicationTests {
 
     @Autowired
     private FilterBusiness filterBusiness;
