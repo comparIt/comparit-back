@@ -1,5 +1,6 @@
 package com.pepit.business;
 
+import com.pepit.CompareITBackApplicationTests;
 import com.pepit.repository.ModelRepository;
 import com.pepit.service.ModelService;
 import org.junit.Before;
@@ -12,9 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(value = ModelBusiness.class)
-public class ModelBusinessTest {
+public class ModelBusinessTest extends CompareITBackApplicationTests {
 
     @Autowired
     private ModelBusiness modelBusiness;
