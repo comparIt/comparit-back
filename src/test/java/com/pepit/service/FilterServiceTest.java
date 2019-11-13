@@ -1,5 +1,6 @@
 package com.pepit.service;
 
+import com.pepit.CompareITBackApplicationTests;
 import com.pepit.repository.FilterRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(value = FilterService.class)
-public class FilterServiceTest {
+public class FilterServiceTest extends CompareITBackApplicationTests {
 
     @Autowired
     private FilterService filterService;
