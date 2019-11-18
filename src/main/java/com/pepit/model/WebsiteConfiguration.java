@@ -22,17 +22,17 @@ public class WebsiteConfiguration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    int id;
+    @Column(name = "adminId")
+    int adminId;
 
-    @Column(name = "color1")
-    String color1;
+    @Column(name = "colorPrimary")
+    String colorPrimary;
 
-    @Column(name = "color2")
-    String color2;
+    @Column(name = "colorSecondary")
+    String colorSecondary;
 
-    @Column(name = "color3")
-    String color3;
+    @Column(name = "colorSecondary2")
+    String colorSecondary2;
 
     @Column(name="logo")
     String logo;
@@ -41,7 +41,7 @@ public class WebsiteConfiguration {
     boolean featAnalytic;
 
     @OneToMany
-    private List<Model> modelList;
+    private List<Model> models;
 
     @CreatedDate
     @Column(name = "createdat")

@@ -68,15 +68,15 @@ public class WebsiteConfigurationBusinessTest extends CompareITBackApplicationTe
         modelList.add(model);
 
         websiteConfiguration = WebsiteConfiguration.builder()
-                .id(websiteConfigurationId)
-                .color1("blue")
-                .color2("white")
-                .color3("red")
+                .adminId(websiteConfigurationId)
+                .colorPrimary("blue")
+                .colorSecondary("white")
+                .colorSecondary2("red")
                 .logo("/tmp/logo.svg")
                 .featAnalytic(true)
+                .models(modelList)
                 .createdAt(null)
                 .updatedAt(null)
-                .modelList(modelList)
                 .build();
     }
 

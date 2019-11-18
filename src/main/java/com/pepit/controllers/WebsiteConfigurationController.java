@@ -30,8 +30,8 @@ public class WebsiteConfigurationController {
     }
 
     @CrossOrigin
-    @PostMapping("/saveWebsiteConfiguration")
-    public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestParam("websiteConfiguration") WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
+    @PutMapping("/saveWebsiteConfiguration")
+    public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestBody WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
     }
 }

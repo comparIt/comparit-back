@@ -24,7 +24,7 @@ public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBus
     public WebsiteConfiguration saveWebsiteConfiguration(WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
         try{
             WebsiteConfiguration save = websiteConfigurationService.save(websiteConfiguration);
-            save.getModelList().forEach(modelService::save);
+            save.getModels().forEach(modelService::save);
         }catch (Exception e){
             throw new ReferentielRequestException();
         }
