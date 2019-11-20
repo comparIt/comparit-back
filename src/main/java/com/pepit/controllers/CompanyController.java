@@ -33,8 +33,10 @@ public class CompanyController {
     }
 
 
-    @PostMapping("/byCsvUpload")
-    public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type) throws Exception {
+    @PostMapping("/byCsvUpload/{typeProduit}")
+    public ResponseEntity<String> uploadData(@RequestParam("files") MultipartFile file, @PathVariable("typeProduit") String typeProduit) throws Exception {
+        String supplierId = "1";
+        String type = typeProduit;
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
     }
 }
