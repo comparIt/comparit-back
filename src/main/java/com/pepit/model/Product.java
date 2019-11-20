@@ -8,6 +8,7 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -30,5 +31,6 @@ public class Product {
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private String properties;
+
 }
 

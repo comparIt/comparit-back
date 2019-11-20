@@ -1,9 +1,11 @@
 package com.pepit.model;
 
+import freemarker.template.utility.DateUtil;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,6 +36,7 @@ public class WebsiteConfiguration {
     @Column(name = "colorSecondary2")
     String colorSecondary2;
 
+    @Nullable
     @Column(name="logo")
     String logo;
     
@@ -50,5 +53,10 @@ public class WebsiteConfiguration {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
 
 }

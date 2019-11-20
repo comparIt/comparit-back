@@ -43,9 +43,6 @@ public class ModelProperty {
     @Column(name = "mandatory")
     boolean mandatory;
 
-    @ManyToOne
-    Model model;
-
     @CreatedDate
     @Column(name = "createdat")
     LocalDateTime createdAt;
@@ -53,5 +50,11 @@ public class ModelProperty {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
 
 }
