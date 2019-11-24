@@ -24,17 +24,24 @@ public class CompanyController {
     }
 
     @CrossOrigin
-    @GetMapping("/byUrl")
+    @GetMapping("/byUrl/{typeProduit}")
     @ResponseBody
-    public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type){
+    public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @PathVariable("typeProduit") String typeProduit) {
         //TODO S'assurer que type reçu est coherent avec un des Model existant
         //TODO MAsquer le resultat qd c'est conforme result http only
-        return new ResponseEntity<String>(companyService.fromUrlToDb(url, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
+
+        //TODO a recuperer a partir du token
+        String supplierId = "1";
+        return new ResponseEntity<String>(companyService.fromUrlToDb(url, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
 
-    @PostMapping("/byCsvUpload")
-    public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file, @RequestParam("supplierId") String supplierId, @RequestParam("type") String type) throws Exception {
+    @PostMapping("/byCsvUpload/{typeProduit}")
+    public ResponseEntity<String> uploadData(@RequestParam("files") MultipartFile file, @PathVariable("typeProduit") String typeProduit) throws Exception {
+
+        //TODO a recuperer a partir du token
+        String supplierId = "1";
+        String type = typeProduit;
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
     }
 }
