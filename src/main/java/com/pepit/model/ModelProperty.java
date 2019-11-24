@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -42,6 +43,12 @@ public class ModelProperty {
 
     @Column(name = "mandatory")
     boolean mandatory;
+
+    @Column(name = "bornes")
+    Minmax bornes;
+
+    @Column(name = "uniqList")
+    List<String> uniqList;
 
     @CreatedDate
     @Column(name = "createdat")
