@@ -44,6 +44,9 @@ public class ModelProperty {
     @Column(name = "mandatory")
     boolean mandatory;
 
+    @Column(name = "activated")
+    boolean activated;
+
     @Column(name = "bornes")
     Minmax bornes;
 
