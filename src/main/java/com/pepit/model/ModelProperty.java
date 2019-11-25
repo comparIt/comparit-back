@@ -43,6 +43,9 @@ public class ModelProperty {
     @Column(name = "mandatory")
     boolean mandatory;
 
+    @Column(name = "activated")
+    boolean activated;
+
     @CreatedDate
     @Column(name = "createdat")
     LocalDateTime createdAt;

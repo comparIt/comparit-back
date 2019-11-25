@@ -31,8 +31,8 @@ public class Model {
     @Column(name = "technicalName")
     String technicalName;
 
-    @Column(name = "isActivated")
-    boolean isActivated;
+    @Column(name = "activated")
+    boolean activated;
 
     @OneToMany
     List<ModelProperty> modelProperties;

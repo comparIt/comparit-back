@@ -8,12 +8,9 @@ import com.pepit.repository.WebsiteConfigurationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
                 .id(modelId)
                 .name("model_test")
                 .technicalName("test")
-                .isActivated(true)
+                .activated(true)
                 .modelProperties(new ArrayList<>())
                 .createdAt(null)
                 .updatedAt(null)
