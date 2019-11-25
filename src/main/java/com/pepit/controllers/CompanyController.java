@@ -2,8 +2,8 @@ package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
-import com.pepit.repository.ProductRepository;
 import com.pepit.service.CompanyService;
+import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,13 @@ public class CompanyController {
 
     private CompanyBusiness companyBusiness;
     private CompanyService companyService;
+    private WebsiteConfigurationService websiteConfigurationService;
 
     @Autowired
-    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, ProductRepository productRepository) {
+    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, WebsiteConfigurationService websiteConfigurationService) {
         this.companyBusiness = companyBusiness;
         this.companyService = companyService;
+        this.websiteConfigurationService = websiteConfigurationService;
     }
 
     @CrossOrigin
@@ -42,6 +44,7 @@ public class CompanyController {
         //TODO a recuperer a partir du token
         String supplierId = "1";
         String type = typeProduit;
+        System.out.println(websiteConfigurationService.findOneById(1));
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
     }
 }

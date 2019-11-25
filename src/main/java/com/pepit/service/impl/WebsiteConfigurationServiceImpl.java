@@ -22,11 +22,6 @@ public class WebsiteConfigurationServiceImpl implements WebsiteConfigurationServ
     }
 
     @Override
-    public WebsiteConfiguration findAll() throws ReferentielRequestException {
-        return null;
-    }
-
-    @Override
     public WebsiteConfiguration save(WebsiteConfiguration websiteConfiguration) {
         return websiteConfigurationRepository.save(websiteConfiguration);
     }

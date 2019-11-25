@@ -6,7 +6,5 @@ import com.pepit.model.WebsiteConfiguration;
 public interface WebsiteConfigurationService {
     WebsiteConfiguration findOneById(Integer websiteConfigurationId) throws ReferentielRequestException;
 
-    WebsiteConfiguration findAll() throws ReferentielRequestException;
-
     WebsiteConfiguration save(WebsiteConfiguration websiteConfiguration);
 }
