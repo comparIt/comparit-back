@@ -4,7 +4,7 @@ insert into compareit.`user` (email,first_name,last_name,type_user,company_id) V
 insert into compareit.company_members values (1,1);
 insert into compareit.`filter`(alert_type,is_alert,is_email,users_id) VALUES (1,1,1,1);
 insert into compareit.user_filters VALUES(1,1);
-insert into compareit.model (is_activated,name,technical_name) values (1,'test','test');
+insert into compareit.model (activated,name,technical_name) values (1,'test','test');
 insert into compareit.model_property(filtrable,filtrable_advanced,mandatory,name,technical_name,`type`,model_id)
 VALUES(1,1,1,'test','testi',1,1);
 insert into compareit.model_model_properties values (1,1);
