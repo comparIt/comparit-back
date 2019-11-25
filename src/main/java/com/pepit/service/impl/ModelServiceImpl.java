@@ -20,4 +20,6 @@ public class ModelServiceImpl implements ModelService {
     public Model save(Model modelTosave) {
         return modelRepository.save(modelTosave);
     }
+
+    //List<Model> findAllModelByIdProduit(String idProduit);
 }

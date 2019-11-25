@@ -47,9 +47,11 @@ public class ModelProperty {
     @Column(name = "activated")
     boolean activated;
 
+    @ElementCollection
     @Column(name = "bornes")
-    Minmax bornes;
+    List<Integer> bornes;
 
+    @ElementCollection
     @Column(name = "uniqList")
     List<String> uniqList;
 
