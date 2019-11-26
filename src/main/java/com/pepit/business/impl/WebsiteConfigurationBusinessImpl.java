@@ -32,13 +32,11 @@ public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBus
     public WebsiteConfiguration saveWebsiteConfiguration(WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
         try{
             websiteConfiguration.getModels().forEach(model -> {
-                model.getModelProperties().forEach(modelProperty -> {
-                    modelProperty.update();
-                    modelPropertyService.save(modelProperty);
-                });
+                model.getModelProperties().forEach(ModelProperty::update);
                 model.update();
-                modelService.save(model);
+                modelPropertyService.saveAll(model.getModelProperties());
             });
+            modelService.saveAll(websiteConfiguration.getModels());
             websiteConfiguration.update();
             return websiteConfigurationService.save(websiteConfiguration);
         }catch (Exception e){
