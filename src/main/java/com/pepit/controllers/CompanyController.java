@@ -3,7 +3,6 @@ package com.pepit.controllers;
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
 import com.pepit.model.Model;
-import com.pepit.model.ModelProperty;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +53,11 @@ public class CompanyController {
         //TODO a recuperer a partir du token
         String supplierId = "1";
         //TODO get d'un autre modele
-        List<Model> listModel = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
-        Model currentModel = listModel.stream().filter(model -> typeProduit.equals(model.technicalName)).findFirst().orElse(null);
-        List<ModelProperty> modelProperties = currentModel.getModelProperties();
+        //List<Model> listModel = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        //Model currentModel = listModel.stream().filter(model -> typeProduit.equals(model.technicalName)).findFirst().orElse(null);
+        //List<ModelProperty> modelProperties = currentModel.getModelProperties();
+        List<Model> models = websiteConfigurationService.findOneById(1).getModels();
+        models.forEach(System.out::println);
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
