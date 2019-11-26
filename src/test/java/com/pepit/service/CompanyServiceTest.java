@@ -38,4 +38,10 @@ public class CompanyServiceTest extends CompareITBackApplicationTests {
     public void testSample() {
         assertTrue(true);
     }
+
+    /**
+     *     String fromUrlToDb(String url, String supplierId, String type);
+     *
+     *     String fromCsvToDb(MultipartFile file, String supplierId, String type) throws IOException;
+     */
 }

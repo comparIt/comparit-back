@@ -1,6 +1,7 @@
 package com.pepit.service;
 
 import com.pepit.CompareITBackApplicationTests;
+import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Model;
 import com.pepit.repository.ModelRepository;
 import org.junit.Assert;
@@ -53,7 +54,8 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
     }
 
     private void initMocks() {
-        Mockito.when(modelService.save(model)).thenReturn(model);
+        Mockito.when(modelService.save(Mockito.any(Model.class))).thenReturn(model);
+        Mockito.when(modelService.saveAll(Mockito.anyList())).thenReturn(modelList);
     }
 
     @Test
@@ -62,13 +64,24 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
     }
 
     @Test
-    public void saveOk(){
-        Assert.assertEquals(model,modelService.save(model));
+    public void saveOk() {
+        Assert.assertEquals(model, modelService.save(model));
     }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveKO(){
-//        Mockito.when(modelService.save(model)).thenThrow(new ReferentielRequestException());
-//        modelService.save(model);
-//    }
+    @Test(expected = ReferentielRequestException.class)
+    public void saveKO() {
+        Mockito.when(modelService.save(model)).thenThrow(new ReferentielRequestException());
+        modelService.save(model);
+    }
+
+    @Test
+    public void saveAllOk(){
+        Assert.assertEquals(modelList,modelService.saveAll(modelList));
+    }
+
+    @Test(expected = ReferentielRequestException.class)
+    public void saveAllKo(){
+        Mockito.when(modelService.saveAll(modelList)).thenThrow(new ReferentielRequestException());
+        modelService.saveAll(modelList);
+    }
 }

@@ -94,10 +94,10 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
         Assert.assertEquals(websiteConfiguration, websiteConfigurationService.save(websiteConfiguration));
     }
 
-//    @Test
-//    public void saveWebconfigurationKO() {
-//        Mockito.when(websiteConfigurationRepository.save(Mockito.any())).thenThrow(new ReferentielRequestException());
-//        websiteConfigurationService.save(websiteConfiguration);
-//    }
+    @Test
+    public void saveWebconfigurationKO() {
+        Mockito.when(websiteConfigurationRepository.save(Mockito.any())).thenThrow(new ReferentielRequestException());
+        websiteConfigurationService.save(websiteConfiguration);
+    }
 
 }

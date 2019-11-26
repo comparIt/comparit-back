@@ -21,9 +21,6 @@ public class ModelPropertyBusinessTest extends CompareITBackApplicationTests {
     @MockBean
     private ModelPropertyService modelPropertyService;
 
-    @MockBean
-    private ModelPropertyRepository modelPropertyRepository;
-
     @Before
     public void initTests() {
         initDatas();

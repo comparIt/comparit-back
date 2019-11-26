@@ -18,9 +18,6 @@ public class AlertBusinessTest extends CompareITBackApplicationTests {
     @MockBean
     private AlertService alertService;
 
-    @MockBean
-    private AlertRepository alertRepository;
-
     @Before
     public void initTests() {
         initDatas();

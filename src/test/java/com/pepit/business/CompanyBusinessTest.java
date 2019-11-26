@@ -21,9 +21,6 @@ public class CompanyBusinessTest extends CompareITBackApplicationTests {
     @MockBean
     private CompanyService companyService;
 
-    @MockBean
-    private CompanyRepository companyRepository;
-
     @Before
     public void initTests() {
         initDatas();

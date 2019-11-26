@@ -21,9 +21,6 @@ public class FilterBusinessTest extends CompareITBackApplicationTests {
     @MockBean
     private FilterService filterService;
 
-    @MockBean
-    private FilterRepository filterRepository;
-
     @Before
     public void initTests() {
         initDatas();
