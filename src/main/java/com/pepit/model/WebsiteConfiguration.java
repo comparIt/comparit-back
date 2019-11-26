@@ -58,9 +58,8 @@ public class WebsiteConfiguration {
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-
-    public Model getModelByTechnicalName(String technicalName) {
-        return this.models.stream().filter(model -> technicalName.equals(model.technicalName)).findFirst().orElse(null);
+    public List<Model> getModelByTechnicalName(String technicalName) {
+        return this.models;//.stream().filter(model -> technicalName.equals(model.technicalName)).findFirst().orElse(null);
     }
 
 }
