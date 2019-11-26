@@ -3,6 +3,7 @@ package com.pepit.controllers;
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
 import com.pepit.model.Model;
+import com.pepit.model.ModelProperty;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 @RestController
 @RequestMapping(Routes.COMPAGNY)
@@ -41,12 +44,20 @@ public class CompanyController {
     }
 
 
+    public static <T> T findByProperty(Collection<T> col, Predicate<T> filter) {
+        return col.stream().filter(filter).findFirst().orElse(null);
+    }
+
     @PostMapping("/byCsvUpload/{typeProduit}")
     public ResponseEntity<String> uploadData(@RequestParam("files") MultipartFile file, @PathVariable("typeProduit") String typeProduit) throws Exception {
 
         //TODO a recuperer a partir du token
         String supplierId = "1";
-        List<Model> currentModel = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        //TODO get d'un autre modele
+        Model model = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        //Model currentModel = listModel.stream().filter( model ->typeProduit.equals(model.technicalName)).findFirst().orElse(null);
+        List<ModelProperty> modelProperties = model.getModelProperties();
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
+
 }

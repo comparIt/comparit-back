@@ -59,8 +59,8 @@ public class WebsiteConfiguration {
     }
 
 
-    public List<Model> getModelByTechnicalName(String technicalName){
-        return this.models;
+    public Model getModelByTechnicalName(String technicalName) {
+        return this.models.stream().filter(model -> technicalName.equals(model.technicalName)).findFirst().orElse(null);
     }
 
 }
