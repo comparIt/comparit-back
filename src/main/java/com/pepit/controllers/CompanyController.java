@@ -54,9 +54,9 @@ public class CompanyController {
         //TODO a recuperer a partir du token
         String supplierId = "1";
         //TODO get d'un autre modele
-        Model model = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
-        //Model currentModel = listModel.stream().filter( model ->typeProduit.equals(model.technicalName)).findFirst().orElse(null);
-        List<ModelProperty> modelProperties = model.getModelProperties();
+        List<Model> listModel = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        Model currentModel = listModel.stream().filter(model -> typeProduit.equals(model.technicalName)).findFirst().orElse(null);
+        List<ModelProperty> modelProperties = currentModel.getModelProperties();
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
