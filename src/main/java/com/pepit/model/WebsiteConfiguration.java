@@ -1,6 +1,5 @@
 package com.pepit.model;
 
-import freemarker.template.utility.DateUtil;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
@@ -57,6 +56,11 @@ public class WebsiteConfiguration {
     public void update() {
         this.setCreatedAt(LocalDateTime.now());
         this.setUpdatedAt(LocalDateTime.now());
+    }
+
+
+    public List<Model> getModelByTechnicalName(String technicalName){
+        return this.models;
     }
 
 }

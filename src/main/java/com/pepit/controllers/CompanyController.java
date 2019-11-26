@@ -2,6 +2,7 @@ package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
+import com.pepit.model.Model;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(Routes.COMPANY)
@@ -43,8 +46,7 @@ public class CompanyController {
 
         //TODO a recuperer a partir du token
         String supplierId = "1";
-        String type = typeProduit;
-        System.out.println(websiteConfigurationService.findOneById(1));
-        return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), type.replace("\"", "")), HttpStatus.OK);
+        List<Model> currentModel = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 }
