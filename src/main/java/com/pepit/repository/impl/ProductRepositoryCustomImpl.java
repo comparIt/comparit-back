@@ -70,13 +70,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         return productDtos;
     }
 
-    public void updateBornes(String technicalName) {
-        //tentative de passer une query sur la database pour obtenir les minmax
+    public SqlResult updateBornes(String technicalName) {
+        //On passe une query sur la database pour setter les minmax
         String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
                 ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
                 "FROM produit) where technical_name = '"+technicalName+"';";
         logger.info(query);
-        Result sqlTest = mySession.sql(query).execute();
+        return mySession.sql(query).execute();
 
     }
 

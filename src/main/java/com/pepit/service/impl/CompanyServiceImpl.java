@@ -136,19 +136,7 @@ public class CompanyServiceImpl implements CompanyService {
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
         productRepository.addDoc(docs);
 
-        //recalcul des bornes
-        /*
-        //Des sets pour stocker les valeurs de facon unique?
-        Set<Integer> minMax = new HashSet<>();
-        Set<String> list = new HashSet<>();
-        //On parcours les objects?
-        List<ProductDto> products = productRepository.find("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
-
-        products.forEach( product ->{
-            logger.info(product.getProperties());
-        });
-
-         */
+        //On constitue les listes de properties selon qu'elles sont numeriques ou enumeratives
         List<String> modelListNumeric = new ArrayList<>();
         List<String> modelListEnum = new ArrayList<>();
         websiteConfigurationService.findOneById(1)
@@ -163,8 +151,6 @@ public class CompanyServiceImpl implements CompanyService {
                         modelListEnum.add(prop.getTechnicalName());
                 });
 
-        logger.info(modelListEnum.toString());
-        logger.info(modelListNumeric.toString());
         //Mise a jour des bornes minMax pour les type Numeric
         modelListNumeric.forEach( technicalName -> productRepository.updateBornes(technicalName) );
 
@@ -175,7 +161,7 @@ public class CompanyServiceImpl implements CompanyService {
     /** block de check columns comparaison de model et du fichier passé
      *
      */
-    private List<String> compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
+    private void compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
         //getting current model to have its properties
         List<String> modelProps = new ArrayList<>();
         //recuperation sous forme de liste des modelProperties
@@ -190,7 +176,6 @@ public class CompanyServiceImpl implements CompanyService {
         else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
 
         //Fin check columns
-        return modelProps;
     }
 
     private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {
