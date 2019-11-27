@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
+import com.pepit.constants.TypeModelPropertyEnum;
 import com.pepit.dto.ProductDto;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
@@ -96,7 +97,7 @@ public class CompanyServiceImpl implements CompanyService {
         long size = file.getSize();
         logger.info("inputStream: " + inputStream + "\noriginalName: " + originalName + "\nname: " + name + "\ncontentType: " + contentType + "\nsize: " + size);
 
-        System.out.println("processing Csv from supplierId "+ supplierId + " type= "+ typeProduit);
+        logger.info("processing Csv from supplierId "+ supplierId + " type= "+ typeProduit);
         CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
         settings.detectFormatAutomatically();
 
@@ -110,28 +111,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Record> allRecords = parser.parseAllRecords(inputStream);
 
 
-        /** block de check columns
-         *
-         */
-
-        //getting current model to have its properties
-        List<String> modelProps = new ArrayList<>();
-        //recuperation sous forme de liste des modelProperties
-        websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit).getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
-
-        //Parcours des headers du fichier passé et comparaison au modele attendu
-        List<String> headers = Arrays.asList(parser.getContext().headers());
-
-
-        System.out.println(headers.toString());
-        System.out.println(modelProps.toString());
-
-        if(modelProps.equals(headers)){
-            System.out.println("OK: Fichier cohérent avec le modele de donnée en place");
-        }
-        else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
-
-        //Fin check columns
+        List<String> modelProps = compareModelWithFileHeader(typeProduit, parser);
 
 
         //L'objet dbDocList de sortie a passer au productRepo
@@ -164,12 +144,52 @@ public class CompanyServiceImpl implements CompanyService {
         List<ProductDto> products = productRepository.find("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
 
         products.forEach( product ->{
-            System.out.println(product.getProperties());
+            logger.info(product.getProperties());
         });
 
          */
+        List<String> modelListNumeric = new ArrayList<>();
+        List<String> modelListEnum = new ArrayList<>();
+        websiteConfigurationService.findOneById(1)
+                .getModelByTechnicalName(typeProduit)
+                .getModelProperties()
+                .stream()
+                .forEach(prop -> {
+                    logger.info(prop.toString());
+                    if ( prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                        modelListNumeric.add(prop.getTechnicalName());
+                    else
+                        modelListEnum.add(prop.getTechnicalName());
+                });
+
+        logger.info(modelListEnum.toString());
+        logger.info(modelListNumeric.toString());
+        //Mise a jour des bornes minMax pour les type Numeric
+        modelListNumeric.forEach( technicalName -> productRepository.updateBornes(technicalName) );
+
         logger.info("FIN fromCsvToDb");
         return dbDocList.toString();
+    }
+
+    /** block de check columns comparaison de model et du fichier passé
+     *
+     */
+    private List<String> compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
+        //getting current model to have its properties
+        List<String> modelProps = new ArrayList<>();
+        //recuperation sous forme de liste des modelProperties
+        websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit).getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
+
+        //Parcours des headers du fichier passé et comparaison au modele attendu
+        List<String> headers = Arrays.asList(parser.getContext().headers());
+
+        if(modelProps.equals(headers)){
+            logger.info("OK: Fichier cohérent avec le modele de donnée en place");
+        }
+        else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
+
+        //Fin check columns
+        return modelProps;
     }
 
     private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {

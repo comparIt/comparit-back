@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.exceptions.WrongArgumentException;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.dto.ProductDto;
+import com.pepit.service.impl.CompanyServiceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 //@NoArgsConstructor
 @Repository
@@ -18,6 +20,8 @@ public class ProductRepository {
     static Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=" + System.getenv("DATABASE_PASSWORD") );
     static Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
     static Collection myColl;
+
+    private static final Logger logger = Logger.getLogger(CompanyServiceImpl.class.getName());
 
     public ProductRepository() {
         try {
@@ -30,12 +34,6 @@ public class ProductRepository {
     public List<ProductDto> find(String query){
         DocResult docs = myColl.find(query).execute();
 
-        //tentative de passer une query sur la database pour obtenir les minmax
-        /*
-        Result sqlTest = mySession.sql("SELECT MAX(CAST(doc->'$.properties.prix' AS DECIMAL(10,2))) AS min_price FROM produit;").execute();
-        System.out.println(sqlTest);
-        */
-
         List<DbDoc> docList = docs.fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -43,7 +41,7 @@ public class ProductRepository {
         for ( DbDoc onedoc : docList) {
 
             String jsonP = "{\"properties\": " + onedoc.toString() + "}";
-            //System.out.println(jsonP);
+            //logger.info(jsonP);
 
             ObjectMapper objectMapper = new ObjectMapper();
             ProductDto productDto = null;
@@ -55,6 +53,16 @@ public class ProductRepository {
         }
 
         return productDtos;
+    }
+
+    public void updateBornes(String technicalName) {
+        //tentative de passer une query sur la database pour obtenir les minmax
+        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
+                ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
+                "FROM produit) where technical_name = '"+technicalName+"';";
+        logger.info(query);
+        Result sqlTest = mySession.sql(query).execute();
+
     }
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
@@ -69,8 +77,8 @@ public class ProductRepository {
     }
 
     public void removeDoc(String query){
-        System.out.println("sending RemoveDoc Query: "+ query);
+        logger.info("sending RemoveDoc Query: "+ query);
         Result res = myColl.remove(query).execute();
-        System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+        logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 }
