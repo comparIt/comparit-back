@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
+import com.pepit.dto.ProductDto;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Model;
@@ -115,16 +116,13 @@ public class CompanyServiceImpl implements CompanyService {
          */
 
         //getting current model to have its properties
-        Model model = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
-        List<ModelProperty> mProps = model.getModelProperties();
         List<String> modelProps = new ArrayList<>();
-        mProps.forEach(prop -> modelProps.add(prop.getTechnicalName()));
+        //recuperation sous forme de liste des modelProperties
+        websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit).getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
 
         //Parcours des headers du fichier passé et comparaison au modele attendu
         List<String> headers = Arrays.asList(parser.getContext().headers());
-        headers.forEach( header -> {
-            System.out.println("Checking column: " + header);
-        });
+
 
         System.out.println(headers.toString());
         System.out.println(modelProps.toString());
@@ -158,6 +156,19 @@ public class CompanyServiceImpl implements CompanyService {
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
         productRepository.addDoc(docs);
 
+        //recalcul des bornes
+        /*
+        //Des sets pour stocker les valeurs de facon unique?
+        Set<Integer> minMax = new HashSet<>();
+        Set<String> list = new HashSet<>();
+        //On parcours les objects?
+        List<ProductDto> products = productRepository.find("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
+
+        products.forEach( product ->{
+            System.out.println(product.getProperties());
+        });
+
+         */
         logger.info("FIN fromCsvToDb");
         return dbDocList.toString();
     }
