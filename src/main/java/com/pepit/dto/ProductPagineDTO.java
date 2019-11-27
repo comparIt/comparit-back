@@ -2,10 +2,7 @@ package com.pepit.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pepit.model.Product;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -13,11 +10,15 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductPagine {
+public class ProductPagineDTO {
 
-    List<Product> productListOnThisPage;
+    List<ProductDto> productListOnThisPage;
     Integer nbPages;
     Integer pageActuel;
 

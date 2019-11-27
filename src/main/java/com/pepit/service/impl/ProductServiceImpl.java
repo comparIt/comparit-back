@@ -1,6 +1,7 @@
 package com.pepit.service.impl;
 
 import com.pepit.dto.ProductDto;
+import com.pepit.dto.ProductPagineDTO;
 import com.pepit.util.Query;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.ProductService;
@@ -12,12 +13,13 @@ import java.util.Map;
 
 @Component
 public class ProductServiceImpl implements ProductService {
+    Long nbProductParPage = 10L;
 
     @Autowired
     ProductRepositoryCustom productRepositoryCustom;
 
     @Override
-    public List<ProductDto> search(Map<String, String> params, String order, Integer page, String supplier, String type) {
+    public ProductPagineDTO search(Map<String, String> params, String order, Integer page, String supplier, String type) {
         Query query = new Query();
         query
                 .addType(type)
@@ -25,7 +27,13 @@ public class ProductServiceImpl implements ProductService {
                 .addAllCriterias(params)
                 .page(page)
                 .addSorting(order);
-        return productRepositoryCustom.testRequest(query);
+        List<ProductDto> productList = productRepositoryCustom.testRequest(query);
+        ProductPagineDTO productPagine = new ProductPagineDTO();
+        productPagine.setProductListOnThisPage(productList);
+        Long l  =  productRepositoryCustom.count();
+        Integer nbPages = (int) Math.ceil(l / nbProductParPage);
+        System.out.println(nbPages);
+        return productPagine;
     }
 
 
