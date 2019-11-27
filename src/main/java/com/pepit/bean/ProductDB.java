@@ -1,6 +1,7 @@
 package com.pepit.bean;
 
 import com.mysql.cj.xdevapi.*;
+import com.pepit.config.Conf;
 import com.pepit.util.Query;
 
 
@@ -11,8 +12,8 @@ public class ProductDB {
     private Schema db;
 
     public ProductDB(){
-        this.session = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user="+System.getenv("DATABASE_USERNAME")+"&password="+System.getenv("DATABASE_PASSWORD"));
-        this.db = this.session.getSchema(System.getenv("DATABASE_NAME"));
+        this.session = new SessionFactory().getSession("mysqlx://" + Conf.getInstance().getHOST() + ":" + Conf.getInstance().getXPORT() +"/compareIt?user=root&password=" + Conf.getInstance().getPASSWORD() );
+        this.db = session.getSchema(Conf.getInstance().getNAME());
         this.collection = this.db.getCollection("produit");
     }
 
