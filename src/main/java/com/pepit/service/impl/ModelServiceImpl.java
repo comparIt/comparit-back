@@ -6,6 +6,8 @@ import com.pepit.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -24,7 +26,10 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Iterable<Model> saveAll(List<Model> modelList) {
-        return modelRepository.saveAll(modelList);
+    public List<Model> saveAll(List<Model> modelList) {
+        List<Model> listModel = new ArrayList<>();
+        Iterable<Model> iterModel =  modelRepository.saveAll(modelList);
+        iterModel.forEach(listModel::add);
+        return listModel;
     }
 }

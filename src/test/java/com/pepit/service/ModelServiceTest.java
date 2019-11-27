@@ -54,8 +54,8 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
     }
 
     private void initMocks() {
-        Mockito.when(modelService.save(Mockito.any(Model.class))).thenReturn(model);
-        Mockito.when(modelService.saveAll(Mockito.anyList())).thenReturn(modelList);
+        Mockito.when(modelRepository.save(Mockito.any(Model.class))).thenReturn(model);
+        //Mockito.when(modelRepository.saveAll(Mockito.anyList())).thenReturn(modelList);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.pepit.service;
 
-import com.pepit.model.ProductDto;
+import com.pepit.dto.ProductDto;
 
 import java.util.List;
 import java.util.Map;

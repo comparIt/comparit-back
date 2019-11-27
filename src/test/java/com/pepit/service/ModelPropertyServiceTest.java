@@ -56,7 +56,7 @@ public class ModelPropertyServiceTest extends CompareITBackApplicationTests {
     }
 
     private void initMocks() {
-        Mockito.when(modelPropertyRepository.saveAll(Mockito.anyList())).thenReturn(modelProperties);
+        //Mockito.when(modelPropertyRepository.saveAll(Mockito.anyList())).thenReturn(modelProperties);
         Mockito.when(modelPropertyRepository.save(Mockito.any())).thenReturn(modelProperty);
     }
 

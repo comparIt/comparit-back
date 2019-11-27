@@ -96,7 +96,7 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
 
     @Test
     public void saveWebconfigurationKO() {
-        Mockito.when(websiteConfigurationRepository.save(Mockito.any())).thenThrow(new ReferentielRequestException());
+        Mockito.when(websiteConfigurationRepository.save(Mockito.any(WebsiteConfiguration.class))).thenThrow(new ReferentielRequestException());
         websiteConfigurationService.save(websiteConfiguration);
     }
 

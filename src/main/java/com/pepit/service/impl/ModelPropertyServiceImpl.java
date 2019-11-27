@@ -6,6 +6,7 @@ import com.pepit.service.ModelPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,7 +25,10 @@ public class ModelPropertyServiceImpl implements ModelPropertyService {
     }
 
     @Override
-    public Iterable<ModelProperty> saveAll(List<ModelProperty> modelProperties) {
-        return modelPropertyRepository.saveAll(modelProperties);
+    public List<ModelProperty> saveAll(List<ModelProperty> modelProperties) {
+        List<ModelProperty> listModel = new ArrayList<>();
+        Iterable<ModelProperty> iterModel =  modelPropertyRepository.saveAll(modelProperties);
+        iterModel.forEach(listModel::add);
+        return listModel;
     }
 }

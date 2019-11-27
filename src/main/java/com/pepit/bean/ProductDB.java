@@ -11,7 +11,7 @@ public class ProductDB {
     private Schema db;
 
     public ProductDB(){
-        this.session = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=rootP@ssw0rd");
+        this.session = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user="+System.getenv("DATABASE_USERNAME")+"&password="+System.getenv("DATABASE_PASSWORD"));
         this.db = this.session.getSchema(System.getenv("DATABASE_NAME"));
         this.collection = this.db.getCollection("produit");
     }
