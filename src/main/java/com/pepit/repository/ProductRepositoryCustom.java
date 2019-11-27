@@ -14,5 +14,7 @@ public interface ProductRepositoryCustom {
     Iterator<Warning> addDoc(DbDoc[] dbDocs);
 
     Iterator<Warning> updateBornes(String technicalName);
+
+    List<String> listeDistinct(String technicalName);
     void removeDoc(String query);
 }

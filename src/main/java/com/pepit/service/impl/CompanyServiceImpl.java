@@ -147,6 +147,10 @@ public class CompanyServiceImpl implements CompanyService {
 
         //Mise a jour des bornes minMax pour les type Numeric
         modelListNumeric.forEach( technicalName -> productRepository.updateBornes(technicalName) );
+        //Mise a jour des valeurs possibles pour les type enumerations
+        modelListEnum.forEach(technicalName -> {
+            productRepository.listeDistinct(technicalName);
+        });
 
         logger.info("FIN fromCsvToDb");
         return dbDocList.toString();
