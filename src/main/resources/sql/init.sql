@@ -12,7 +12,7 @@ INSERT INTO `model_property` VALUES (1,_binary '','2019-11-26 18:05:37.653000',
 
 INSERT INTO `model_model_properties` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(2,7),(2,8);
 
-INSERT INTO `website_configuration` VALUES (1,'#c26d6d','#50459c','#82bd2a','2019-11-26 18:05:38.103000',_binary '','picture','2019-11-26 18:05:38.103000'),(2,'#c26d6d','#50459c','#82bd2a','2019-11-26 21:10:33.286000',_binary '','picture','2019-11-26 21:10:33.286000');
+INSERT INTO `website_configuration` VALUES (1,'#c26d6d','#50459c','#82bd2a','2019-11-26 18:05:38.103000',_binary '','picture','2019-11-26 18:05:38.103000');
 
-INSERT INTO `website_configuration_models` VALUES (1,1),(2,2);
+INSERT INTO `website_configuration_models` VALUES (1,1),(1,2);
 
