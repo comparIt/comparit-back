@@ -110,7 +110,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Record> allRecords = parser.parseAllRecords(inputStream);
 
 
-        /** block de check et de valorisation minmax
+        /** block de check columns
          *
          */
 
@@ -126,10 +126,16 @@ public class CompanyServiceImpl implements CompanyService {
             System.out.println("Checking column: " + header);
         });
 
+        System.out.println(headers.toString());
+        System.out.println(modelProps.toString());
+
         if(modelProps.equals(headers)){
             System.out.println("OK: Fichier cohérent avec le modele de donnée en place");
         }
         else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
+
+        //Fin check columns
+
 
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
