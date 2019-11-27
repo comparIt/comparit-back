@@ -6,13 +6,9 @@ REPLACE INTO compareIt.roles
 (user_id, roles)
 VALUES(1, 'ROLE_CUSTOMER');
 
-INSERT INTO `model` VALUES (1,_binary '','2019-11-26 18:05:38.036000','cars','cars','2019-11-26 18:05:38.036000'),(2,_binary '','2019-11-26 21:10:33.244000','Mobiles','phones','2019-11-26 21:10:33.244000');
-
-INSERT INTO `model_property` VALUES (1,_binary '','2019-11-26 18:05:37.653000',_binary '',_binary '\0',_binary '','Fabricant','maker',1,'2019-11-26 18:05:37.655000'),(2,_binary '','2019-11-26 18:05:37.940000',_binary '',_binary '\0',_binary '','Modèle','model',1,'2019-11-26 18:05:37.940000'),(3,_binary '','2019-11-26 18:05:37.966000',_binary '',_binary '',_binary '','Taille','size',1,'2019-11-26 18:05:37.966000'),(4,_binary '\0','2019-11-26 18:05:37.984000',_binary '\0',_binary '',_binary '','Format','format',1,'2019-11-26 18:05:37.984000'),(5,_binary '\0','2019-11-26 18:05:38.001000',_binary '\0',_binary '',_binary '','Nombre de portes','doors',0,'2019-11-26 18:05:38.001000'),(6,_binary '','2019-11-26 18:05:38.019000',_binary '\0',_binary '',_binary '','Nombre de Places','seats',0,'2019-11-26 18:05:38.019000'),(7,_binary '','2019-11-26 21:10:33.145000',_binary '',_binary '',_binary '','Marque','brand',1,'2019-11-26 21:10:33.146000'),(8,_binary '','2019-11-26 21:10:33.228000',_binary '',_binary '',_binary '','Modele','model',1,'2019-11-26 21:10:33.228000');
-
+INSERT INTO `model` VALUES (1,_binary '','2019-11-27 10:42:33.256000','Vehicules','cars','2019-11-27 10:42:33.256000'),(2,_binary '','2019-11-27 10:42:33.367000','Telephones','phones','2019-11-27 10:42:33.367000');
+INSERT INTO `model_property` VALUES (1,_binary '','2019-11-27 10:42:32.898000',_binary '',_binary '',_binary '',NULL,NULL,'Fabricant','maker',1,'2019-11-27 10:42:32.900000'),(2,_binary '','2019-11-27 10:42:33.150000',_binary '',_binary '',_binary '',NULL,NULL,'Modèle','model',1,'2019-11-27 10:42:33.150000'),(3,_binary '','2019-11-27 10:42:33.176000',_binary '',_binary '',_binary '',NULL,NULL,'Taille','Taille',1,'2019-11-27 10:42:33.176000'),(4,_binary '','2019-11-27 10:42:33.195000',_binary '\0',_binary '',_binary '',NULL,NULL,'Format','format',1,'2019-11-27 10:42:33.195000'),(5,_binary '','2019-11-27 10:42:33.220000',_binary '\0',_binary '',_binary '',NULL,NULL,'Nombre de portes','doors',0,'2019-11-27 10:42:33.220000'),(6,_binary '','2019-11-27 10:42:33.238000',_binary '\0',_binary '',_binary '',NULL,NULL,'Nombre de Places','seats',0,'2019-11-27 10:42:33.238000'),(7,_binary '','2019-11-27 10:42:33.324000',_binary '',_binary '',_binary '',NULL,NULL,'Marque','brand',1,'2019-11-27 10:42:33.324000'),(8,_binary '','2019-11-27 10:42:33.349000',_binary '',_binary '',_binary '',NULL,NULL,'Modele','model',1,'2019-11-27 10:42:33.349000');
 INSERT INTO `model_model_properties` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(2,7),(2,8);
-
-INSERT INTO `website_configuration` VALUES (1,'#c26d6d','#50459c','#82bd2a','2019-11-26 18:05:38.103000',_binary '','picture','2019-11-26 18:05:38.103000');
-
+INSERT INTO `website_configuration` VALUES (1,'#c26d6d','#50459c','#82bd2a','2019-11-27 10:42:33.401000',_binary '','picture','2019-11-27 10:42:33.401000');
 INSERT INTO `website_configuration_models` VALUES (1,1),(1,2);
 
