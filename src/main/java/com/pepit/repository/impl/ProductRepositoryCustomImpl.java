@@ -4,15 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
-import com.pepit.util.Query;
 import com.pepit.repository.ProductRepositoryCustom;
+import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
 @NoArgsConstructor
 @Repository
@@ -20,6 +22,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Autowired
     ProductDB productDB;
+
+    private static final Logger logger = Logger.getLogger(ProductRepositoryCustomImpl.class.getName());
+
 
     public List<ProductDto> testRequest(Query query){
         List<DbDoc> docList = productDB.find(query).fetchAll();
@@ -52,7 +57,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         for ( DbDoc onedoc : docList) {
 
             String jsonP = "{\"properties\": " + onedoc.toString() + "}";
-            System.out.println(jsonP);
+            //logger.info(jsonP);
 
             ObjectMapper objectMapper = new ObjectMapper();
             ProductDto productDto = null;
@@ -64,6 +69,16 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
 
         return productDtos;
+    }
+
+    public Iterator<Warning> updateBornes(String technicalName) {
+        //On passe une query sur la database pour setter les minmax
+        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
+                ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
+                "FROM produit) where technical_name = '"+technicalName+"';";
+        logger.info(query);
+        return productDB.getSession().sql(query).execute().getWarnings();
+
     }
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
@@ -78,8 +93,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
     public void removeDoc(String query){
-        System.out.println("sending RemoveDoc Query: "+ query);
+        logger.info("sending RemoveDoc Query: "+ query);
         Result res = productDB.getCollection().remove(query).execute();
-        System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+        logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 }

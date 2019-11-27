@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -45,6 +46,16 @@ public class ModelProperty {
 
     @Column(name = "activated")
     boolean activated;
+
+    @Column(name = "min")
+    Integer min;
+
+    @Column(name = "max")
+    Integer max;
+
+    @ElementCollection
+    @Column(name = "value")
+    List<String> value;
 
     @CreatedDate
     @Column(name = "createdat")

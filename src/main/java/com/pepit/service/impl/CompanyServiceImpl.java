@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
+import com.pepit.constants.TypeModelPropertyEnum;
+import com.pepit.exception.InputException;
+import com.pepit.exception.ReferentielRequestException;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
+import com.pepit.service.WebsiteConfigurationService;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -27,13 +31,15 @@ public class CompanyServiceImpl implements CompanyService {
 
     private CompanyRepository companyRepository;
     private ProductRepositoryCustom productRepository;
+    private WebsiteConfigurationService websiteConfigurationService;
 
     private static final Logger logger = Logger.getLogger(CompanyServiceImpl.class.getName());
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, ProductRepositoryCustom productRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ProductRepositoryCustom productRepository, WebsiteConfigurationService websiteConfigurationService) {
         this.companyRepository = companyRepository;
         this.productRepository = productRepository;
+        this.websiteConfigurationService = websiteConfigurationService;
     }
 
     public String fromUrlToDb(String url, String supplierId, String type) {
@@ -73,11 +79,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    public String fromCsvToDb(MultipartFile file, String supplierId, String type) throws IOException {
+    public String fromCsvToDb(MultipartFile file, String supplierId, String typeProduit) throws IOException, ReferentielRequestException, InputException {
         logger.info("DEB fromCsvToDb");
         if (file == null) {
             throw new RuntimeException("You must select a file for uploading");
         }
+
         InputStream inputStream = file.getInputStream();
         String originalName = file.getOriginalFilename();
         String name = file.getName();
@@ -85,17 +92,22 @@ public class CompanyServiceImpl implements CompanyService {
         long size = file.getSize();
         logger.info("inputStream: " + inputStream + "\noriginalName: " + originalName + "\nname: " + name + "\ncontentType: " + contentType + "\nsize: " + size);
 
-        System.out.println("processing Csv from supplierId "+ supplierId + " type= "+ type);
+        logger.info("processing Csv from supplierId "+ supplierId + " type= "+ typeProduit);
         CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
         settings.detectFormatAutomatically();
 
         // configure to grab headers from file. We want to use these names to get values from each record.
         settings.setHeaderExtractionEnabled(true);
+
         // creates a CSV parser
         CsvParser parser = new CsvParser(settings);
 
         // parses all records in one go.
         List<Record> allRecords = parser.parseAllRecords(inputStream);
+
+
+        compareModelWithFileHeader(typeProduit, parser);
+
 
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
@@ -108,18 +120,56 @@ public class CompanyServiceImpl implements CompanyService {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.valueToTree(mymap);
 
-            DbDoc outerObject = updateJsonNode(supplierId, type, mapper, jsonNode);
+            DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode);
             dbDocList.add(outerObject);
         }
         //on le convertir en tableau car dependance du add mysql
         DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
 
         //TODO Utiliser le generateur de QUERY
-        productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + type.replace("\"", "") + "'" );
+        productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
         productRepository.addDoc(docs);
+
+        //On constitue les listes de properties selon qu'elles sont numeriques ou enumeratives
+        List<String> modelListNumeric = new ArrayList<>();
+        List<String> modelListEnum = new ArrayList<>();
+        websiteConfigurationService.findOneById(1)
+                .getModelByTechnicalName(typeProduit)
+                .getModelProperties()
+                .stream()
+                .forEach(prop -> {
+                    logger.info(prop.toString());
+                    if ( prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                        modelListNumeric.add(prop.getTechnicalName());
+                    else
+                        modelListEnum.add(prop.getTechnicalName());
+                });
+
+        //Mise a jour des bornes minMax pour les type Numeric
+        modelListNumeric.forEach( technicalName -> productRepository.updateBornes(technicalName) );
 
         logger.info("FIN fromCsvToDb");
         return dbDocList.toString();
+    }
+
+    /** block de check columns comparaison de model et du fichier passé
+     *
+     */
+    private void compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
+        //getting current model to have its properties
+        List<String> modelProps = new ArrayList<>();
+        //recuperation sous forme de liste des modelProperties
+        websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit).getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
+
+        //Parcours des headers du fichier passé et comparaison au modele attendu
+        List<String> headers = Arrays.asList(parser.getContext().headers());
+
+        if(modelProps.equals(headers)){
+            logger.info("OK: Fichier cohérent avec le modele de donnée en place");
+        }
+        else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
+
+        //Fin check columns
     }
 
     private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {

@@ -1,7 +1,6 @@
 package com.pepit.service;
 
 import com.pepit.CompareITBackApplicationTests;
-import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Model;
 import com.pepit.repository.ModelRepository;
 import org.junit.Assert;
