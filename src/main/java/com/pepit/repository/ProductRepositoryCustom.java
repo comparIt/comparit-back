@@ -13,4 +13,5 @@ public interface ProductRepositoryCustom {
     List<ProductDto> find(String query);
     Iterator<Warning> addDoc(DbDoc[] dbDocs);
     void removeDoc(String query);
+    Long count();
 }

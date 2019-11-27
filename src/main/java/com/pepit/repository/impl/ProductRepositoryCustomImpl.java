@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.Collection;
 
 @NoArgsConstructor
 @Repository
@@ -81,5 +80,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         System.out.println("sending RemoveDoc Query: "+ query);
         Result res = productDB.getCollection().remove(query).execute();
         System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+    }
+
+    public Long count(){
+        return productDB.getCollection().count();
     }
 }
