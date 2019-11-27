@@ -4,15 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
-import com.pepit.util.Query;
 import com.pepit.repository.ProductRepositoryCustom;
+import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Autowired
     ProductDB productDB;
 
-    private static final Logger logger = Logger.getLogger(CompanyServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(ProductRepositoryCustomImpl.class.getName());
 
 
     public List<ProductDto> testRequest(Query query){
@@ -70,13 +71,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         return productDtos;
     }
 
-    public SqlResult updateBornes(String technicalName) {
+    public Iterator<Warning> updateBornes(String technicalName) {
         //On passe une query sur la database pour setter les minmax
         String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
                 ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
                 "FROM produit) where technical_name = '"+technicalName+"';";
         logger.info(query);
-        return mySession.sql(query).execute();
+        return productDB.getSession().sql(query).execute().getWarnings();
 
     }
 

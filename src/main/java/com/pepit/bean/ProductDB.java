@@ -1,5 +1,6 @@
 package com.pepit.bean;
 
+import com.mysql.cj.exceptions.WrongArgumentException;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.util.Query;
 
@@ -13,7 +14,11 @@ public class ProductDB {
     public ProductDB(){
         this.session = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user="+System.getenv("DATABASE_USERNAME")+"&password="+System.getenv("DATABASE_PASSWORD"));
         this.db = this.session.getSchema(System.getenv("DATABASE_NAME"));
-        this.collection = this.db.getCollection("produit");
+        try {
+            this.collection = this.db.getCollection("produit", true);
+        } catch (WrongArgumentException e) {
+            this.collection = this.db.createCollection("produit");
+        }
     }
 
     public DocResult find(Query query){
@@ -27,6 +32,10 @@ public class ProductDB {
 
     public Collection getCollection() {
         return collection;
+    }
+
+    public Session getSession() {
+        return session;
     }
 
     public Schema getDb() {

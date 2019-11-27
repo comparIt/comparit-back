@@ -5,18 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
-import com.pepit.dto.ProductDto;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
-import com.pepit.model.Model;
-import com.pepit.model.ModelProperty;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
-import com.univocity.parsers.common.ParsingContext;
-import com.univocity.parsers.common.ResultIterator;
-import com.univocity.parsers.common.processor.BeanProcessor;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -112,7 +106,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Record> allRecords = parser.parseAllRecords(inputStream);
 
 
-        List<String> modelProps = compareModelWithFileHeader(typeProduit, parser);
+        compareModelWithFileHeader(typeProduit, parser);
 
 
         //L'objet dbDocList de sortie a passer au productRepo
