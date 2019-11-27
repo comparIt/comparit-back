@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
+import java.util.*;
 
 @NoArgsConstructor
 @Repository
@@ -106,5 +103,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         logger.info("sending RemoveDoc Query: "+ query);
         Result res = productDB.getCollection().remove(query).execute();
         logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+    }
+
+    public Long count(){
+        return productDB.getCollection().count();
     }
 }

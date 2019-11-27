@@ -2,7 +2,8 @@ package com.pepit.controllers;
 
 
 import com.pepit.constants.Routes;
-import com.pepit.dto.ProductDto;
+import com.pepit.dto.ProductPagineDTO;
+import com.pepit.model.Product;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,7 +26,7 @@ public class ProductController {
 
     @CrossOrigin
     @GetMapping(value = "/search")
-    public ResponseEntity<List<ProductDto>> search(@RequestParam @Nullable Map<String, String> params,
+    public ResponseEntity<ProductPagineDTO> search(@RequestParam @Nullable Map<String, String> params,
                                                    @RequestParam @Nullable String order,
                                                    @RequestParam @Nullable Integer page,
                                                    @RequestParam @Nullable String supplier,
@@ -34,5 +34,14 @@ public class ProductController {
                                                    ){
         return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
+
+    @CrossOrigin
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> searchProduct(@PathVariable Integer productId){
+        return null;
+    }
+
+
+
 
 }

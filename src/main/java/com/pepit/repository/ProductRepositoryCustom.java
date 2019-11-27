@@ -15,4 +15,5 @@ public interface ProductRepositoryCustom {
     Iterator<Warning> updateBornes(String technicalName);
     List<String> listeDistinct(String technicalName);
     void removeDoc(String query);
+    Long count();
 }
