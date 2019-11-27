@@ -18,7 +18,10 @@ public class ProductDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    String _id;
+
+    String supplierId;
+    String type;
 
     @ElementCollection
     @Column(name = "properties")

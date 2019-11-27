@@ -1,18 +1,20 @@
 package com.pepit.controllers;
 
 
+import com.pepit.constants.Routes;
 import com.pepit.dto.ProductDto;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "product", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = Routes.PRODUCT, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 
     ProductService productService;
@@ -24,8 +26,13 @@ public class ProductController {
 
     @CrossOrigin
     @GetMapping(value = "/search")
-    public ResponseEntity<List<ProductDto>> search(@RequestParam Map<String, String> params){
-        return ResponseEntity.status(200).body(productService.search(params));
+    public ResponseEntity<List<ProductDto>> search(@RequestParam @Nullable Map<String, String> params,
+                                                   @RequestParam @Nullable String order,
+                                                   @RequestParam @Nullable Integer page,
+                                                   @RequestParam @Nullable String supplier,
+                                                   @RequestParam @Nullable String type
+                                                   ){
+        return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
 
 }

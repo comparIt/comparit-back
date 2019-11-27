@@ -2,7 +2,6 @@ package com.pepit.controllers;
 
 import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
-import com.pepit.repository.ProductRepository;
 import com.pepit.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(Routes.COMPAGNY)
+@RequestMapping(Routes.COMPANY)
 public class CompanyController {
 
     private CompanyBusiness companyBusiness;
     private CompanyService companyService;
 
     @Autowired
-    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, ProductRepository productRepository) {
+    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService) {
         this.companyBusiness = companyBusiness;
         this.companyService = companyService;
     }

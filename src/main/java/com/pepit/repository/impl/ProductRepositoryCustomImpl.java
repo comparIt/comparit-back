@@ -1,34 +1,49 @@
-package com.pepit.repository;
+package com.pepit.repository.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.cj.exceptions.WrongArgumentException;
 import com.mysql.cj.xdevapi.*;
+import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
+import com.pepit.util.Query;
+import com.pepit.repository.ProductRepositoryCustom;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.Collection;
 
-//@NoArgsConstructor
+@NoArgsConstructor
 @Repository
-public class ProductRepository {
+public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
-    static Session mySession = new SessionFactory().getSession("mysqlx://" + System.getenv("DATABASE_HOST") + ":" + System.getenv("DATABASE_XPORT") +"/compareIt?user=root&password=" + System.getenv("DATABASE_PASSWORD") );
-    static Schema myDb = mySession.getSchema(System.getenv("DATABASE_NAME"));
-    static Collection myColl;
+    @Autowired
+    ProductDB productDB;
 
-    public ProductRepository() {
-        try {
-            myColl = myDb.getCollection("produit", true);
-        } catch (WrongArgumentException e) {
-            myColl = myDb.createCollection("produit");
+    public List<ProductDto> testRequest(Query query){
+        List<DbDoc> docList = productDB.find(query).fetchAll();
+
+        List<ProductDto> productDtos = new ArrayList<>();
+        System.out.println("passed");
+        for ( DbDoc doc : docList) {
+
+            System.out.println(doc.toString());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                productDtos.add(objectMapper.readValue(doc.toString(), ProductDto.class));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        System.out.println("done");
+        return productDtos;
     }
 
+
     public List<ProductDto> find(String query){
-        DocResult docs = myColl.find(query).execute();
+        DocResult docs = productDB.getCollection().find(query).execute();
 
         List<DbDoc> docList = docs.fetchAll();
 
@@ -55,7 +70,7 @@ public class ProductRepository {
 
         AddResult result = null;
 
-        result = myColl.add(dbDocs).execute();
+        result = productDB.getCollection().add(dbDocs).execute();
 
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
         return result.getWarnings();
@@ -64,7 +79,7 @@ public class ProductRepository {
 
     public void removeDoc(String query){
         System.out.println("sending RemoveDoc Query: "+ query);
-        Result res = myColl.remove(query).execute();
+        Result res = productDB.getCollection().remove(query).execute();
         System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 }
