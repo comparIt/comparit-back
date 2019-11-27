@@ -47,13 +47,15 @@ public class ModelProperty {
     @Column(name = "activated")
     boolean activated;
 
-    @ElementCollection
-    @Column(name = "bornes")
-    List<Integer> bornes;
+    @Column(name = "min")
+    Integer min;
+
+    @Column(name = "max")
+    Integer max;
 
     @ElementCollection
-    @Column(name = "uniqList")
-    List<String> uniqList;
+    @Column(name = "value")
+    List<String> value;
 
     @CreatedDate
     @Column(name = "createdat")

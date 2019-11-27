@@ -22,13 +22,11 @@ public class CompanyController {
 
     private CompanyBusiness companyBusiness;
     private CompanyService companyService;
-    private WebsiteConfigurationService websiteConfigurationService;
 
     @Autowired
     public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, WebsiteConfigurationService websiteConfigurationService) {
         this.companyBusiness = companyBusiness;
         this.companyService = companyService;
-        this.websiteConfigurationService = websiteConfigurationService;
     }
 
     @CrossOrigin
@@ -53,12 +51,6 @@ public class CompanyController {
 
         //TODO a recuperer a partir du token
         String supplierId = "1";
-        //TODO get d'un autre modele
-        //List<Model> listModel = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
-        //List<ModelProperty> modelProperties = currentModel.getModelProperties();
-        WebsiteConfiguration wsc =  websiteConfigurationService.findOneById(1);
-        List<Model> models = wsc.getModels();
-        Model currentModel = models.stream().filter(model -> typeProduit.equals(model.technicalName)).findFirst().orElse(null);
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
