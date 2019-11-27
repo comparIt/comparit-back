@@ -30,6 +30,8 @@ public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBus
 
     @Override
     public WebsiteConfiguration saveWebsiteConfiguration(WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
+        //todo
+        //websiteConfiguration.setAdminId(1);
         try{
             websiteConfiguration.getModels().forEach(model -> {
                 model.getModelProperties().forEach(modelProperty -> {
