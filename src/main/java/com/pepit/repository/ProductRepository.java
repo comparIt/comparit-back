@@ -30,6 +30,12 @@ public class ProductRepository {
     public List<ProductDto> find(String query){
         DocResult docs = myColl.find(query).execute();
 
+        //tentative de passer une query sur la database pour obtenir les minmax
+        /*
+        Result sqlTest = mySession.sql("SELECT MAX(CAST(doc->'$.properties.prix' AS DECIMAL(10,2))) AS min_price FROM produit;").execute();
+        System.out.println(sqlTest);
+        */
+
         List<DbDoc> docList = docs.fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -37,7 +43,7 @@ public class ProductRepository {
         for ( DbDoc onedoc : docList) {
 
             String jsonP = "{\"properties\": " + onedoc.toString() + "}";
-            System.out.println(jsonP);
+            //System.out.println(jsonP);
 
             ObjectMapper objectMapper = new ObjectMapper();
             ProductDto productDto = null;
