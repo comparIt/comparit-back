@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.util.*;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 @NoArgsConstructor
 @Repository
@@ -20,6 +21,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Autowired
     ProductDB productDB;
+
+    private static final Logger logger = Logger.getLogger(CompanyServiceImpl.class.getName());
+
 
     public List<ProductDto> testRequest(Query query){
         List<DbDoc> docList = productDB.find(query).fetchAll();
@@ -45,12 +49,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     public List<ProductDto> find(String query){
         DocResult docs = productDB.getCollection().find(query).execute();
 
-        //tentative de passer une query sur la database pour obtenir les minmax
-        /*
-        Result sqlTest = mySession.sql("SELECT MAX(CAST(doc->'$.properties.prix' AS DECIMAL(10,2))) AS min_price FROM produit;").execute();
-        System.out.println(sqlTest);
-        */
-
         List<DbDoc> docList = docs.fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -58,7 +56,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         for ( DbDoc onedoc : docList) {
 
             String jsonP = "{\"properties\": " + onedoc.toString() + "}";
-            //System.out.println(jsonP);
+            //logger.info(jsonP);
 
             ObjectMapper objectMapper = new ObjectMapper();
             ProductDto productDto = null;
@@ -70,6 +68,16 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
 
         return productDtos;
+    }
+
+    public void updateBornes(String technicalName) {
+        //tentative de passer une query sur la database pour obtenir les minmax
+        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
+                ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
+                "FROM produit) where technical_name = '"+technicalName+"';";
+        logger.info(query);
+        Result sqlTest = mySession.sql(query).execute();
+
     }
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
@@ -84,8 +92,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
     public void removeDoc(String query){
-        System.out.println("sending RemoveDoc Query: "+ query);
+        logger.info("sending RemoveDoc Query: "+ query);
         Result res = productDB.getCollection().remove(query).execute();
-        System.out.println( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+        logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 }
