@@ -54,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             // TODO : générer des headers
             headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+            HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
 
             ObjectMapper mapper = new ObjectMapper();
@@ -107,9 +107,8 @@ public class CompanyServiceImpl implements CompanyService {
         // parses all records in one go.
         List<Record> allRecords = parser.parseAllRecords(inputStream);
 
-
-        Model currentModel = compareModelWithFileHeader(typeProduit, parser);
-
+        //On vérifie la coherence du fichier avec le model
+        compareModelWithFileHeader(typeProduit, parser);
 
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
@@ -125,13 +124,14 @@ public class CompanyServiceImpl implements CompanyService {
             DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode);
             dbDocList.add(outerObject);
         }
-        //on le convertir en tableau car dependance du add mysql
+        //on le convertit en tableau car dependance du add mysql
         DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
 
         //TODO Utiliser le generateur de QUERY
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
         productRepository.addDoc(docs);
 
+        //On évalue les bornes et valeurs des proprietes du modele selon les données en base
         recalculMinMaxValue(typeProduit);
 
         logger.info("FIN fromCsvToDb");
@@ -162,7 +162,7 @@ public class CompanyServiceImpl implements CompanyService {
     /** block de check columns comparaison de model et du fichier passé
      *
      */
-    private Model compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
+    private void compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
         //getting current model to have its properties
         List<String> modelProps = new ArrayList<>();
         //recuperation sous forme de liste des modelProperties
@@ -178,7 +178,6 @@ public class CompanyServiceImpl implements CompanyService {
         else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
 
         //Fin check columns
-        return model;
     }
 
     private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {
