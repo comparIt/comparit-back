@@ -76,7 +76,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
                 ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
                 "FROM produit) where technical_name = '"+technicalName+"';";
-        logger.info(query);
         return productDB.getSession().sql(query).execute().getWarnings();
 
     }

@@ -54,8 +54,12 @@ public class ModelProperty {
     Integer max;
 
     @ElementCollection
-    @Column(name = "value")
-    List<String> value;
+    @CollectionTable(
+            name = "mp_values",
+            joinColumns = @JoinColumn(name = "MP_ID")
+    )
+    @Column(name = "mp_values")
+    List<String> values;
 
     @CreatedDate
     @Column(name = "createdat")

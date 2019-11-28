@@ -92,7 +92,7 @@ public class CompanyServiceImpl implements CompanyService {
         String name = file.getName();
         String contentType = file.getContentType();
         long size = file.getSize();
-        logger.info("inputStream: " + inputStream + "\noriginalName: " + originalName + "\nname: " + name + "\ncontentType: " + contentType + "\nsize: " + size);
+        logger.info("Receiving CsvFile: " + originalName + " contentType: " + contentType + " size: " + size);
 
         logger.info("processing Csv from supplierId "+ supplierId + " type= "+ typeProduit);
         CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
@@ -100,16 +100,12 @@ public class CompanyServiceImpl implements CompanyService {
 
         // configure to grab headers from file. We want to use these names to get values from each record.
         settings.setHeaderExtractionEnabled(true);
-
         // creates a CSV parser
         CsvParser parser = new CsvParser(settings);
-
         // parses all records in one go.
         List<Record> allRecords = parser.parseAllRecords(inputStream);
-
         //On vérifie la coherence du fichier avec le model
         compareModelWithFileHeader(typeProduit, parser);
-
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
 
@@ -151,7 +147,7 @@ public class CompanyServiceImpl implements CompanyService {
                 if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
                     productRepository.updateBornes(prop.getTechnicalName());
                 else
-                    prop.setValue(productRepository.listeDistinct(prop.getTechnicalName()));
+                    prop.setValues(productRepository.listeDistinct(prop.getTechnicalName()));
             });
             websiteConfigurationService.save(wsc);
         } catch (ReferentielRequestException e) {
