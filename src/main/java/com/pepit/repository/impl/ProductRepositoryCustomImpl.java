@@ -106,6 +106,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
     public Long count(){
-        return productDB.getCollection().count();
+        return productDB.getDb().getCollection("produit", true).count();
     }
 }
