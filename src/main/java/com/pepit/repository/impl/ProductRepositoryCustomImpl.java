@@ -76,9 +76,19 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
                 ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
                 "FROM produit) where technical_name = '"+technicalName+"';";
-        logger.info(query);
         return productDB.getSession().sql(query).execute().getWarnings();
 
+    }
+
+    @Override
+    public List<String> listeDistinct(String technicalName) {
+        String query = "SELECT distinct(doc->'$.properties." + technicalName + "') as list  FROM compareIt.produit;";
+        SqlResult myResult = productDB.getSession().sql(query).execute();
+        List<String> result = new ArrayList<>();
+        // Gets the row and prints the first column
+        List<Row> rowList = myResult.fetchAll();
+        rowList.forEach(row -> result.add(row.getString(0).replace("\"", "")));
+        return result;
     }
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {

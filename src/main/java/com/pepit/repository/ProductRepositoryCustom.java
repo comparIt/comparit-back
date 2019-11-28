@@ -12,7 +12,7 @@ public interface ProductRepositoryCustom {
     List<ProductDto> testRequest(Query query);
     List<ProductDto> find(String query);
     Iterator<Warning> addDoc(DbDoc[] dbDocs);
-
     Iterator<Warning> updateBornes(String technicalName);
+    List<String> listeDistinct(String technicalName);
     void removeDoc(String query);
 }

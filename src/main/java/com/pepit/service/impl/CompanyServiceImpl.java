@@ -7,6 +7,8 @@ import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
+import com.pepit.model.Model;
+import com.pepit.model.WebsiteConfiguration;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
@@ -52,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             // TODO : générer des headers
             headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+            HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
 
             ObjectMapper mapper = new ObjectMapper();
@@ -90,7 +92,7 @@ public class CompanyServiceImpl implements CompanyService {
         String name = file.getName();
         String contentType = file.getContentType();
         long size = file.getSize();
-        logger.info("inputStream: " + inputStream + "\noriginalName: " + originalName + "\nname: " + name + "\ncontentType: " + contentType + "\nsize: " + size);
+        logger.info("Receiving CsvFile: " + originalName + " contentType: " + contentType + " size: " + size);
 
         logger.info("processing Csv from supplierId "+ supplierId + " type= "+ typeProduit);
         CsvParserSettings settings = new CsvParserSettings(); //configuration du parser
@@ -98,17 +100,12 @@ public class CompanyServiceImpl implements CompanyService {
 
         // configure to grab headers from file. We want to use these names to get values from each record.
         settings.setHeaderExtractionEnabled(true);
-
         // creates a CSV parser
         CsvParser parser = new CsvParser(settings);
-
         // parses all records in one go.
         List<Record> allRecords = parser.parseAllRecords(inputStream);
-
-
+        //On vérifie la coherence du fichier avec le model
         compareModelWithFileHeader(typeProduit, parser);
-
-
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
 
@@ -123,33 +120,39 @@ public class CompanyServiceImpl implements CompanyService {
             DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode);
             dbDocList.add(outerObject);
         }
-        //on le convertir en tableau car dependance du add mysql
+        //on le convertit en tableau car dependance du add mysql
         DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
 
         //TODO Utiliser le generateur de QUERY
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
         productRepository.addDoc(docs);
 
-        //On constitue les listes de properties selon qu'elles sont numeriques ou enumeratives
-        List<String> modelListNumeric = new ArrayList<>();
-        List<String> modelListEnum = new ArrayList<>();
-        websiteConfigurationService.findOneById(1)
-                .getModelByTechnicalName(typeProduit)
-                .getModelProperties()
-                .stream()
-                .forEach(prop -> {
-                    logger.info(prop.toString());
-                    if ( prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
-                        modelListNumeric.add(prop.getTechnicalName());
-                    else
-                        modelListEnum.add(prop.getTechnicalName());
-                });
-
-        //Mise a jour des bornes minMax pour les type Numeric
-        modelListNumeric.forEach( technicalName -> productRepository.updateBornes(technicalName) );
+        //On évalue les bornes et valeurs des proprietes du modele selon les données en base
+        recalculMinMaxValue(typeProduit);
 
         logger.info("FIN fromCsvToDb");
         return dbDocList.toString();
+    }
+
+    /**
+     * recalculMinMaxValue fonction qui recalcule les valeurs de bornes des éléments d'un modèle
+     *
+     * @param typeProduit
+     */
+    private void recalculMinMaxValue(String typeProduit) {
+        //On boucle sur les propriétes du modele pour calculer les bornes et valeurs
+        try {
+            WebsiteConfiguration wsc = websiteConfigurationService.findOneById(1);
+            wsc.getModelByTechnicalName(typeProduit).getModelProperties().forEach(prop -> {
+                if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                    productRepository.updateBornes(prop.getTechnicalName());
+                else
+                    prop.setValues(productRepository.listeDistinct(prop.getTechnicalName()));
+            });
+            websiteConfigurationService.save(wsc);
+        } catch (ReferentielRequestException e) {
+            e.printStackTrace();
+        }
     }
 
     /** block de check columns comparaison de model et du fichier passé
@@ -159,7 +162,8 @@ public class CompanyServiceImpl implements CompanyService {
         //getting current model to have its properties
         List<String> modelProps = new ArrayList<>();
         //recuperation sous forme de liste des modelProperties
-        websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit).getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
+        Model model = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        model.getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
 
         //Parcours des headers du fichier passé et comparaison au modele attendu
         List<String> headers = Arrays.asList(parser.getContext().headers());
