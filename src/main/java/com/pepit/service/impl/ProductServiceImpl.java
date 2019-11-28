@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 public class ProductServiceImpl implements ProductService {
-    Long nbProductParPage = 10L;
+    private final Long nbProductParPage = 10L;
 
     @Autowired
     ProductRepositoryCustom productRepositoryCustom;
@@ -35,7 +35,4 @@ public class ProductServiceImpl implements ProductService {
         System.out.println(nbPages);
         return productPagine;
     }
-
-
-
 }
