@@ -7,6 +7,8 @@ import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
+import com.pepit.model.Model;
+import com.pepit.model.WebsiteConfiguration;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
@@ -106,7 +108,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Record> allRecords = parser.parseAllRecords(inputStream);
 
 
-        compareModelWithFileHeader(typeProduit, parser);
+        Model currentModel = compareModelWithFileHeader(typeProduit, parser);
 
 
         //L'objet dbDocList de sortie a passer au productRepo
@@ -130,40 +132,42 @@ public class CompanyServiceImpl implements CompanyService {
         productRepository.removeDoc("supplierId = "+supplierId + " and type = '" + typeProduit.replace("\"", "") + "'" );
         productRepository.addDoc(docs);
 
-        //On constitue les listes de properties selon qu'elles sont numeriques ou enumeratives
-        List<String> modelListNumeric = new ArrayList<>();
-        List<String> modelListEnum = new ArrayList<>();
-        websiteConfigurationService.findOneById(1)
-                .getModelByTechnicalName(typeProduit)
-                .getModelProperties()
-                .stream()
-                .forEach(prop -> {
-                    logger.info(prop.toString());
-                    if ( prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
-                        modelListNumeric.add(prop.getTechnicalName());
-                    else
-                        modelListEnum.add(prop.getTechnicalName());
-                });
-
-        //Mise a jour des bornes minMax pour les type Numeric
-        modelListNumeric.forEach( technicalName -> productRepository.updateBornes(technicalName) );
-        //Mise a jour des valeurs possibles pour les type enumerations
-        modelListEnum.forEach(technicalName -> {
-            productRepository.listeDistinct(technicalName);
-        });
+        recalculMinMaxValue(typeProduit);
 
         logger.info("FIN fromCsvToDb");
         return dbDocList.toString();
     }
 
+    /**
+     * recalculMinMaxValue fonction qui recalcule les valeurs de bornes des éléments d'un modèle
+     *
+     * @param typeProduit
+     */
+    private void recalculMinMaxValue(String typeProduit) {
+        //On boucle sur les propriétes du modele pour calculer les bornes et valeurs
+        try {
+            WebsiteConfiguration wsc = websiteConfigurationService.findOneById(1);
+            wsc.getModelByTechnicalName(typeProduit).getModelProperties().forEach(prop -> {
+                if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                    productRepository.updateBornes(prop.getTechnicalName());
+                else
+                    prop.setValue(productRepository.listeDistinct(prop.getTechnicalName()));
+            });
+            websiteConfigurationService.save(wsc);
+        } catch (ReferentielRequestException e) {
+            e.printStackTrace();
+        }
+    }
+
     /** block de check columns comparaison de model et du fichier passé
      *
      */
-    private void compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
+    private Model compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
         //getting current model to have its properties
         List<String> modelProps = new ArrayList<>();
         //recuperation sous forme de liste des modelProperties
-        websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit).getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
+        Model model = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
+        model.getModelProperties().stream().forEach(prop -> modelProps.add(prop.getTechnicalName()));
 
         //Parcours des headers du fichier passé et comparaison au modele attendu
         List<String> headers = Arrays.asList(parser.getContext().headers());
@@ -174,6 +178,7 @@ public class CompanyServiceImpl implements CompanyService {
         else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
 
         //Fin check columns
+        return model;
     }
 
     private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {

@@ -83,17 +83,12 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Override
     public List<String> listeDistinct(String technicalName) {
-        logger.info(technicalName);
         String query = "SELECT distinct(doc->'$.properties." + technicalName + "') as list  FROM compareIt.produit;";
-        logger.info(query);
-
         SqlResult myResult = productDB.getSession().sql(query).execute();
-
         List<String> result = new ArrayList<>();
         // Gets the row and prints the first column
         List<Row> rowList = myResult.fetchAll();
         rowList.forEach(row -> result.add(row.getString(0).replace("\"", "")));
-        logger.info(result.toString());
         return result;
     }
 
