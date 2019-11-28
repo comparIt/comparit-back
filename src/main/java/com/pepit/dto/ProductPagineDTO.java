@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductPagineDTO {
 
     List<ProductDto> productListOnThisPage;
-    Integer nbPages;
-    Integer pageActuel;
+    Integer nbPagesTotal;
+    Integer pageActuelle;
 
 }
