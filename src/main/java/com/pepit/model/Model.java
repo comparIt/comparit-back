@@ -34,6 +34,9 @@ public class Model {
     @Column(name = "activated")
     boolean activated;
 
+    @Column(name = "imageURL")
+    String imageURL;
+
     @OneToMany
     List<ModelProperty> modelProperties;
 
