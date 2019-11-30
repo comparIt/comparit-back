@@ -94,10 +94,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
 
-        AddResult result = null;
-
-        result = productDB.getCollection().add(dbDocs).execute();
-
+        AddResult result = productDB.getCollection().add(dbDocs).execute();
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
         return result.getWarnings();
 
@@ -109,11 +106,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 
-    public Long count(){
+    @Override
+    public Long count() {
         return productDB.getDb().getCollection("produit", true).count();
-    }
-
-    public Long count(){
-        return productDB.getCollection().count();
     }
 }

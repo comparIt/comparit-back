@@ -25,13 +25,11 @@ public class ProductServiceImpl implements ProductService {
                 .addType(type)
                 .addSupplier(supplier)
                 .addAllCriterias(params)
-                .page(page)
                 .addSorting(order);
         List<ProductDto> productList = productRepositoryCustom.testRequest(query);
         ProductPagineDTO productPagine = new ProductPagineDTO();
-        productPagine.setProductListOnThisPage(productList);
-        Long nbProductsTotal  =  productRepositoryCustom.count();
-        Integer nbPagesTotal = (int) Math.ceil(nbProductsTotal / nbProductParPage);
+        productPagine.setProductsToDisplay(productList);
+        Integer nbPagesTotal = (int) Math.ceil(productList.size()/ nbProductParPage);
         productPagine.setNbPagesTotal(nbPagesTotal);
 
         if(page != null && nbPagesTotal>= page){
