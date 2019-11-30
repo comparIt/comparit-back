@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 
 @NoArgsConstructor
 @Repository
@@ -24,6 +25,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 
     public List<ProductDto> testRequest(Query query){
+        logger.info("Query :"+ query);
         List<DbDoc> docList = productDB.find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();

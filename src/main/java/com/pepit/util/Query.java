@@ -22,9 +22,10 @@ public class Query {
     }
 
     private void addCriteria(String fieldName, String unparsedValue) {
-        switch (fieldName) {
-            case "a" : addInterval(fieldName,unparsedValue); break;
-            case "os" : addEnumeration(fieldName,unparsedValue); break;
+        if(unparsedValue.contains("-")){
+            addInterval(fieldName,unparsedValue);
+        }else{
+            addEnumeration(fieldName,unparsedValue);
         }
     }
 
