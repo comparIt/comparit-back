@@ -14,9 +14,6 @@ public class Query {
     private List<String> criterias = new ArrayList<>();
     private Map<String, Object> boundParams = new HashMap<>();
 
-    private Integer offset;
-    private Integer limit;
-
     private String sort;
 
     public Query addAllCriterias(Map<String, String> params) {
@@ -53,12 +50,6 @@ public class Query {
             String direction = sortingPredicate.startsWith("-") ? "DESC" : "ASC";
             this.sort = field + " " + direction;
         }
-        return this;
-    }
-
-    public Query page(Integer page){
-        this.offset = page != null ? (page-1)*10 : 0;
-        this.limit = page != null ? ((page-1)*10)+10 : 10;
         return this;
     }
 
@@ -127,8 +118,6 @@ public class Query {
 
     public Statement<FindStatement, DocResult> find(Collection collection) {
         FindStatement statement = collection.find(this.criteriasAsStatement());
-        statement.offset(this.offset);
-        statement.limit(this.limit);
         statement.sort(this.sort);
         statement.bind(this.boundParams);
         return statement;
@@ -149,7 +138,6 @@ public class Query {
         }
 
         sb.append("Sorted : ").append(this.sort).append("\n");
-        sb.append("Pagination : from ").append(this.offset).append(" to ").append(this.limit);
 
         return sb.toString();
     }
