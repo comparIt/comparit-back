@@ -133,8 +133,8 @@ public class Query {
     public Statement<FindStatement, DocResult> find(Collection collection) {
         FindStatement statement = collection.find(this.criteriasAsStatement());
         statement.offset(this.offset);
-        statement.limit(this.limit);
-        statement.sort(this.sort);
+        // statement.limit(this.limit);
+        // statement.sort(this.sort);
         statement.bind(this.boundParams);
         return statement;
     }
