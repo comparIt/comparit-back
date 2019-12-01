@@ -20,19 +20,24 @@ public class Query {
     private String sort;
 
     public Query addAllCriterias(Map<String, String> params) {
+        params.remove("type");
+        params.remove("supplier");
+        params.remove("order");
+        params.remove("page");
         params.forEach(this::addCriteria);
         return this;
     }
 
     private void addCriteria(String fieldName, String unparsedValue) {
-        switch (fieldName) {
-            case "a" : addInterval(fieldName,unparsedValue); break;
-            case "os" : addEnumeration(fieldName,unparsedValue); break;
+        if (unparsedValue.contains("-")) {
+            addInterval(fieldName, unparsedValue);
+        } else {
+            addEnumeration(fieldName, unparsedValue);
         }
     }
 
     public Query addType(String unparsedType) {
-        if(unparsedType != null){
+        if (unparsedType != null) {
             this.boundParams.put("type", unparsedType);
             this.criterias.add("type = :type");
         }
@@ -40,15 +45,15 @@ public class Query {
     }
 
     public Query addSupplier(String unparsedType) {
-        if(unparsedType != null){
+        if (unparsedType != null) {
             this.boundParams.put("supplier", unparsedType);
             this.criterias.add("supplierId = :supplier");
         }
         return this;
     }
 
-    public Query addSorting(String sortingPredicate){
-        if(sortingPredicate != null) {
+    public Query addSorting(String sortingPredicate) {
+        if (sortingPredicate != null) {
             String field = sortingPredicate.startsWith("-") ? sortingPredicate.substring(1) : sortingPredicate;
             String direction = sortingPredicate.startsWith("-") ? "DESC" : "ASC";
             this.sort = field + " " + direction;
@@ -56,9 +61,9 @@ public class Query {
         return this;
     }
 
-    public Query page(Integer page){
+    public Query page(Integer page) {
         this.offset = page != null ? (page-1)*10 : 0;
-        this.limit = page != null ? ((page-1)*10)+10 : 10;
+        this.limit = 10;
         return this;
     }
 
@@ -69,30 +74,30 @@ public class Query {
 
         try {
             min = Integer.parseInt(interval[0]);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             min = null;
         }
 
         try {
             max = Integer.parseInt(interval[1]);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             max = null;
         }
 
         this.addInterval(field, min, max);
     }
 
-    private void addInterval(String field, Integer min, Integer max){
-        if(min != null){
-            String paramMin = field+"min";
-            String criteriaMin = "properties."+field + " >= :" + paramMin;
+    private void addInterval(String field, Integer min, Integer max) {
+        if (min != null) {
+            String paramMin = field + "min";
+            String criteriaMin = "properties." + field + " >= :" + paramMin;
             this.boundParams.put(paramMin, min);
             this.criterias.add(criteriaMin);
         }
 
-        if(max != null){
-            String paramMax = field +"max";
-            String criteriaMax = field + " <= :" + paramMax;
+        if (max != null) {
+            String paramMax = field + "max";
+            String criteriaMax = "properties." + field + " <= :" + paramMax;
             this.boundParams.put(paramMax, max);
             this.criterias.add(criteriaMax);
         }
@@ -105,31 +110,31 @@ public class Query {
         this.addEnumeration(field, values);
     }
 
-    private void addEnumeration(String field, List<String> values){
+    private void addEnumeration(String field, List<String> values) {
         List<String> bindParams = new ArrayList<>();
-        for(int i = 0; i < values.size(); i++){
-            String bindParam = field+i;
+        for (int i = 0; i < values.size(); i++) {
+            String bindParam = field + i;
             bindParams.add(bindParam);
             boundParams.put(bindParam, values.get(i));
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append("properties.").append(field).append(" in ").append("(");
-        bindParams.stream().map(p -> ":"+p).reduce((x, y) -> x + ", " + y).map(sb::append);
+        bindParams.stream().map(p -> ":" + p).reduce((x, y) -> x + ", " + y).map(sb::append);
         sb.append(")");
 
         this.criterias.add(sb.toString());
     }
 
-    private String criteriasAsStatement(){
-        return this.criterias.stream().reduce((x,y) -> x + " AND " + y).orElse("");
+    private String criteriasAsStatement() {
+        return this.criterias.stream().reduce((x, y) -> x + " AND " + y).orElse("");
     }
 
     public Statement<FindStatement, DocResult> find(Collection collection) {
         FindStatement statement = collection.find(this.criteriasAsStatement());
         statement.offset(this.offset);
-        statement.limit(this.limit);
-        statement.sort(this.sort);
+        // statement.limit(this.limit);
+        // statement.sort(this.sort);
         statement.bind(this.boundParams);
         return statement;
     }
@@ -138,18 +143,18 @@ public class Query {
         return collection.remove(this.criteriasAsStatement());
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         criterias.forEach(c -> sb.append("criteria : ").append(c).append("\n"));
 
         sb.append("statement : ").append(criteriasAsStatement()).append("\n");
 
-        for(Map.Entry<String, Object> e : boundParams.entrySet()){
+        for (Map.Entry<String, Object> e : boundParams.entrySet()) {
             sb.append("param : ").append(e.getKey()).append(" : ").append(e.getValue()).append("\n");
         }
 
         sb.append("Sorted : ").append(this.sort).append("\n");
-        sb.append("Pagination : from ").append(this.offset).append(" to ").append(this.limit);
+        sb.append("Pagination : from ").append(this.offset).append(" to ").append(this.offset + this.limit);
 
         return sb.toString();
     }

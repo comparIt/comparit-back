@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @NoArgsConstructor
@@ -27,6 +25,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 
     public List<ProductDto> testRequest(Query query){
+        logger.info("Query :"+ query);
         List<DbDoc> docList = productDB.find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -93,10 +92,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
 
-        AddResult result = null;
-
-        result = productDB.getCollection().add(dbDocs).execute();
-
+        AddResult result = productDB.getCollection().add(dbDocs).execute();
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
         return result.getWarnings();
 
@@ -106,5 +102,10 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         logger.info("sending RemoveDoc Query: "+ query);
         Result res = productDB.getCollection().remove(query).execute();
         logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+    }
+
+    @Override
+    public Long count() {
+        return productDB.getDb().getCollection("produit", true).count();
     }
 }

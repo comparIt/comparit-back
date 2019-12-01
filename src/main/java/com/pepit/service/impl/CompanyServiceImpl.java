@@ -59,10 +59,11 @@ public class CompanyServiceImpl implements CompanyService {
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode parsedArray = mapper.readTree(response.getBody());
+            Model model = null;
 
             //pour tous les elements retournés par l'API on construit l'objet json enrichi
             for (JsonNode parsedJson : parsedArray) {
-                DbDoc outerObject = updateJsonNode(supplierId, type, mapper, parsedJson);
+                DbDoc outerObject = updateJsonNode(supplierId, type, mapper, parsedJson, model);
                 dbDocList.add(outerObject);
             }
 
@@ -105,7 +106,7 @@ public class CompanyServiceImpl implements CompanyService {
         // parses all records in one go.
         List<Record> allRecords = parser.parseAllRecords(inputStream);
         //On vérifie la coherence du fichier avec le model
-        compareModelWithFileHeader(typeProduit, parser);
+        Model model = compareModelWithFileHeader(typeProduit, parser);
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
 
@@ -117,7 +118,7 @@ public class CompanyServiceImpl implements CompanyService {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.valueToTree(mymap);
 
-            DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode);
+            DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode, model);
             dbDocList.add(outerObject);
         }
         //on le convertit en tableau car dependance du add mysql
@@ -155,10 +156,10 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
-    /** block de check columns comparaison de model et du fichier passé
-     *
+    /**
+     * block de check columns comparaison de model et du fichier passé
      */
-    private void compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
+    private Model compareModelWithFileHeader(String typeProduit, CsvParser parser) throws ReferentielRequestException, InputException {
         //getting current model to have its properties
         List<String> modelProps = new ArrayList<>();
         //recuperation sous forme de liste des modelProperties
@@ -168,26 +169,36 @@ public class CompanyServiceImpl implements CompanyService {
         //Parcours des headers du fichier passé et comparaison au modele attendu
         List<String> headers = Arrays.asList(parser.getContext().headers());
 
-        if(modelProps.equals(headers)){
+        if (modelProps.equals(headers)) {
             logger.info("OK: Fichier cohérent avec le modele de donnée en place");
-        }
-        else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
+        } else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
 
         //Fin check columns
+        return model;
     }
 
-    private DbDoc updateJsonNode(String supplierId, String type, ObjectMapper mapper, JsonNode jsonNode) throws IOException {
+    private DbDoc updateJsonNode(String supplierId, String typeProduit, ObjectMapper mapper, JsonNode jsonNode, Model model) throws IOException, ReferentielRequestException {
+
+        //On prepare un object a modifier.
         ObjectNode parsedObject = jsonNode.deepCopy();
+
+        //pour toutes les proprietes NUMERIC du modele on update l'object JSON
+        model.getModelProperties().forEach(prop -> {
+            if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                parsedObject.put(prop.getTechnicalName(), parsedObject.get(prop.getTechnicalName()).asInt());
+        });
+
+        parsedObject.put("doors", parsedObject.get("doors").asInt());
         //TODO a voir si on laisse prix, pour l'instant on l'ajoute comme properties pour mocker les intervals de prix
         Random random = new Random();
         int min = 1;
         int max = 10;
         Integer randomInt = random.nextInt(max - min + 1) + min;
 
-        DbDoc properties = JsonParser.parseDoc(new StringReader(jsonNode.toString())).add("prix", new JsonNumber().setValue(randomInt.toString()));
+        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString())).add("prix", new JsonNumber().setValue(randomInt.toString()));
 
         DbDoc outerObject = new DbDocImpl().add("supplierId", new JsonNumber().setValue(supplierId))
-                .add("type", new JsonString().setValue(type))
+                .add("type", new JsonString().setValue(typeProduit))
                 .add("properties", properties);
         return outerObject;
     }
