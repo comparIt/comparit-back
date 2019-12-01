@@ -30,7 +30,8 @@ public class ProductServiceImpl implements ProductService {
                 .addType(type)
                 .addSupplier(supplier)
                 .addAllCriterias(params)
-                .addSorting(order);
+                .addSorting(order)
+                .page(page);
         List<ProductDto> productList = productRepositoryCustom.testRequest(query);
         ProductPagineDTO productPagine = new ProductPagineDTO();
         productPagine.setProductsToDisplay(productList);

@@ -26,11 +26,11 @@ public class ProductController {
 
     @CrossOrigin
     @GetMapping(value = "/search")
-    public ResponseEntity<ProductPagineDTO> search(@RequestParam @Nullable Map<String, String> params,
-                                                   @RequestParam @Nullable String order,
+    public ResponseEntity<ProductPagineDTO> search(@RequestParam @Nullable String order,
                                                    @RequestParam @Nullable Integer page,
                                                    @RequestParam @Nullable String supplier,
-                                                   @RequestParam @Nullable String type
+                                                   @RequestParam @Nullable String type,
+                                                   @RequestParam @Nullable Map<String, String> params
                                                    ){
         return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
