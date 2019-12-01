@@ -114,7 +114,6 @@ public class CompanyServiceImpl implements CompanyService {
             //On retourne le resultat dans une map string string qui pourra s'intégrer dans properties d'un JSON
             //Ce sont les fields du header qui sont les clés !!
             Map<String, String> mymap = record.toFieldMap();
-            //Map<String, Object> mymap = record.toFieldObjectMap();
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.valueToTree(mymap);
