@@ -1,6 +1,7 @@
 package com.pepit;
 
 import com.pepit.config.Conf;
+import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,14 +27,12 @@ import javax.transaction.Transactional;
 @ContextConfiguration(initializers = {CompareITBackApplicationTests.Initializer.class})
 @Transactional
 public abstract class CompareITBackApplicationTests {
+
+    @ClassRule
     public static MySQLContainer mysqlContainer = new MySQLContainer("mysql:8")
             .withDatabaseName("compareIt")
             .withUsername("test")
             .withPassword("test");
-
-    static {
-        mysqlContainer.start();
-    }
 
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
