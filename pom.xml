@@ -85,7 +85,12 @@
             <artifactId>univocity-parsers</artifactId>
             <version>2.8.3</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.12.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -97,88 +102,9 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.20.1</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <images>
-                        <image>
-                            <alias>database</alias>
-                            <name>mysql:8</name>
-                            <run>
-                                <wait>
-                                    <log>mysqld: ready for connections</log>
-                                    <time>20000</time>
-                                </wait>
-                                <env>
-                                    <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-                                    <MYSQL_DATABASE>compareIt</MYSQL_DATABASE>
-                                    <MYSQL_USER>mysql</MYSQL_USER>
-                                    <MYSQL_PASSWORD>mysql</MYSQL_PASSWORD>
-                                </env>
-                                <ports>
-                                    <port>3307:3306</port>
-                                    <port>33061:33060</port>
-                                </ports>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>docker:start</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>docker:stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.17</version>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <systemPropertyVariables>
-                        <mysql.jdbc.url>jdbc:mysql://192.168.99.100/compareIt</mysql.jdbc.url>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
-                <configuration>
-                    <environmentVariables>
-                        <DATABASE_HOST>${host}</DATABASE_HOST>
-                        <DATABASE_PORT>3307</DATABASE_PORT>
-                        <DATABASE_NAME>compareIt</DATABASE_NAME>
-                        <DATABASE_USERNAME>root</DATABASE_USERNAME>
-                        <DATABASE_PASSWORD>root</DATABASE_PASSWORD>
-                        <DATABASE_XPORT>33061</DATABASE_XPORT>
-                    </environmentVariables>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
