@@ -23,9 +23,9 @@ maven-build:
 docker-build:
   stage: package
   script:
-  - docker build -t registry.gitlab.com/valentintartare59/compare-it-back .
+  - docker build -t registry.gitlab.com/compare-it/compare-it-back .
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-  - docker push registry.gitlab.com/valentintartare59/compare-it-back
+  - docker push registry.gitlab.com/compare-it/compare-it-back
 
 docker-deploy:
   image: rastasheep/ubuntu-sshd
