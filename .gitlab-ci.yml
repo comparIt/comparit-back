@@ -33,9 +33,6 @@ maven-integration-tests:
   image: maven:3-jdk-8
   stage: integration
   script: "mvn clean package"
-  artifacts:
-    paths:
-      - target/*.jar
 
 
 docker-build:
