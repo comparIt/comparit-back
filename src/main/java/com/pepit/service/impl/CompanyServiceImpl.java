@@ -25,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -179,7 +177,7 @@ public class CompanyServiceImpl implements CompanyService {
         return model;
     }
 
-    private DbDoc updateJsonNode(String supplierId, String typeProduit, ObjectMapper mapper, JsonNode jsonNode, Model model) throws IOException, ReferentielRequestException, NoSuchAlgorithmException {
+    private DbDoc updateJsonNode(String supplierId, String typeProduit, ObjectMapper mapper, JsonNode jsonNode, Model model) throws IOException, ReferentielRequestException {
 
         //On prepare un object a modifier.
         ObjectNode parsedObject = jsonNode.deepCopy();
@@ -192,7 +190,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         parsedObject.put("doors", parsedObject.get("doors").asInt());
         //TODO a voir si on laisse prix, pour l'instant on l'ajoute comme properties pour mocker les intervals de prix
-        Random random = SecureRandom.getInstanceStrong();
+        Random random = new Random();
         int min = 1;
         int max = 10;
         Integer randomInt = random.nextInt(max - min + 1) + min;

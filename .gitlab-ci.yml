@@ -9,8 +9,6 @@ variables:
 
 stages:
   - build
-  - get-integration-tests
-  - integration
   - package
   - deploy
 
@@ -21,19 +19,6 @@ maven-build:
   artifacts:
     paths:
       - target/*.jar
-
-get-integration depot:
-  image: carver/git
-  stage: get-integration-tests
-  script:
-    - git clone https://compareIT:myyvlqtfrryo7wkopcv2w42lgx2wjfeylxq6ethdismwwmt77j6a@dev.azure.com/compareIT/COMPARE-IT/_git/CITTESTI
-    - cd CITESTI
-
-maven-integration-tests:
-  image: maven:3-jdk-8
-  stage: integration
-  script: "mvn clean package"
-
 
 docker-build:
   stage: package
