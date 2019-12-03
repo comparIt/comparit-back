@@ -17,13 +17,13 @@ stages:
 maven-build:
   image: maven:3-jdk-8
   stage: build
-  script: "mvn clean package"
+  script: "mvn clean package -DskipTests"
   artifacts:
     paths:
       - target/*.jar
 
 get-integration depot:
-  image: carver/docker-git
+  image: carver/git
   stage: get-integration-tests
   script:
     - git clone https://compareIT:myyvlqtfrryo7wkopcv2w42lgx2wjfeylxq6ethdismwwmt77j6a@dev.azure.com/compareIT/COMPARE-IT/_git/CITTESTI
