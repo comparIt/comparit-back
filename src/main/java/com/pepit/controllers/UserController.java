@@ -16,15 +16,20 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private UserBusiness userBusiness;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    public UserController(UserBusiness userBusiness,UserService userService){
+        this.userBusiness=userBusiness;
+        this.userService=userService;
+    }
+
 
 
     @CrossOrigin
-    @PutMapping(value = "/saveUser",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.status(200).body(userBusiness.saveUser(user));
+    @PutMapping(value = "/saveUser",consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.status(200).body(userService.create(userDto));
     }
 
 }

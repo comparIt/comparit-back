@@ -58,16 +58,5 @@ public class UserServiceImpl implements UserService {
         return userConverter.entityToDto(user);
     }
 
-    @Override
-    public User createUser(User user) {
-        user.setPassword(this.bCryptPasswordEncoder.encode(Hashing.sha256(user.getPassword())));
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            user.setCreatedAt(LocalDateTime.now());
-            user.setRoles(Collections.singletonList(
-                    Roles.ROLE_CUSTOMER
-            ));
-        }
-        return userRepository.save(user);
-    }
 
 }

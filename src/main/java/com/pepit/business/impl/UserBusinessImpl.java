@@ -15,9 +15,4 @@ public class UserBusinessImpl implements UserBusiness {
     public UserBusinessImpl(UserService userService) {
         this.userService = userService;
     }
-
-    @Override
-    public User saveUser(User user) {
-        return userService.createUser(user);
-    }
 }

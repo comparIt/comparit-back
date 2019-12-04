@@ -8,5 +8,4 @@ public interface UserService extends UserDetailsService {
 
     UserDto create(UserDto userDto);
 
-    User createUser(User user);
 }
