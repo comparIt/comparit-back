@@ -68,20 +68,20 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
         Assert.assertEquals(model, modelService.save(model));
     }
 
-    @Test(expected = ReferentielRequestException.class)
-    public void saveKO() {
-        Mockito.when(modelService.save(model)).thenThrow(new ReferentielRequestException());
-        modelService.save(model);
-    }
+//    @Test(expected = ReferentielRequestException.class)
+//    public void saveKO() {
+//        Mockito.when(modelService.save(model)).thenThrow(new ReferentielRequestException());
+//        modelService.save(model);
+//    }
 
-    @Test
-    public void saveAllOk(){
-        Assert.assertEquals(modelList,modelService.saveAll(modelList));
-    }
+//    @Test
+//    public void saveAllOk(){
+//        Assert.assertEquals(modelList,modelService.saveAll(modelList));
+//    }
 
-    @Test(expected = ReferentielRequestException.class)
-    public void saveAllKo(){
-        Mockito.when(modelService.saveAll(modelList)).thenThrow(new ReferentielRequestException());
-        modelService.saveAll(modelList);
-    }
+//    @Test(expected = ReferentielRequestException.class)
+//    public void saveAllKo(){
+//        Mockito.when(modelService.saveAll(modelList)).thenThrow(new ReferentielRequestException());
+//        modelService.saveAll(modelList);
+//    }
 }
