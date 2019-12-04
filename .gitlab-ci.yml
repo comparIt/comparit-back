@@ -23,19 +23,21 @@ maven-build:
 docker-build:
   stage: package
   script:
-  - docker build -t registry.gitlab.com/compare-it/compare-it-back .
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-  - docker push registry.gitlab.com/compare-it/compare-it-back
+    - docker build -t registry.gitlab.com/compare-it/compare-it-back .
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/compare-it/compare-it-back
+  only:
+    - release/*
 
 docker-deploy:
   image: rastasheep/ubuntu-sshd
   stage: deploy
   script:
-  - pwd
-  - ls
-  - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
-  - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@35.180.27.13 './start_project'
+    - pwd
+    - ls
+    - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
+    - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@35.180.27.13 './start_project'
   only:
-  - master
+    - release/*
 
 
