@@ -44,4 +44,23 @@ public class UserServiceTest extends CompareITBackApplicationTests {
     public void testSample() {
         assertTrue(true);
     }
+
+    @Test
+    public void createOk(){
+
+    }
+
+    @Test
+    public void createCustomerOK(){
+
+    }
+
+    @Test(expected = Exception.class)
+    public void createUserKORepo(){
+
+    }
+
+
+
+
 }
