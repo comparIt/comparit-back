@@ -5,6 +5,7 @@ import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.util.Query;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -24,18 +25,23 @@ public class ProductServiceTest extends CompareITBackApplicationTests {
     private ProductService productService;
 
     @MockBean
-    private ProductRepositoryCustom productRepository;
-
-    @MockBean
     private ProductRepositoryCustom productRepositoryCustom;
 
-    private ProductPagineDTO productPagineDTO;
+    private ProductPagineDTO productPagineDTOAll;
+    private ProductPagineDTO productPagineDTOSuplier1;
+    private ProductPagineDTO productPagineDTOTypeCars;
 
-    private List<ProductDto> productDtoList;
+    private List<ProductDto> productDtoListAll;
+    private List<ProductDto> productDtoListSupplier1;
+    private List<ProductDto> productDtoListTypeCars;
 
     private Map<String,Object> mapProperties;
 
-    private Query query;
+    private Query queryAll;
+    private Query querySuppliers1;
+    private Query queryTypeCars;
+    private Query queryPage1000;
+    private Query queryNoPage;
 
 
     @Before
@@ -45,29 +51,91 @@ public class ProductServiceTest extends CompareITBackApplicationTests {
     }
 
     private void initDatas() {
-        productDtoList = new ArrayList<>();
+        productDtoListAll = new ArrayList<>();
+        productDtoListSupplier1 = new ArrayList<>();
+        productDtoListTypeCars = new ArrayList<>();
+
         mapProperties = new HashMap<>();
         mapProperties.put("doors",2);
 
-        ProductDto product = new ProductDto();
-        product.set_id("1");
-        product.setSupplierId("1");
-        product.setType("cars");
-        product.setProperties(mapProperties);
+        ProductDto productAll = new ProductDto();
+        productAll.set_id("1");
+        productAll.setSupplierId("1");
+        productAll.setType("cars");
+        productAll.setProperties(mapProperties);
 
-        productDtoList.add(product);
+        productDtoListAll.add(productAll);
+        productDtoListSupplier1.add(productAll);
+        productDtoListTypeCars.add(productAll);
 
-        productPagineDTO = ProductPagineDTO.builder()
-                .nbPagesTotal((int)Math.ceil(productDtoList.size()/10))
+
+        ProductDto productSupplier2 = new ProductDto();
+        productAll.set_id("2");
+        productAll.setSupplierId("2");
+        productAll.setType("cars");
+        productAll.setProperties(mapProperties);
+
+        productDtoListTypeCars.add(productSupplier2);
+        productDtoListAll.add(productSupplier2);
+
+        ProductDto productTypeAutre = new ProductDto();
+        productAll.set_id("3");
+        productAll.setSupplierId("1");
+        productAll.setType("phone");
+        productAll.setProperties(mapProperties);
+
+        productDtoListAll.add(productTypeAutre);
+        productDtoListSupplier1.add(productTypeAutre);
+
+        productPagineDTOAll = ProductPagineDTO.builder()
+                .nbPagesTotal(1)
                 .pageActuelle(1)
-                .productsToDisplay(productDtoList)
+                .productsToDisplay(productDtoListAll)
                 .build();
 
-        query = new Query();
+        productPagineDTOSuplier1 = ProductPagineDTO.builder()
+                .nbPagesTotal(1)
+                .pageActuelle(1)
+                .productsToDisplay(productDtoListSupplier1)
+                .build();
+
+        productPagineDTOTypeCars = ProductPagineDTO.builder()
+                .nbPagesTotal(1)
+                .pageActuelle(1)
+                .productsToDisplay(productDtoListTypeCars)
+                .build();
+
+        queryAll = new Query();
+        querySuppliers1 = new Query();
+        queryTypeCars = new Query();
+        queryNoPage = new Query();
+        queryPage1000 = new Query();
+
+        queryAll.addType("cars");
+        queryAll.addSupplier("1");
+        queryAll.addAllCriterias(new HashMap<>());
+        queryAll.page(1);
+
+        queryNoPage.addType("cars");
+        queryNoPage.addSupplier("1");
+        queryNoPage.addAllCriterias(new HashMap<>());
+        queryNoPage.page(null);
+
+        queryPage1000.addType("cars");
+        queryPage1000.addSupplier("1");
+        queryPage1000.addAllCriterias(new HashMap<>());
+        queryPage1000.page(1000);
+
+        queryTypeCars.addType("cars");
+        queryTypeCars.addAllCriterias(new HashMap<>());
+        queryTypeCars.page(1);
+
+        querySuppliers1.addSupplier("1");
+        querySuppliers1.addAllCriterias(new HashMap<>());
+        querySuppliers1.page(1);
     }
 
     private void initMocks() {
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoList);
     }
 
     @Test
@@ -77,36 +145,36 @@ public class ProductServiceTest extends CompareITBackApplicationTests {
 
     @Test
     public void searchOK(){
-
+        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
+        Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,1,"1","cars"));
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void searchKO(){
-
+        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenThrow(new Exception());
     }
 
     @Test
     public void searchOkButNoPage(){
-
+        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
+        Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,null,"1","cars"));
     }
 
     @Test
     public void searchOkPageIncoherente(){
-
+        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
+        Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,1000,"1","cars"));
     }
 
     @Test
-    public void searchButNoType(){
-
+    public void searchSupplier1(){
+        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListSupplier1);
+        Assert.assertEquals(productPagineDTOSuplier1,productService.search(new HashMap<>(),null,1,"1",null));
     }
 
     @Test
-    public void searchButNoSupplier(){
-
-    }
-
-    @Test
-    public void searchButNoSorting(){
-
+    public void searchTypeCars(){
+        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListTypeCars   );
+        Assert.assertEquals(productPagineDTOTypeCars,productService.search(new HashMap<>(),null,1,null,"cars"));
     }
 }
