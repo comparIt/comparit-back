@@ -75,10 +75,6 @@ public class ProductServiceTest extends CompareITBackApplicationTests {
         assertTrue(true);
     }
 
-    /**
-     * List<ProductDto> search(Map<String, String> params);
-     */
-
     @Test
     public void searchOK(){
 
