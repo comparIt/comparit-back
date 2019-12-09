@@ -15,7 +15,7 @@ stages:
 maven-build:
   image: maven:3-jdk-8
   stage: build
-  script: "mvn clean package"
+  script: "mvn clean package -DskipTests"
   artifacts:
     paths:
       - target/*.jar
@@ -34,6 +34,7 @@ docker-deploy:
   stage: deploy
   script:
     - pwd
+    - cd ..
     - ls
     - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
     - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@35.180.27.13 './start_project'
