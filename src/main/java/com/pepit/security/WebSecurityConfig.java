@@ -65,10 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors();
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(Routes.AUTH).permitAll()
-                .antMatchers(Routes.HEARTBEAT).permitAll()
-                .antMatchers(Routes.USER).permitAll()
-                .antMatchers(Routes.WEBSITE_CONFIG) .permitAll()
                 .antMatchers(Routes.WEBSITE_CONFIG+"/saveWebsiteConfiguration").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
