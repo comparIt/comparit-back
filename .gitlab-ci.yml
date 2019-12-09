@@ -27,7 +27,7 @@ docker-build:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker push registry.gitlab.com/compare-it/compare-it-back
   only:
-    - release/*
+    - develop
 
 docker-deploy:
   image: rastasheep/ubuntu-sshd
@@ -38,6 +38,6 @@ docker-deploy:
     - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
     - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@35.180.27.13 './start_project'
   only:
-    - release/*
+    - develop
 
 
