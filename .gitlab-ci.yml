@@ -34,7 +34,7 @@ docker-deploy:
   stage: deploy
   script:
     - pwd
-    - cd ..
+    - cd ../compare-it-back.tmp
     - ls
     - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
     - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@35.180.27.13 './start_project'
