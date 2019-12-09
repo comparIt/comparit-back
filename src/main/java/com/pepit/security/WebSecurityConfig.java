@@ -69,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(Routes.HEARTBEAT).permitAll()
                 .antMatchers(Routes.USER).permitAll()
                 .antMatchers(Routes.WEBSITE_CONFIG+"/saveWebsiteConfiguration").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
