@@ -120,7 +120,7 @@ public class Query {
 
         StringBuilder sb = new StringBuilder();
         sb.append("properties.").append(field).append(" in ").append("(");
-        bindParams.stream().map(p -> ":" + p).reduce((x, y) -> x + ", " + y).map(sb::append);
+        bindParams.stream().map(p -> ":" + p).reduce((x, y) -> x + ", " + y).ifPresent(sb::append);
         sb.append(")");
 
         this.criterias.add(sb.toString());

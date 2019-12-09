@@ -56,7 +56,7 @@ public class ModelPropertyServiceTest extends CompareITBackApplicationTests {
     }
 
     private void initMocks() {
-        //Mockito.when(modelPropertyRepository.saveAll(Mockito.anyList())).thenReturn(modelProperties);
+        Mockito.when(modelPropertyRepository.saveAll(Mockito.anyList())).thenReturn(modelProperties);
         Mockito.when(modelPropertyRepository.save(Mockito.any())).thenReturn(modelProperty);
     }
 
@@ -72,11 +72,11 @@ public class ModelPropertyServiceTest extends CompareITBackApplicationTests {
 
     }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void SaveKO() {
-//        Mockito.when(modelPropertyRepository.save(Mockito.any())).thenThrow(new ReferentielRequestException());
-//        modelPropertyService.save(modelProperty);
-//    }
+    @Test(expected = Exception.class)
+    public void SaveKO() {
+        Mockito.when(modelPropertyRepository.save(Mockito.any())).thenThrow(new Exception());
+        modelPropertyService.save(modelProperty);
+    }
 
     @Test
     public void SaveAllOk(){
@@ -84,9 +84,9 @@ public class ModelPropertyServiceTest extends CompareITBackApplicationTests {
         Mockito.verify(modelPropertyRepository, Mockito.times(1)).saveAll(modelProperties);
     }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void SaveAllKO(){
-//        Mockito.when(modelPropertyRepository.saveAll(Mockito.anyList())).thenThrow(new ReferentielRequestException());
-//        modelPropertyService.saveAll(modelProperties);
-//    }
+    @Test(expected = Exception.class)
+    public void SaveAllKO(){
+        Mockito.when(modelPropertyRepository.saveAll(Mockito.anyList())).thenThrow(new Exception());
+        modelPropertyService.saveAll(modelProperties);
+    }
 }

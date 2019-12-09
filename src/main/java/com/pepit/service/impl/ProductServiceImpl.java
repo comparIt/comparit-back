@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> productList = productRepositoryCustom.testRequest(query);
         ProductPagineDTO productPagine = new ProductPagineDTO();
         productPagine.setProductsToDisplay(productList);
-        Integer nbPagesTotal = (int) Math.ceil(productList.size()/ (double) nbProductParPage);
+        Integer nbPagesTotal = (int) Math.ceil((double)productList.size()/ (double)nbProductParPage);
         productPagine.setNbPagesTotal(nbPagesTotal);
 
         if(page != null && nbPagesTotal>= page){
