@@ -171,7 +171,9 @@ public class CompanyServiceImpl implements CompanyService {
 
         if (modelProps.equals(headers)) {
             logger.info("OK: Fichier cohérent avec le modele de donnée en place");
-        } else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place");
+        } else throw new InputException("Error: Fichier incoherent avec le modele de donnée en place"
+                                        + "\n Attendu:" + modelProps.toString()
+                                        + "\n Envoyé: " + headers.toString());
 
         //Fin check columns
         return model;

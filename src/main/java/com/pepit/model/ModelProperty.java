@@ -47,10 +47,10 @@ public class ModelProperty {
     @Column(name = "activated")
     boolean activated;
 
-    @Column(name = "min")
+    @Column(name = "min", columnDefinition = "int default 0", nullable=false)
     Integer min;
 
-    @Column(name = "max")
+    @Column(name = "max", columnDefinition = "int default 0", nullable=false)
     Integer max;
 
     @ElementCollection
