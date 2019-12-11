@@ -5,6 +5,7 @@ import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -65,8 +66,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors();
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(Routes.WEBSITE_CONFIG+"/saveWebsiteConfiguration").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                .antMatchers(Routes.AUTH).permitAll()
+                .antMatchers(Routes.HEARTBEAT).hasRole("ADMIN")
+                .antMatchers(Routes.USER).permitAll()
+                .antMatchers(HttpMethod.GET, Routes.WEBSITE_CONFIG+"/*").permitAll()
+                .antMatchers(HttpMethod.PUT, Routes.WEBSITE_CONFIG+"/saveWebsiteConfiguration").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)

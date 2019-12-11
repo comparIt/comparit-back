@@ -24,7 +24,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @CrossOrigin
+
     @GetMapping(value = "/search")
     public ResponseEntity<ProductPagineDTO> search(@RequestParam @Nullable String order,
                                                    @RequestParam @Nullable Integer page,
@@ -35,7 +35,7 @@ public class ProductController {
         return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
 
-    @CrossOrigin
+
     @GetMapping("/{productId}")
     public ResponseEntity<Product> searchProduct(@PathVariable Integer productId){
         return null;

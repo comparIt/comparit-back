@@ -22,15 +22,16 @@ public class WebsiteConfigurationController {
         this.websiteConfigurationBusiness = websiteConfigurationBusiness;
     }
 
-    @CrossOrigin
+
     @GetMapping("/{websiteConfigurationId}")
     @ResponseBody
     public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@PathVariable("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationService.findOneById(websiteConfigurationId));
     }
 
-    @CrossOrigin
+
     @PutMapping("/saveWebsiteConfiguration")
+    @ResponseBody
     public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestBody WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
     }

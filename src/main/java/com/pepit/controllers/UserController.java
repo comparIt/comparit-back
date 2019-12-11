@@ -26,7 +26,7 @@ public class UserController {
 
 
 
-    @CrossOrigin
+
     @PutMapping(value = "/saveUser",consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.status(200).body(userService.create(userDto));

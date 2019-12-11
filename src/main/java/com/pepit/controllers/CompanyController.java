@@ -29,7 +29,7 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @CrossOrigin
+
     @GetMapping("/byUrl/{typeProduit}")
     @ResponseBody
     public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @PathVariable("typeProduit") String typeProduit) {
