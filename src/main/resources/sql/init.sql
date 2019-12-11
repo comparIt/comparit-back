@@ -4,8 +4,6 @@ VALUES(1, '2019-10-21 13:26:37.438', 'test@test.fr', 'test', 'test', '$2a$10$dRf
 
 INSERT IGNORE INTO compareIt.roles (user_id, roles) VALUES(1, 'ROLE_ADMIN');
 
-
-
 INSERT IGNORE INTO `model` VALUES (1,_binary '','2019-11-27 10:42:33.256000','https://upload.wikimedia.org/wikipedia/commons/5/56/FardierdeCugnot20050111.jpg','Vehicules','cars','2019-11-27 10:42:33.256000'),(2,_binary '','2019-11-27 10:42:33.367000','https://images.samsung.com/is/image/samsung/p5/fr/home/curation/S10_488x488_hp.png','Telephones','phones','2019-11-27 10:42:33.367000');
 INSERT IGNORE INTO `model_property` VALUES (1,_binary '','2019-11-27 10:42:32.898000',_binary '',_binary '',_binary '',0,0,'Fabricant','maker',1,'2019-11-27 10:42:32.900000'),
                                            (2,_binary '','2019-11-27 10:42:33.150000',_binary '',_binary '',_binary '',0,0,'Modèle','model',1,'2019-11-27 10:42:33.150000'),

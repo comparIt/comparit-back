@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
+import com.pepit.exception.DataProvidedException;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Model;
@@ -16,6 +17,7 @@ import com.pepit.service.WebsiteConfigurationService;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -82,7 +84,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    public String fromCsvToDb(MultipartFile file, String supplierId, String typeProduit) throws IOException, ReferentielRequestException, InputException {
+    public String fromCsvToDb(MultipartFile file, String supplierId, String typeProduit) throws IOException, ReferentielRequestException, InputException, DataProvidedException {
         logger.info("DEB fromCsvToDb");
         if (file == null) {
             throw new RuntimeException("You must select a file for uploading");
@@ -110,16 +112,23 @@ public class CompanyServiceImpl implements CompanyService {
         //L'objet dbDocList de sortie a passer au productRepo
         List<DbDoc> dbDocList = new ArrayList<>();
 
+        List<String> refusedRecords = new ArrayList<>();
+
         for(Record record : allRecords){
             //On retourne le resultat dans une map string string qui pourra s'intégrer dans properties d'un JSON
             //Ce sont les fields du header qui sont les clés !!
             Map<String, String> mymap = record.toFieldMap();
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.valueToTree(mymap);
+            String testedRecord = checkRecordFields(mymap, model);
+            if ( ! testedRecord.isEmpty() )
+                refusedRecords.add(testedRecord);
+            else {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.valueToTree(mymap);
 
-            DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode, model);
-            dbDocList.add(outerObject);
+                DbDoc outerObject = updateJsonNode(supplierId, typeProduit, mapper, jsonNode, model);
+                dbDocList.add(outerObject);
+            }
         }
         //on le convertit en tableau car dependance du add mysql
         DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
@@ -131,8 +140,33 @@ public class CompanyServiceImpl implements CompanyService {
         //On évalue les bornes et valeurs des proprietes du modele selon les données en base
         recalculMinMaxValue(typeProduit);
 
+        if ( ! refusedRecords.isEmpty() ) {
+            logger.info("Lignes rejettées: "+ refusedRecords.toString());
+            throw new DataProvidedException(refusedRecords.size() + " ligne(s) rejetées: \n" + refusedRecords.toString());
+        }
+
         logger.info("FIN fromCsvToDb");
-        return dbDocList.toString();
+
+        return refusedRecords.toString();
+    }
+
+    /**
+     * Verification du contenu fourni pour verifier la coherence
+     * @param mymap
+     * @param model
+     */
+    private String checkRecordFields(Map<String, String> mymap, Model model) {
+        try{
+            model.getModelProperties().forEach(prop -> {
+                if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                    Integer.parseInt(mymap.get(prop.getTechnicalName()));
+            });
+        }
+        catch (NumberFormatException ex){
+            return mymap.toString();
+        }
+
+        return "";
     }
 
     /**

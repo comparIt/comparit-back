@@ -7,6 +7,7 @@ import com.pepit.model.WebsiteConfiguration;
 import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class CompanyServiceTest extends CompareITBackApplicationTests {
 
     @Autowired
