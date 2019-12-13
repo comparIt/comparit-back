@@ -75,11 +75,6 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
     }
 
     @Test
-    public void testSample() {
-        assertTrue(true);
-    }
-
-    @Test
     public void findOneByIdOk() throws ReferentielRequestException {
         Assert.assertEquals(websiteConfiguration, websiteConfigurationService.findOneById(websiteConfigurationId));
     }

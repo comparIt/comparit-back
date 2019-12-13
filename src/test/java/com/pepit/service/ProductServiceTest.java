@@ -139,11 +139,6 @@ public class ProductServiceTest extends CompareITBackApplicationTests {
     }
 
     @Test
-    public void testSample() {
-        assertTrue(true);
-    }
-
-    @Test
     public void searchOK(){
         Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
         Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,1,"1","cars"));

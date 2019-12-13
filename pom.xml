@@ -17,7 +17,34 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <sonar.url>http://35.181.152.198:9000</sonar.url>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.coverage.exclusions>
+                    **/security/*.java,
+                    **/controllers/*.java,
+                    **/dto/*.java,
+                    **/model/*.java,
+                    **/config/*.java,
+                    **/constants/*.java,
+                    **/exception/*.java,
+                    **/converters/*.java,
+                    **/exceptionHandler/*.java,
+                    **/repository/*.java
+                </sonar.coverage.exclusions>
+                <sonar.host.url>
+                    ${sonar.url}
+                </sonar.host.url>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -44,7 +71,6 @@
             <artifactId>protobuf-java</artifactId>
             <version>3.10.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
@@ -91,23 +117,9 @@
             <version>1.12.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.4.0.905</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -123,6 +135,16 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.5</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/pepit/security/*.class</exclude>
+                        <exclude>com/pepit/exception/*.class</exclude>
+                        <exclude>com/pepit/exceptionHandler/*.class</exclude>
+                        <exclude>com/pepit/dto/*.class</exclude>
+                        <exclude>com/pepit/converters/*.class</exclude>
+                        <exclude>com/pepit/controllers/*.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
