@@ -2,7 +2,6 @@ package com.pepit.business.impl;
 
 import com.pepit.business.WebsiteConfigurationBusiness;
 import com.pepit.exception.ReferentielRequestException;
-import com.pepit.model.Model;
 import com.pepit.model.ModelProperty;
 import com.pepit.model.WebsiteConfiguration;
 import com.pepit.service.ModelPropertyService;
@@ -10,9 +9,6 @@ import com.pepit.service.ModelService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBusiness {
@@ -30,9 +26,7 @@ public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBus
 
     @Override
     public WebsiteConfiguration saveWebsiteConfiguration(WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
-        //todo
-        //websiteConfiguration.setAdminId(1);
-        try{
+        try {
             websiteConfiguration.getModels().forEach(model -> {
                 model.getModelProperties().forEach(ModelProperty::update);
                 model.update();
@@ -41,7 +35,7 @@ public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBus
             modelService.saveAll(websiteConfiguration.getModels());
             websiteConfiguration.update();
             return websiteConfigurationService.save(websiteConfiguration);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ReferentielRequestException();
         }
     }

@@ -4,8 +4,9 @@ import com.mysql.cj.exceptions.WrongArgumentException;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.config.Conf;
 import com.pepit.util.Query;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public class ProductDB {
 
     private Collection collection;
@@ -23,7 +24,7 @@ public class ProductDB {
     }
 
     public DocResult find(Query query){
-        System.out.println(query.toString());
+        log.debug(query.toString());
         return query.find(this.collection).execute();
     }
 

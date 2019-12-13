@@ -28,6 +28,6 @@ public class UserDto {
     Long companyId;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-    public Collection<Roles> roles;
+    Collection<Roles> roles;
 
 }

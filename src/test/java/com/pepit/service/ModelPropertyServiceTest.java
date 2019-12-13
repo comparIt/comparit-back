@@ -61,11 +61,6 @@ public class ModelPropertyServiceTest extends CompareITBackApplicationTests {
     }
 
     @Test
-    public void testSample() {
-        assertTrue(true);
-    }
-
-    @Test
     public void SaveOK() {
         modelPropertyService.save(modelProperty);
         Mockito.verify(modelPropertyRepository, Mockito.times(1)).save(modelProperty);

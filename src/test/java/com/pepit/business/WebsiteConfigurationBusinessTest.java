@@ -106,11 +106,6 @@ public class WebsiteConfigurationBusinessTest extends CompareITBackApplicationTe
     }
 
     @Test
-    public void testSample() {
-        assertTrue(true);
-    }
-
-    @Test
     public void saveWebsiteConfigOK() throws ReferentielRequestException {
         Assert.assertEquals(websiteConfiguration, websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
         Mockito.verify(modelService, Mockito.times(1)).saveAll(modelList);
