@@ -4,8 +4,9 @@ import com.mysql.cj.exceptions.WrongArgumentException;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.config.Conf;
 import com.pepit.util.Query;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public class ProductDB {
 
     private Collection collection;
@@ -13,13 +14,17 @@ public class ProductDB {
     private Schema db;
 
     public ProductDB(){
-        this.session = new SessionFactory().getSession("mysqlx://" + Conf.getInstance().getHOST() + ":" + Conf.getInstance().getXPORT() +"/compareIt?user=root&password=" + Conf.getInstance().getPASSWORD() );
+        this.session = new SessionFactory().getSession("mysqlx://" + Conf.getInstance().getHOST() + ":" + Conf.getInstance().getXPORT() + "/compareIt?user=root&password=" + Conf.getInstance().getPASSWORD());
         this.db = session.getSchema(Conf.getInstance().getNAME());
-        this.collection = this.db.getCollection("produit");
+        try {
+            this.collection = this.db.getCollection("produit", true);
+        } catch (WrongArgumentException e) {
+            this.collection = this.db.createCollection("produit");
+        }
     }
 
     public DocResult find(Query query){
-        System.out.println(query.toString());
+        log.debug(query.toString());
         return query.find(this.collection).execute();
     }
 

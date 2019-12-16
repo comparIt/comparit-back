@@ -55,33 +55,29 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
 
     private void initMocks() {
         Mockito.when(modelRepository.save(Mockito.any(Model.class))).thenReturn(model);
-        //Mockito.when(modelRepository.saveAll(Mockito.anyList())).thenReturn(modelList);
+        Mockito.when(modelRepository.saveAll(Mockito.anyList())).thenReturn(modelList);
     }
 
-    @Test
-    public void testSample() {
-        assertTrue(true);
-    }
 
     @Test
     public void saveOk() {
         Assert.assertEquals(model, modelService.save(model));
     }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveKO() {
-//        Mockito.when(modelService.save(model)).thenThrow(new ReferentielRequestException());
-//        modelService.save(model);
-//    }
+   @Test(expected = Exception.class)
+    public void saveKO() {
+        Mockito.when(modelService.save(model)).thenThrow(new Exception());
+        modelService.save(model);
+    }
 
-//    @Test
-//    public void saveAllOk(){
-//        Assert.assertEquals(modelList,modelService.saveAll(modelList));
-//    }
+   @Test
+    public void saveAllOk(){
+        Assert.assertEquals(modelList,modelService.saveAll(modelList));
+    }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveAllKo(){
-//        Mockito.when(modelService.saveAll(modelList)).thenThrow(new ReferentielRequestException());
-//        modelService.saveAll(modelList);
-//    }
+   @Test(expected = Exception.class)
+    public void saveAllKo(){
+        Mockito.when(modelService.saveAll(modelList)).thenThrow(new Exception());
+        modelService.saveAll(modelList);
+    }
 }

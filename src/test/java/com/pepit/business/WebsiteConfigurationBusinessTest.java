@@ -106,11 +106,6 @@ public class WebsiteConfigurationBusinessTest extends CompareITBackApplicationTe
     }
 
     @Test
-    public void testSample() {
-        assertTrue(true);
-    }
-
-    @Test
     public void saveWebsiteConfigOK() throws ReferentielRequestException {
         Assert.assertEquals(websiteConfiguration, websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
         Mockito.verify(modelService, Mockito.times(1)).saveAll(modelList);
@@ -118,23 +113,23 @@ public class WebsiteConfigurationBusinessTest extends CompareITBackApplicationTe
         Mockito.verify(websiteConfigurationService, Mockito.times(1)).save(websiteConfiguration);
     }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveWebsiteConfigKOSaveWebsite() throws ReferentielRequestException {
-//        Mockito.when(websiteConfigurationService.save(Mockito.any(WebsiteConfiguration.class))).thenThrow(new ReferentielRequestException());
-//        websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration);
-//    }
-//
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveWebsiteConfigKOSaveModel() throws ReferentielRequestException {
-//        Mockito.when(modelService.saveAll(Mockito.anyList())).thenThrow(new ReferentielRequestException());
-//        websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration);
-//
-//    }
-//
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveWebsiteConfigKOSaveModelProperties() throws ReferentielRequestException {
-//        Mockito.when(modelPropertyService.saveAll(Mockito.anyList())).thenThrow(new ReferentielRequestException());
-//        websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration);
-//
-//    }
+    @Test(expected = Exception.class)
+    public void saveWebsiteConfigKOSaveWebsite() throws ReferentielRequestException {
+        Mockito.when(websiteConfigurationService.save(Mockito.any(WebsiteConfiguration.class))).thenThrow(new Exception());
+        websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration);
+    }
+
+    @Test(expected = Exception.class)
+    public void saveWebsiteConfigKOSaveModel() throws ReferentielRequestException {
+        Mockito.when(modelService.saveAll(Mockito.anyList())).thenThrow(new Exception());
+        websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration);
+
+    }
+
+    @Test(expected = Exception.class)
+    public void saveWebsiteConfigKOSaveModelProperties() throws ReferentielRequestException {
+        Mockito.when(modelPropertyService.saveAll(Mockito.anyList())).thenThrow(new Exception());
+        websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration);
+
+    }
 }

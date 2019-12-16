@@ -1,9 +1,6 @@
 package com.pepit.controllers;
 
-import com.pepit.business.CompanyBusiness;
 import com.pepit.constants.Routes;
-import com.pepit.model.Model;
-import com.pepit.model.WebsiteConfiguration;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Predicate;
 
 @RestController
 @RequestMapping(Routes.COMPANY)
 public class CompanyController {
 
-    private CompanyBusiness companyBusiness;
     private CompanyService companyService;
 
     @Autowired
-    public CompanyController(CompanyBusiness companyBusiness, CompanyService companyService, WebsiteConfigurationService websiteConfigurationService) {
-        this.companyBusiness = companyBusiness;
+    public CompanyController(CompanyService companyService, WebsiteConfigurationService websiteConfigurationService) {
         this.companyService = companyService;
     }
 
-    @CrossOrigin
+
     @GetMapping("/byUrl/{typeProduit}")
     @ResponseBody
     public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @PathVariable("typeProduit") String typeProduit) {

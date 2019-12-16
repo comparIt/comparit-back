@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,30 +75,26 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
     }
 
     @Test
-    public void testSample() {
-        assertTrue(true);
+    public void findOneByIdOk() throws ReferentielRequestException {
+        Assert.assertEquals(websiteConfiguration, websiteConfigurationService.findOneById(websiteConfigurationId));
     }
 
-//    @Test
-//    public void findOneByIdOk() throws ReferentielRequestException {
-//        Assert.assertEquals(websiteConfiguration, websiteConfigurationService.findOneById(websiteConfigurationId));
-//    }
-//
-//    @Test(expected = ReferentielRequestException.class)
-//    public void findOneByIdEmpty() throws ReferentielRequestException {
-//        Mockito.when(websiteConfigurationRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-//        websiteConfigurationService.findOneById(websiteConfigurationId);
-//    }
-//
-//    @Test
-//    public void saveWebconfigurationOk() {
-//        Assert.assertEquals(websiteConfiguration, websiteConfigurationService.save(websiteConfiguration));
-//    }
+    @Test(expected = ReferentielRequestException.class)
+    public void findOneByIdEmpty() throws ReferentielRequestException {
+        Mockito.when(websiteConfigurationRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
+        websiteConfigurationService.findOneById(websiteConfigurationId);
+    }
 
-//    @Test
-//    public void saveWebconfigurationKO() {
-//        Mockito.when(websiteConfigurationRepository.save(Mockito.any(WebsiteConfiguration.class))).thenThrow(new ReferentielRequestException());
-//        websiteConfigurationService.save(websiteConfiguration);
-//    }
+    @Test
+    public void saveWebconfigurationOk() {
+        Assert.assertEquals(websiteConfiguration, websiteConfigurationService.save(websiteConfiguration));
+    }
+
+
+    @Test(expected = Exception.class)
+    public void saveWebconfigurationKO() {
+        Mockito.when(websiteConfigurationRepository.save(websiteConfiguration)).thenThrow(new Exception());
+        websiteConfigurationService.save(websiteConfiguration);
+    }
 
 }

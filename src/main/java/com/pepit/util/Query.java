@@ -14,6 +14,8 @@ public class Query {
     private List<String> criterias = new ArrayList<>();
     private Map<String, Object> boundParams = new HashMap<>();
 
+    private static final String PROPERTIES = "properties.";
+
     private Integer offset;
     private Integer limit;
 
@@ -90,14 +92,14 @@ public class Query {
     private void addInterval(String field, Integer min, Integer max) {
         if (min != null) {
             String paramMin = field + "min";
-            String criteriaMin = "properties." + field + " >= :" + paramMin;
+            String criteriaMin = PROPERTIES + field + " >= :" + paramMin;
             this.boundParams.put(paramMin, min);
             this.criterias.add(criteriaMin);
         }
 
         if (max != null) {
             String paramMax = field + "max";
-            String criteriaMax = "properties." + field + " <= :" + paramMax;
+            String criteriaMax = PROPERTIES + field + " <= :" + paramMax;
             this.boundParams.put(paramMax, max);
             this.criterias.add(criteriaMax);
         }
@@ -119,8 +121,8 @@ public class Query {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("properties.").append(field).append(" in ").append("(");
-        bindParams.stream().map(p -> ":" + p).reduce((x, y) -> x + ", " + y).map(sb::append);
+        sb.append(PROPERTIES).append(field).append(" in ").append("(");
+        bindParams.stream().map(p -> ":" + p).reduce((x, y) -> x + ", " + y).ifPresent(sb::append);
         sb.append(")");
 
         this.criterias.add(sb.toString());
@@ -133,8 +135,6 @@ public class Query {
     public Statement<FindStatement, DocResult> find(Collection collection) {
         FindStatement statement = collection.find(this.criteriasAsStatement());
         statement.offset(this.offset);
-        // statement.limit(this.limit);
-        // statement.sort(this.sort);
         statement.bind(this.boundParams);
         return statement;
     }
