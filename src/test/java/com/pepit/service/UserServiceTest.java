@@ -83,10 +83,6 @@ public class UserServiceTest extends CompareITBackApplicationTests {
         Mockito.when(userConverter.dtoToEntity(userDto)).thenReturn(user);
     }
 
-    @Test
-    public void testSample() {
-        assertTrue(true);
-    }
 
     @Test
     public void createCustomerOK(){

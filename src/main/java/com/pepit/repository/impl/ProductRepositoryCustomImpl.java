@@ -7,6 +7,7 @@ import com.pepit.dto.ProductDto;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,32 +17,31 @@ import java.util.logging.Logger;
 
 @NoArgsConstructor
 @Repository
+@Slf4j
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Autowired
     ProductDB productDB;
 
-    private static final Logger logger = Logger.getLogger(ProductRepositoryCustomImpl.class.getName());
-
 
     public List<ProductDto> testRequest(Query query){
-        logger.info("Query :"+ query);
+        log.info("Query :"+ query);
         List<DbDoc> docList = productDB.find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
-        System.out.println("passed");
+        log.info("passed");
         for ( DbDoc doc : docList) {
 
-            System.out.println(doc.toString());
+            log.info(doc.toString());
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 productDtos.add(objectMapper.readValue(doc.toString(), ProductDto.class));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("error :", e);
             }
         }
-        System.out.println("done");
+        log.info("done");
         return productDtos;
     }
 
@@ -56,14 +56,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         for ( DbDoc onedoc : docList) {
 
             String jsonP = "{\"properties\": " + onedoc.toString() + "}";
-            //logger.info(jsonP);
 
             ObjectMapper objectMapper = new ObjectMapper();
             ProductDto productDto = null;
             try {
                 productDtos.add(objectMapper.readValue(jsonP.toString(), ProductDto.class));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("error : ", e);
             }
         }
 
@@ -99,9 +98,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
     public void removeDoc(String query){
-        logger.info("sending RemoveDoc Query: "+ query);
+        log.info("sending RemoveDoc Query: "+ query);
         Result res = productDB.getCollection().remove(query).execute();
-        logger.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+        log.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 
     @Override

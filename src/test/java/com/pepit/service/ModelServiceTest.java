@@ -58,10 +58,6 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
         Mockito.when(modelRepository.saveAll(Mockito.anyList())).thenReturn(modelList);
     }
 
-    @Test
-    public void testSample() {
-        assertTrue(true);
-    }
 
     @Test
     public void saveOk() {
