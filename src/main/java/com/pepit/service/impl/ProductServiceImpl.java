@@ -2,10 +2,10 @@ package com.pepit.service.impl;
 
 import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
-import com.pepit.repository.impl.ProductRepositoryCustomImpl;
-import com.pepit.util.Query;
+import com.pepit.model.Product;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.ProductService;
+import com.pepit.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,14 +35,19 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> productList = productRepositoryCustom.testRequest(query);
         ProductPagineDTO productPagine = new ProductPagineDTO();
         productPagine.setProductsToDisplay(productList);
-        Integer nbPagesTotal = (int) Math.ceil((double)productList.size()/ (double)nbProductParPage);
+        Integer nbPagesTotal = (int) Math.ceil((double) productList.size() / (double) nbProductParPage);
         productPagine.setNbPagesTotal(nbPagesTotal);
 
-        if(page != null && nbPagesTotal>= page){
+        if (page != null && nbPagesTotal >= page) {
             productPagine.setPageActuelle(page);
-        }else{
+        } else {
             productPagine.setPageActuelle(1);
         }
         return productPagine;
+    }
+
+    @Override
+    public Product searchProductById(String productId) {
+        return productRepositoryCustom.getProductById(productId);
     }
 }

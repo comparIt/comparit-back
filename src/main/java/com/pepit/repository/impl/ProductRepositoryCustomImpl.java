@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
+import com.pepit.model.Product;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @NoArgsConstructor
 @Repository
@@ -24,13 +26,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     ProductDB productDB;
 
 
-    public List<ProductDto> testRequest(Query query){
-        log.info("Query :"+ query);
+    public List<ProductDto> testRequest(Query query) {
+        log.info("Query :" + query);
         List<DbDoc> docList = productDB.find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
         log.info("passed");
-        for ( DbDoc doc : docList) {
+        for (DbDoc doc : docList) {
 
             log.info(doc.toString());
 
@@ -46,21 +48,20 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
 
-    public List<ProductDto> find(String query){
+    public List<ProductDto> find(String query) {
         DocResult docs = productDB.getCollection().find(query).execute();
 
         List<DbDoc> docList = docs.fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
 
-        for ( DbDoc onedoc : docList) {
+        for (DbDoc onedoc : docList) {
 
             String jsonP = "{\"properties\": " + onedoc.toString() + "}";
 
             ObjectMapper objectMapper = new ObjectMapper();
-            ProductDto productDto = null;
             try {
-                productDtos.add(objectMapper.readValue(jsonP.toString(), ProductDto.class));
+                productDtos.add(objectMapper.readValue(jsonP, ProductDto.class));
             } catch (IOException e) {
                 log.error("error : ", e);
             }
@@ -71,9 +72,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     public Iterator<Warning> updateBornes(String technicalName) {
         //On passe une query sur la database pour setter les minmax
-        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties."+technicalName+"'  AS DECIMAL(10,2))) FROM produit)" +
-                ", max = (SELECT max(CAST(doc->'$.properties."+technicalName+"' AS DECIMAL(10,2))) " +
-                "FROM produit) where technical_name = '"+technicalName+"';";
+        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties." + technicalName + "'  AS DECIMAL(10,2))) FROM produit)" +
+                ", max = (SELECT max(CAST(doc->'$.properties." + technicalName + "' AS DECIMAL(10,2))) " +
+                "FROM produit) where technical_name = '" + technicalName + "';";
         return productDB.getSession().sql(query).execute().getWarnings();
 
     }
@@ -97,14 +98,30 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     }
 
-    public void removeDoc(String query){
-        log.info("sending RemoveDoc Query: "+ query);
+    public void removeDoc(String query) {
+        log.info("sending RemoveDoc Query: " + query);
         Result res = productDB.getCollection().remove(query).execute();
-        log.info( "removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
+        log.info("removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 
     @Override
     public Long count() {
         return productDB.getDb().getCollection("produit", true).count();
+    }
+
+    @Override
+    public Product getProductById(String productId) {
+        Product product = new Product();
+        DbDoc doc = productDB.getCollection().getOne(productId);
+
+        try {
+            String jsonP = "{\"properties\": " + doc.get("properties").toString() + "}";
+            product.setId(productId);
+            product.setProperties(jsonP);
+        } catch (Exception e) {
+            log.error("error : ", e);
+        }
+
+        return product;
     }
 }

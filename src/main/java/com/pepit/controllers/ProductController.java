@@ -31,17 +31,15 @@ public class ProductController {
                                                    @RequestParam @Nullable String supplier,
                                                    @RequestParam @Nullable String type,
                                                    @RequestParam @Nullable Map<String, String> params
-                                                   ){
+    ) {
         return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
 
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> searchProduct(@PathVariable Integer productId){
-        return null;
+    public ResponseEntity<Product> searchProductById(@PathVariable String productId) {
+        return ResponseEntity.status(200).body(productService.searchProductById(productId));
     }
-
-
 
 
 }
