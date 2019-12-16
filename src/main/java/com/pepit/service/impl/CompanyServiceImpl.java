@@ -219,7 +219,7 @@ public class CompanyServiceImpl implements CompanyService {
                 parsedObject.put(prop.getTechnicalName(), parsedObject.get(prop.getTechnicalName()).asInt());
         });
 
-        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString())));
+        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString()));
 
         DbDoc outerObject = new DbDocImpl().add("supplierId", new JsonNumber().setValue(supplierId))
                 .add("type", new JsonString().setValue(typeProduit))
