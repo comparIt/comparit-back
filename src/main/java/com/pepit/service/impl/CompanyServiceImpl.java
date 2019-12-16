@@ -219,14 +219,7 @@ public class CompanyServiceImpl implements CompanyService {
                 parsedObject.put(prop.getTechnicalName(), parsedObject.get(prop.getTechnicalName()).asInt());
         });
 
-        parsedObject.put("doors", parsedObject.get("doors").asInt());
-        //TODO a voir si on laisse prix, pour l'instant on l'ajoute comme properties pour mocker les intervals de prix
-        Random random = new Random();
-        int min = 1;
-        int max = 10;
-        Integer randomInt = random.nextInt(max - min + 1) + min;
-
-        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString())).add("prix", new JsonNumber().setValue(randomInt.toString()));
+        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString()));
 
         DbDoc outerObject = new DbDocImpl().add("supplierId", new JsonNumber().setValue(supplierId))
                 .add("type", new JsonString().setValue(typeProduit))
