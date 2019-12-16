@@ -17,6 +17,7 @@ public class WebsiteConfigurationServiceImpl implements WebsiteConfigurationServ
         this.websiteConfigurationRepository = websiteConfigurationRepository;
     }
 
+    @Override
     public WebsiteConfiguration findOneById(Integer websiteConfiguration) throws ReferentielRequestException {
         return websiteConfigurationRepository.findById(websiteConfiguration).orElseThrow(ReferentielRequestException::new);
     }

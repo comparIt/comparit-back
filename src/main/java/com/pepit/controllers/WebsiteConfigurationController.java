@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(Routes.WEBSITECONFIG)
+@RequestMapping(Routes.WEBSITE_CONFIG)
 public class WebsiteConfigurationController {
 
     private WebsiteConfigurationService websiteConfigurationService;
@@ -22,16 +22,17 @@ public class WebsiteConfigurationController {
         this.websiteConfigurationBusiness = websiteConfigurationBusiness;
     }
 
-    @CrossOrigin
+
     @GetMapping("/{websiteConfigurationId}")
     @ResponseBody
     public ResponseEntity<WebsiteConfiguration> getWebsiteConfigurationById(@PathVariable("websiteConfigurationId") Integer websiteConfigurationId) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationService.findOneById(websiteConfigurationId));
     }
 
-    @CrossOrigin
-    @PostMapping("/saveWebsiteConfiguration")
-    public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestParam("websiteConfiguration") WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
+
+    @PutMapping("/saveWebsiteConfiguration")
+    @ResponseBody
+    public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestBody WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
     }
 }

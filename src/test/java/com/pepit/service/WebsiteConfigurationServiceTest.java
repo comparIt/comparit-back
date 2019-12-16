@@ -8,12 +8,10 @@ import com.pepit.repository.WebsiteConfigurationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +46,7 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
                 .id(modelId)
                 .name("model_test")
                 .technicalName("test")
-                .isActivated(true)
+                .activated(true)
                 .modelProperties(new ArrayList<>())
                 .createdAt(null)
                 .updatedAt(null)
@@ -59,13 +57,13 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
 
         websiteConfigurationId = 1;
         websiteConfiguration = WebsiteConfiguration.builder()
-                .id(websiteConfigurationId)
-                .color1("blue")
-                .color2("white")
-                .color3("red")
+                .adminId(websiteConfigurationId)
+                .colorPrimary("blue")
+                .colorSecondary("white")
+                .colorSecondary2("red")
                 .logo("/tmp/logo.svg")
                 .featAnalytic(true)
-                .modelList(modelList)
+                .models(modelList)
                 .createdAt(null)
                 .updatedAt(null)
                 .build();
@@ -74,11 +72,6 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
     private void initMocks() {
         Mockito.when(websiteConfigurationRepository.findById(websiteConfigurationId)).thenReturn(Optional.ofNullable(websiteConfiguration));
         Mockito.when(websiteConfigurationRepository.save(websiteConfiguration)).thenReturn(websiteConfiguration);
-    }
-
-    @Test
-    public void testSample() {
-        assertTrue(true);
     }
 
     @Test
@@ -97,10 +90,11 @@ public class WebsiteConfigurationServiceTest extends CompareITBackApplicationTes
         Assert.assertEquals(websiteConfiguration, websiteConfigurationService.save(websiteConfiguration));
     }
 
-//    @Test
-//    public void saveWebconfigurationKO() {
-//        Mockito.when(websiteConfigurationRepository.save(Mockito.any())).thenThrow(new ReferentielRequestException());
-//        websiteConfigurationService.save(websiteConfiguration);
-//    }
+
+    @Test(expected = Exception.class)
+    public void saveWebconfigurationKO() {
+        Mockito.when(websiteConfigurationRepository.save(websiteConfiguration)).thenThrow(new Exception());
+        websiteConfigurationService.save(websiteConfiguration);
+    }
 
 }

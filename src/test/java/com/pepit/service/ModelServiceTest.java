@@ -7,12 +7,9 @@ import com.pepit.repository.ModelRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
                 .id(modelId)
                 .name("model_test")
                 .technicalName("test")
-                .isActivated(true)
+                .activated(true)
                 .modelProperties(new ArrayList<>())
                 .createdAt(null)
                 .updatedAt(null)
@@ -57,22 +54,30 @@ public class ModelServiceTest extends CompareITBackApplicationTests {
     }
 
     private void initMocks() {
-        Mockito.when(modelService.save(model)).thenReturn(model);
+        Mockito.when(modelRepository.save(Mockito.any(Model.class))).thenReturn(model);
+        Mockito.when(modelRepository.saveAll(Mockito.anyList())).thenReturn(modelList);
     }
+
 
     @Test
-    public void testSample() {
-        assertTrue(true);
+    public void saveOk() {
+        Assert.assertEquals(model, modelService.save(model));
     }
 
-    @Test
-    public void saveOk(){
-        Assert.assertEquals(model,modelService.save(model));
+   @Test(expected = Exception.class)
+    public void saveKO() {
+        Mockito.when(modelService.save(model)).thenThrow(new Exception());
+        modelService.save(model);
     }
 
-//    @Test(expected = ReferentielRequestException.class)
-//    public void saveKO(){
-//        Mockito.when(modelService.save(model)).thenThrow(new ReferentielRequestException());
-//        modelService.save(model);
-//    }
+   @Test
+    public void saveAllOk(){
+        Assert.assertEquals(modelList,modelService.saveAll(modelList));
+    }
+
+   @Test(expected = Exception.class)
+    public void saveAllKo(){
+        Mockito.when(modelService.saveAll(modelList)).thenThrow(new Exception());
+        modelService.saveAll(modelList);
+    }
 }

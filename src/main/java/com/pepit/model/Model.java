@@ -31,8 +31,11 @@ public class Model {
     @Column(name = "technicalName")
     String technicalName;
 
-    @Column(name = "isActivated")
-    boolean isActivated;
+    @Column(name = "activated")
+    boolean activated;
+
+    @Column(name = "imageURL")
+    String imageURL;
 
     @OneToMany
     List<ModelProperty> modelProperties;
@@ -44,5 +47,11 @@ public class Model {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
 
 }

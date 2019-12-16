@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -43,8 +44,22 @@ public class ModelProperty {
     @Column(name = "mandatory")
     boolean mandatory;
 
-    @ManyToOne
-    Model model;
+    @Column(name = "activated")
+    boolean activated;
+
+    @Column(name = "min", columnDefinition = "int default 0", nullable=false)
+    Integer min;
+
+    @Column(name = "max", columnDefinition = "int default 0", nullable=false)
+    Integer max;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "mp_values",
+            joinColumns = @JoinColumn(name = "MP_ID")
+    )
+    @Column(name = "mp_values")
+    List<String> values;
 
     @CreatedDate
     @Column(name = "createdat")
@@ -53,5 +68,11 @@ public class ModelProperty {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
 
 }

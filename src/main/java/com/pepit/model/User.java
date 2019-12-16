@@ -60,4 +60,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     public Collection<Roles> roles;
 
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
+
 }

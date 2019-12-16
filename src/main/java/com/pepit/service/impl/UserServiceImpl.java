@@ -9,6 +9,7 @@ import com.pepit.security.Hashing;
 import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,13 +37,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Invalid username or password."));
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
+                AuthorityUtils.commaSeparatedStringToAuthorityList(this.fromRoleListToCommaSeparatedRoles(user)));
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Roles> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(roles.toString()))
-                .collect(Collectors.toList());
+    private String fromRoleListToCommaSeparatedRoles(User user){
+        return user.getRoles().stream().map(Enum::name).collect(Collectors.joining(","));
     }
 
     public UserDto create(UserDto userDto) {
@@ -57,5 +56,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(user);
         return userConverter.entityToDto(user);
     }
+
 
 }

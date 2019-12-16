@@ -53,4 +53,10 @@ public class Filter {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
 }

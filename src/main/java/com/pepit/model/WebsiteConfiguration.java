@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,18 +23,19 @@ public class WebsiteConfiguration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    int id;
+    @Column(name = "adminId")
+    int adminId;
 
-    @Column(name = "color1")
-    String color1;
+    @Column(name = "colorPrimary")
+    String colorPrimary;
 
-    @Column(name = "color2")
-    String color2;
+    @Column(name = "colorSecondary")
+    String colorSecondary;
 
-    @Column(name = "color3")
-    String color3;
+    @Column(name = "colorSecondary2")
+    String colorSecondary2;
 
+    @Nullable
     @Column(name="logo")
     String logo;
     
@@ -41,7 +43,7 @@ public class WebsiteConfiguration {
     boolean featAnalytic;
 
     @OneToMany
-    private List<Model> modelList;
+    private List<Model> models;
 
     @CreatedDate
     @Column(name = "createdat")
@@ -50,5 +52,14 @@ public class WebsiteConfiguration {
     @LastModifiedDate
     @Column(name = "updatedat")
     LocalDateTime updatedAt;
+
+    public void update() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
+    }
+
+    public Model getModelByTechnicalName(String technicalName) {
+        return this.models.stream().filter(model -> technicalName.equals(model.technicalName)).findFirst().orElse(null);
+    }
 
 }
