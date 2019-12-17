@@ -2,6 +2,7 @@ package com.pepit.controllers;
 
 
 import com.pepit.constants.Routes;
+import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
 import com.pepit.model.Product;
 import com.pepit.service.ProductService;
@@ -37,9 +38,8 @@ public class ProductController {
 
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> searchProductById(@PathVariable String productId) {
+    public ResponseEntity<ProductDto> searchProductById(@PathVariable String productId) {
         return ResponseEntity.status(200).body(productService.searchProductById(productId));
     }
-
 
 }

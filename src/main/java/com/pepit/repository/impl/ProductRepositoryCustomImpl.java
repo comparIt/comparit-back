@@ -110,18 +110,23 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public Product getProductById(String productId) {
-        Product product = new Product();
+    public ProductDto getProductById(String productId) {
         DbDoc doc = productDB.getCollection().getOne(productId);
 
+
+        ProductDto productDto = new ProductDto();
+
+
+        String jsonP = "{\"properties\": " + doc.toString() + "}";
+
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String jsonP = "{\"properties\": " + doc.get("properties").toString() + "}";
-            product.setId(productId);
-            product.setProperties(jsonP);
-        } catch (Exception e) {
+            productDto = objectMapper.readValue(doc.toString(), ProductDto.class);
+        } catch (IOException e) {
             log.error("error : ", e);
         }
 
-        return product;
+
+        return productDto;
     }
 }

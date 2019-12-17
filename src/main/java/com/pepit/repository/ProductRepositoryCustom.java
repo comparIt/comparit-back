@@ -18,5 +18,5 @@ public interface ProductRepositoryCustom {
     void removeDoc(String query);
     Long count();
 
-    Product getProductById(String productId);
+    ProductDto getProductById(String productId);
 }

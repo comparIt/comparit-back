@@ -1,5 +1,6 @@
 package com.pepit.service;
 
+import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
 import com.pepit.model.Product;
 
@@ -9,5 +10,5 @@ public interface ProductService {
 
     ProductPagineDTO search(Map<String, String> params, String order, Integer page, String supplier, String type);
 
-    Product searchProductById(String productId);
+    ProductDto searchProductById(String productId);
 }
