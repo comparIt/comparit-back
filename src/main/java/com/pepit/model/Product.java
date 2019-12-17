@@ -26,7 +26,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    String id;
 
     @Type(type = "json")
     @Column(columnDefinition = "json")
