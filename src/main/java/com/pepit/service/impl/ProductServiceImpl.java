@@ -2,7 +2,6 @@ package com.pepit.service.impl;
 
 import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
-import com.pepit.model.Product;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.ProductService;
 import com.pepit.util.Query;

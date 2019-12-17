@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
-import com.pepit.model.Product;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
@@ -112,21 +111,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Override
     public ProductDto getProductById(String productId) {
         DbDoc doc = productDB.getCollection().getOne(productId);
-
-
         ProductDto productDto = new ProductDto();
-
-
-        String jsonP = "{\"properties\": " + doc.toString() + "}";
-
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             productDto = objectMapper.readValue(doc.toString(), ProductDto.class);
         } catch (IOException e) {
             log.error("error : ", e);
         }
-
-
         return productDto;
     }
 }

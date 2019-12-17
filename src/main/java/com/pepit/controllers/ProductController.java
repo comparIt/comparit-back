@@ -4,7 +4,6 @@ package com.pepit.controllers;
 import com.pepit.constants.Routes;
 import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
-import com.pepit.model.Product;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
