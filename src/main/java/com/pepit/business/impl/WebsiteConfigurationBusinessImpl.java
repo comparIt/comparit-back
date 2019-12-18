@@ -7,10 +7,12 @@ import com.pepit.model.WebsiteConfiguration;
 import com.pepit.service.ModelPropertyService;
 import com.pepit.service.ModelService;
 import com.pepit.service.WebsiteConfigurationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBusiness {
 
     private WebsiteConfigurationService websiteConfigurationService;
@@ -36,6 +38,7 @@ public class WebsiteConfigurationBusinessImpl implements WebsiteConfigurationBus
             websiteConfiguration.update();
             return websiteConfigurationService.save(websiteConfiguration);
         } catch (Exception e) {
+            log.error("error : ", e);
             throw new ReferentielRequestException();
         }
     }
