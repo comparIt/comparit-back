@@ -33,7 +33,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         log.info("passed");
         for (DbDoc doc : docList) {
 
-            log.info(doc.toString());
+            // log.info(doc.toString());
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {

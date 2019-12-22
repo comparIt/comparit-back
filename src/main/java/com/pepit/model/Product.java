@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Builder
-@Entity
 @TypeDefs({
         @TypeDef(name = "json", typeClass = JsonStringType.class)
 })
