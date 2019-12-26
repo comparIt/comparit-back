@@ -2,9 +2,8 @@ package com.pepit.service.impl;
 
 import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
-import com.pepit.repository.impl.ProductRepositoryCustomImpl;
-import com.pepit.util.Query;
 import com.pepit.repository.ProductRepositoryCustom;
+import com.pepit.util.Query;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

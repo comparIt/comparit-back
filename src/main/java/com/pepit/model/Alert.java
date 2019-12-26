@@ -34,9 +34,6 @@ public class Alert {
     @Column(name = "isConsulted")
     boolean isConsulted;
 
-    @Column(name = "isAlerteMail")
-    boolean isAlerteMail;
-
     @Column(name = "dateConsulted")
     LocalDateTime dateConsulted;
 
