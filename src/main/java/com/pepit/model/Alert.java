@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@FieldDefaults(level = AccessLevel.PUBLIC)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -27,6 +27,9 @@ public class Alert {
 
     @ManyToOne
     private Filter filter;
+
+    @ManyToOne
+    private User user;
 
     @ElementCollection
     List<String> listProductsId;

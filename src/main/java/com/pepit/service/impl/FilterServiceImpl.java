@@ -28,7 +28,22 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public List<FilterDto> getAllFiltersByUser(User userByToken) {
-        return filterConverter.entityListToDtoList(filterRepository.findAllByUsers(userByToken));
+    public List<Filter> getAllFiltersByUser(User userByToken) {
+        return filterRepository.findAllByUsers(userByToken);
+    }
+
+    @Override
+    public List<Filter> getAllFilterWithAlertActivatedAndDaily() {
+        return filterRepository.findAllByIsAlertIsTrueAndDaily();
+    }
+
+    @Override
+    public List<Filter> getAllFilterWithAlertActivatedAndWeekly() {
+        return filterRepository.findAllByIsAlertIsTrueAndWeekly();
+    }
+
+    @Override
+    public List<Filter> getAllFilterWithAlertActivatedAndMonthly() {
+        return filterRepository.findAllByIsAlertIsTrueAndMonthly();
     }
 }

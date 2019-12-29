@@ -10,5 +10,9 @@ public interface FilterService {
 
     FilterDto create(Filter filter);
 
-    List<FilterDto> getAllFiltersByUser(User userByToken);
+    List<Filter> getAllFiltersByUser(User userByToken);
+
+    List<Filter> getAllFilterWithAlertActivatedAndDaily();
+    List<Filter> getAllFilterWithAlertActivatedAndWeekly();
+    List<Filter> getAllFilterWithAlertActivatedAndMonthly();
 }

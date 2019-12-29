@@ -40,7 +40,7 @@ public class FilterBusiness {
     }
 
     public List<FilterDto> getAllFiltersByUser() {
-        return filterService.getAllFiltersByUser(userService.getUserByToken());
+        return filterConverter.entityListToDtoList(filterService.getAllFiltersByUser(userService.getUserByToken()));
     }
 
 }
