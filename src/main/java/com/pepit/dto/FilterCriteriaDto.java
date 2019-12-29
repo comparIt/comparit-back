@@ -13,6 +13,7 @@ import java.util.HashMap;
 @NoArgsConstructor
 public class FilterCriteriaDto {
     String alertType;
+    String category;
     HashMap<Integer, String> criterias;
     Boolean isAlert;
 

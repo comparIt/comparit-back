@@ -31,6 +31,7 @@ public class FilterBusiness {
     public FilterDto createFromCriteriaDto(FilterCriteriaDto filterCriteriaDto) {
         FilterDto filterDto = FilterDto.builder()
                 .user(userConverter.entityToDto(userService.getUserByToken()))
+                .category(filterCriteriaDto.getCategory())
                 .alertType(Enum.valueOf(TypeAlertEnum.class, filterCriteriaDto.getAlertType()))
                 .criterias(filterCriteriaDto.getCriterias())
                 .isAlert(filterCriteriaDto.getIsAlert())
