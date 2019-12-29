@@ -8,4 +8,6 @@ public interface UserService extends UserDetailsService {
 
     UserDto create(UserDto userDto);
 
+    User getUserByToken();
+
 }

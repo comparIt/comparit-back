@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @TypeDefs({
         @TypeDef(name = "json", typeClass = JsonStringType.class)
 })
-@Table(name = "Product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

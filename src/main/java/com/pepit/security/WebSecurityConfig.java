@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(Routes.AUTH).permitAll()
-                .antMatchers(Routes.HEARTBEAT).hasRole("ADMIN")
+                .antMatchers(Routes.HEARTBEAT).permitAll()
                 .antMatchers(Routes.USER).permitAll()
                 .antMatchers(Routes.PRODUCT + "/*").permitAll()
                 .antMatchers(HttpMethod.GET, Routes.WEBSITE_CONFIG+"/*").permitAll()
