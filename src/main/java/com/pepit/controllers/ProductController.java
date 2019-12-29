@@ -2,8 +2,8 @@ package com.pepit.controllers;
 
 
 import com.pepit.constants.Routes;
+import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
-import com.pepit.model.Product;
 import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,17 +31,14 @@ public class ProductController {
                                                    @RequestParam @Nullable String supplier,
                                                    @RequestParam @Nullable String type,
                                                    @RequestParam @Nullable Map<String, String> params
-                                                   ){
+    ) {
         return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
 
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> searchProduct(@PathVariable Integer productId){
-        return null;
+    public ResponseEntity<ProductDto> searchProductById(@PathVariable String productId) {
+        return ResponseEntity.status(200).body(productService.searchProductById(productId));
     }
-
-
-
 
 }

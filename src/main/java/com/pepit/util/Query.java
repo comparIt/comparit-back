@@ -58,7 +58,7 @@ public class Query {
         if (sortingPredicate != null) {
             String field = sortingPredicate.startsWith("-") ? sortingPredicate.substring(1) : sortingPredicate;
             String direction = sortingPredicate.startsWith("-") ? "DESC" : "ASC";
-            this.sort = field + " " + direction;
+            this.sort = PROPERTIES + field + " " + direction;
         }
         return this;
     }
@@ -133,7 +133,7 @@ public class Query {
     }
 
     public Statement<FindStatement, DocResult> find(Collection collection) {
-        FindStatement statement = collection.find(this.criteriasAsStatement());
+        FindStatement statement = collection.find(this.criteriasAsStatement()).sort(this.sort);
         statement.offset(this.offset);
         statement.bind(this.boundParams);
         return statement;
