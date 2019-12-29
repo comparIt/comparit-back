@@ -33,6 +33,9 @@ public class Filter {
     @Column(name = "alertType")
     TypeAlertEnum alertType;
 
+    @Column(name = "category")
+    String category;
+
     @ElementCollection
     @Column(name = "criterias")
     Map<ModelProperty, String> criterias;

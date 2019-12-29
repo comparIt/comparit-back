@@ -22,6 +22,8 @@ public class FilterDto {
 
     TypeAlertEnum alertType;
 
+    String category;
+
     HashMap<Integer, String> criterias;
 
     List<Alert> alerts;
