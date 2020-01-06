@@ -39,10 +39,7 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
     @Override
     public Filter dtoToEntity(FilterDto filterDto) {
         Map<ModelProperty, String> mapForFilterDto = new HashMap<>();
-        if (!filterDto.getCriterias().isEmpty())
-            filterDto.getCriterias().forEach((key, value) -> mapForFilterDto.put(modelPropertyService.getById(key), value));
-        else
-            throw new DataProvidedException();
+        filterDto.getCriterias().forEach((key, value) -> mapForFilterDto.put(modelPropertyService.getById(key), value));
         return Filter.builder()
                 .users(userConverter.dtoToEntity(filterDto.getUser()))
                 .isAlert(filterDto.isAlert())
@@ -51,6 +48,7 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
                 .createdAt(filterDto.getCreatedAt())
                 .updatedAt(filterDto.getUpdatedAt())
                 .criterias(mapForFilterDto)
+                .orderBy(filterDto.orderBy)
                 .alerts(filterDto.getAlerts())
                 .build();
     }

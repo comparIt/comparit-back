@@ -26,6 +26,8 @@ public class FilterDto {
 
     HashMap<Integer, String> criterias;
 
+    String orderBy;
+
     List<Alert> alerts;
 
     boolean isAlert;

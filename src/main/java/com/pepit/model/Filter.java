@@ -40,6 +40,9 @@ public class Filter {
     @Column(name = "criterias")
     Map<ModelProperty, String> criterias;
 
+    @Column(name = "orderBy")
+    String orderBy;
+
     @OneToMany
     List<Alert> alerts;
 
