@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Invalid username or password."));
     }
 
+    @Override
+    public UserDto getUserDtoByToken() {
+        return userConverter.entityToDto(getUserByToken());
+    }
+
+
     private String fromRoleListToCommaSeparatedRoles(User user){
         return user.getRoles().stream().map(Enum::name).collect(Collectors.joining(","));
     }

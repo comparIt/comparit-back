@@ -10,4 +10,6 @@ public interface UserService extends UserDetailsService {
 
     User getUserByToken();
 
+    UserDto getUserDtoByToken();
+
 }
