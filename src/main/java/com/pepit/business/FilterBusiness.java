@@ -6,6 +6,7 @@ import com.pepit.converters.UserConverter;
 import com.pepit.dto.FilterCriteriaDto;
 import com.pepit.dto.FilterDto;
 import com.pepit.model.Filter;
+import com.pepit.model.User;
 import com.pepit.service.FilterService;
 import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,7 @@ public class FilterBusiness {
         return filterService.getAllFiltersByUser(userService.getUserByToken());
     }
 
+    public void removeFilter(Integer id) {
+        filterService.removeFilter(id, userService.getUserByToken());
+    }
 }

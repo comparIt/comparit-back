@@ -6,6 +6,7 @@ import com.pepit.dto.FilterCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.server.authentication.RedirectServerAuthenticationEntryPoint;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +24,11 @@ public class FilterController {
     @GetMapping
     public ResponseEntity getAllFilters() {
         return ResponseEntity.status(200).body(filterBusiness.getAllFiltersByUser());
+    }
+
+    @DeleteMapping(path="/{id}")
+    public ResponseEntity deleteFilterById(@PathVariable Integer id){
+        return ResponseEntity.status(202).body(null);
     }
 
 

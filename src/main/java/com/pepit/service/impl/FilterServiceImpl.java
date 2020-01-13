@@ -1,8 +1,9 @@
 package com.pepit.service.impl;
 
-import com.pepit.controllers.FilterController;
 import com.pepit.converters.FilterConverter;
 import com.pepit.dto.FilterDto;
+import com.pepit.exception.DataProvidedException;
+import com.pepit.exception.UnauthorizedException;
 import com.pepit.model.Filter;
 import com.pepit.model.User;
 import com.pepit.repository.FilterRepository;
@@ -30,5 +31,14 @@ public class FilterServiceImpl implements FilterService {
     @Override
     public List<FilterDto> getAllFiltersByUser(User userByToken) {
         return filterConverter.entityListToDtoList(filterRepository.findAllByUsers(userByToken));
+    }
+
+    @Override
+    public void removeFilter(Integer id, User user) {
+        Filter filter = filterRepository.findById(id).orElseThrow(DataProvidedException::new);
+        if (filter.getUsers().equals(user))
+            filterRepository.delete(filter);
+        else
+            throw new UnauthorizedException();
     }
 }
