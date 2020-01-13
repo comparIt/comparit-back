@@ -28,6 +28,7 @@ public class FilterController {
 
     @DeleteMapping(path="/{id}")
     public ResponseEntity deleteFilterById(@PathVariable Integer id){
+        filterBusiness.removeFilter(id);
         return ResponseEntity.status(202).body(null);
     }
 
