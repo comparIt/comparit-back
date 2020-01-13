@@ -5,6 +5,7 @@ import com.pepit.exception.DataProvidedException;
 import com.pepit.model.Filter;
 import com.pepit.model.ModelProperty;
 import com.pepit.service.ModelPropertyService;
+import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
     ModelPropertyService modelPropertyService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     UserConverter userConverter;
 
     @Override
@@ -25,7 +29,7 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
         HashMap<Integer, String> mapForFilter = new HashMap<>();
         filter.getCriterias().forEach((key, value) -> mapForFilter.put(key.id, value));
         return FilterDto.builder()
-                .user(userConverter.entityToDto(filter.getUsers()))
+                .user(userService.getUserDtoByToken())
                 .isAlert(filter.isAlert())
                 .category(filter.getCategory())
                 .alertType(filter.getAlertType())
