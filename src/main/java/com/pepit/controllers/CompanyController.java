@@ -49,7 +49,7 @@ public class CompanyController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity CountData(){
+    public ResponseEntity countData(){
         return ResponseEntity.status(200).body(companyService.countData());
     }
 
