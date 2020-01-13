@@ -35,4 +35,9 @@ public class WebsiteConfigurationController {
     public ResponseEntity<WebsiteConfiguration> saveWebsiteConfiguration(@RequestBody WebsiteConfiguration websiteConfiguration) throws ReferentielRequestException {
         return ResponseEntity.status(200).body(websiteConfigurationBusiness.saveWebsiteConfiguration(websiteConfiguration));
     }
+
+    @GetMapping("/count")
+    public ResponseEntity count(){
+        return ResponseEntity.status(200).body(websiteConfigurationService.count());
+    }
 }

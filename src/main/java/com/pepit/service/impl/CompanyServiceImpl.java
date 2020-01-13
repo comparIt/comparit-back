@@ -35,11 +35,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     private ProductRepositoryCustom productRepository;
     private WebsiteConfigurationService websiteConfigurationService;
+    private CompanyRepository companyRepository;
 
     @Autowired
-    public CompanyServiceImpl(ProductRepositoryCustom productRepository, WebsiteConfigurationService websiteConfigurationService) {
+    public CompanyServiceImpl(ProductRepositoryCustom productRepository, WebsiteConfigurationService websiteConfigurationService, CompanyRepository companyRepository) {
         this.productRepository = productRepository;
         this.websiteConfigurationService = websiteConfigurationService;
+        this.companyRepository = companyRepository;
     }
 
     public String fromUrlToDb(String url, String supplierId, String type) {
@@ -225,5 +227,10 @@ public class CompanyServiceImpl implements CompanyService {
                 .add("type", new JsonString().setValue(typeProduit))
                 .add("properties", properties);
         return outerObject;
+    }
+
+    @Override
+    public long countData() {
+        return companyRepository.count();
     }
 }

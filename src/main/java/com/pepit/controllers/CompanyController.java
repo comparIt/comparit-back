@@ -48,4 +48,9 @@ public class CompanyController {
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity CountData(){
+        return ResponseEntity.status(200).body(companyService.countData());
+    }
+
 }

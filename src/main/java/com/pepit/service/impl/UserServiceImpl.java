@@ -72,5 +72,10 @@ public class UserServiceImpl implements UserService {
         return user.getRoles().stream().map(Enum::name).collect(Collectors.joining(","));
     }
 
+    @Override
+    public long count() {
+        return userRepository.count();
+    }
+
 
 }

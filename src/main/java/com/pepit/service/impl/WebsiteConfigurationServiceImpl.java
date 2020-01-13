@@ -26,4 +26,9 @@ public class WebsiteConfigurationServiceImpl implements WebsiteConfigurationServ
     public WebsiteConfiguration save(WebsiteConfiguration websiteConfiguration) {
         return websiteConfigurationRepository.save(websiteConfiguration);
     }
+
+    @Override
+    public long count() {
+        return websiteConfigurationRepository.count();
+    }
 }

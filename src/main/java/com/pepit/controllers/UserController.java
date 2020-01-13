@@ -29,4 +29,9 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.getUserDtoByToken());
     }
 
+    @GetMapping("/count")
+    public ResponseEntity count(){
+        return ResponseEntity.status(200).body(userService.count());
+    }
+
 }

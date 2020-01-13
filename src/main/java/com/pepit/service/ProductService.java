@@ -10,4 +10,6 @@ public interface ProductService {
     ProductPagineDTO search(Map<String, String> params, String order, Integer page, String supplier, String type);
 
     ProductDto searchProductById(String productId);
+
+    long count();
 }

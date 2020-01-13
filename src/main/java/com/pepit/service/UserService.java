@@ -12,4 +12,5 @@ public interface UserService extends UserDetailsService {
 
     UserDto getUserDtoByToken();
 
+    long count();
 }

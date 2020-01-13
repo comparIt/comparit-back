@@ -50,4 +50,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto searchProductById(String productId) {
         return productRepositoryCustom.getProductById(productId);
     }
+
+    @Override
+    public long count() {
+        return productRepositoryCustom.count();
+    }
 }

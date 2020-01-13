@@ -31,4 +31,9 @@ public class FilterServiceImpl implements FilterService {
     public List<FilterDto> getAllFiltersByUser(User userByToken) {
         return filterConverter.entityListToDtoList(filterRepository.findAllByUsers(userByToken));
     }
+
+    @Override
+    public long countData() {
+        return filterRepository.count();
+    }
 }

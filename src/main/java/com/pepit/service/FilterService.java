@@ -11,4 +11,6 @@ public interface FilterService {
     FilterDto create(Filter filter);
 
     List<FilterDto> getAllFiltersByUser(User userByToken);
+
+    long countData();
 }

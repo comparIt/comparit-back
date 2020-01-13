@@ -41,4 +41,8 @@ public class ProductController {
         return ResponseEntity.status(200).body(productService.searchProductById(productId));
     }
 
+    @GetMapping("/count")
+    public ResponseEntity count(){
+        return ResponseEntity.status(200).body(productService.count());
+    }
 }
