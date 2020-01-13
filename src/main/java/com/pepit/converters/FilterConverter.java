@@ -29,6 +29,7 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
         HashMap<Integer, String> mapForFilter = new HashMap<>();
         filter.getCriterias().forEach((key, value) -> mapForFilter.put(key.id, value));
         return FilterDto.builder()
+                .id(filter.getId())
                 .user(userService.getUserDtoByToken())
                 .isAlert(filter.isAlert())
                 .category(filter.getCategory())
@@ -45,6 +46,7 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
         Map<ModelProperty, String> mapForFilterDto = new HashMap<>();
         filterDto.getCriterias().forEach((key, value) -> mapForFilterDto.put(modelPropertyService.getById(key), value));
         return Filter.builder()
+                .id(filterDto.getId())
                 .users(userConverter.dtoToEntity(filterDto.getUser()))
                 .isAlert(filterDto.isAlert())
                 .category(filterDto.getCategory())

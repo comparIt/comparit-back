@@ -18,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 public class FilterDto {
 
+    int id;
+
     UserDto user;
 
     TypeAlertEnum alertType;

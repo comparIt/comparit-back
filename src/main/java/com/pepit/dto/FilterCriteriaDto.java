@@ -12,6 +12,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FilterCriteriaDto {
+    int id;
     String alertType;
     String category;
     HashMap<Integer, String> criterias;
