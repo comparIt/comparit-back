@@ -37,6 +37,7 @@ public class FilterBusiness {
                 .alertType(Enum.valueOf(TypeAlertEnum.class, filterCriteriaDto.getAlertType()))
                 .criterias(filterCriteriaDto.getCriterias())
                 .isAlert(filterCriteriaDto.getIsAlert())
+                .orderBy(filterCriteriaDto.getOrderBy())
                 .build();
         Filter filter = filterConverter.dtoToEntity(filterDto);
         return filterService.create(filter);

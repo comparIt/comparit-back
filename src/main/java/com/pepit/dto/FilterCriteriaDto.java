@@ -15,6 +15,7 @@ public class FilterCriteriaDto {
     int id;
     String alertType;
     String category;
+    String orderBy;
     HashMap<Integer, String> criterias;
     Boolean isAlert;
 

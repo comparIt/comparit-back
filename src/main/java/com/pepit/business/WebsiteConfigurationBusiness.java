@@ -34,7 +34,7 @@ public class WebsiteConfigurationBusiness {
             websiteConfiguration.update();
             return websiteConfigurationService.save(websiteConfiguration);
         } catch (Exception e) {
-            throw new ReferentielRequestException();
+            throw new ReferentielRequestException(e);
         }
     }
 }

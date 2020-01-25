@@ -34,6 +34,7 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
                 .isAlert(filter.isAlert())
                 .category(filter.getCategory())
                 .alertType(filter.getAlertType())
+                .orderBy(filter.getOrderBy())
                 .createdAt(filter.getCreatedAt())
                 .updatedAt(filter.getUpdatedAt())
                 .criterias(mapForFilter)

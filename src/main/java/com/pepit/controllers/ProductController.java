@@ -26,11 +26,11 @@ public class ProductController {
 
 
     @GetMapping(value = "/search")
-    public ResponseEntity<ProductPagineDTO> search(@RequestParam @Nullable String order,
-                                                   @RequestParam @Nullable Integer page,
-                                                   @RequestParam @Nullable String supplier,
-                                                   @RequestParam @Nullable String type,
-                                                   @RequestParam @Nullable Map<String, String> params
+    public ResponseEntity<ProductPagineDTO> search(@RequestParam(required = false) String order,
+                                                   @RequestParam(required = false) Integer page,
+                                                   @RequestParam(required = false) String supplier,
+                                                   @RequestParam(required = false) String type,
+                                                   @RequestParam(required = false) Map<String, String> params
     ) {
         return ResponseEntity.status(200).body(productService.search(params, order, page, supplier, type));
     }
