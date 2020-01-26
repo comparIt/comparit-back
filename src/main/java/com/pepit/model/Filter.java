@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Builder
 @Entity
 @Table(name = "Filter")
+@Transactional
 public class Filter {
 
     @Id
@@ -43,14 +45,11 @@ public class Filter {
     @Column(name = "orderBy")
     String orderBy;
 
-    @OneToMany
-    List<Alert> alerts;
-
     @Column(name = "isEmail")
     boolean isEmail;
 
     @Column(name = "isAlert")
-    boolean isAlert;
+    boolean alert;
 
     @CreatedDate
     @Column(name = "createdat")
