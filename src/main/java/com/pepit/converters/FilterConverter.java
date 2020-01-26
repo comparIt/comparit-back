@@ -38,7 +38,6 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
                 .createdAt(filter.getCreatedAt())
                 .updatedAt(filter.getUpdatedAt())
                 .criterias(mapForFilter)
-                .alerts(filter.getAlerts())
                 .build();
     }
 
@@ -49,14 +48,13 @@ public class FilterConverter extends GenericsConverter<Filter, FilterDto> {
         return Filter.builder()
                 .id(filterDto.getId())
                 .users(userConverter.dtoToEntity(filterDto.getUser()))
-                .isAlert(filterDto.isAlert())
+                .alert(filterDto.isAlert())
                 .category(filterDto.getCategory())
                 .alertType(filterDto.getAlertType())
                 .createdAt(filterDto.getCreatedAt())
                 .updatedAt(filterDto.getUpdatedAt())
                 .criterias(mapForFilterDto)
                 .orderBy(filterDto.orderBy)
-                .alerts(filterDto.getAlerts())
                 .build();
     }
 }

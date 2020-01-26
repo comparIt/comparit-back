@@ -13,4 +13,12 @@ public interface FilterService {
     List<FilterDto> getAllFiltersByUser(User userByToken);
 
     void removeFilter(Integer id, User user);
+
+    List<Filter> getAllFilterWithAlertActivatedAndMinutes();
+
+    List<Filter> getAllFilterWithAlertActivatedAndDaily();
+
+    List<Filter> getAllFilterWithAlertActivatedAndWeekly();
+
+    List<Filter> getAllFilterWithAlertActivatedAndMonthly();
 }
