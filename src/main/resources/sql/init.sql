@@ -1,8 +1,8 @@
-INSERT IGNORE INTO compareIt.`user`
-(id, createdat, email, first_name, last_name, password, updatedat, company_id)
-VALUES(1, '2019-10-21 13:26:37.438', 'valentintartare59@gmail.com', 'test', 'test', '$2a$10$dRfKgYSqqyb4zVm5aaqhF.tHIWzQyZORBAq/KnSgdGrB0YI/ZWpga', NULL, NULL);
+INSERT IGNORE INTO compareIt.`user` (id, createdat, email, first_name, last_name, password, updatedat, company_id) VALUES
+    (1, '2019-10-21 13:26:37.438', 'test@test.fr', 'test', 'test', '$2a$10$dRfKgYSqqyb4zVm5aaqhF.tHIWzQyZORBAq/KnSgdGrB0YI/ZWpga', NULL, NULL),
+    (2, '2019-10-21 13:26:37.438', 'admin@test.fr', 'test', 'test', '$2a$10$dRfKgYSqqyb4zVm5aaqhF.tHIWzQyZORBAq/KnSgdGrB0YI/ZWpga', NULL, NULL);
 
-INSERT IGNORE INTO compareIt.roles (user_id, roles) VALUES(1, 'ROLE_ADMIN');
+INSERT IGNORE INTO compareIt.roles (user_id, roles) VALUES(1, 'ROLE_CUSTOMER'), (2, 'ROLE_ADMIN');
 
 INSERT IGNORE INTO `model` VALUES (1,_binary '','2019-11-27 10:42:33.256000','https://upload.wikimedia.org/wikipedia/commons/5/56/FardierdeCugnot20050111.jpg','Vehicules','cars','2019-11-27 10:42:33.256000'),
                                   (2,_binary '','2019-11-27 10:42:33.367000','https://images.samsung.com/is/image/samsung/p5/fr/home/curation/S10_488x488_hp.png','Telephones','phones','2019-11-27 10:42:33.367000');
