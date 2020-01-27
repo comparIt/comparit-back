@@ -34,7 +34,7 @@ public class MailSender {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(email));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("valentintartare59@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("[COMPARE-IT] Un filtre à remonté de nouveaux résultats !");
             message.setContent("<h1>Compare IT</h1> \n" +
                     "<h2>Un de vos filtres a de nouveaux résultats !</h2>\n" +
