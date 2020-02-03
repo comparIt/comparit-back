@@ -42,7 +42,7 @@ public class Company {
 
     @Column(name = "presentation")
     String presentation;
-    
+
     @OneToMany
     List<User> members;
 
