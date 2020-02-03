@@ -8,6 +8,7 @@ public class Routes {
     public static final String COMPANY = "/company";
     public static final String FILTER = "/filter";
     public static final String HEARTBEAT = "/heartbeat";
+    public static final String PROVIDER_CONTACT = "providerContact";
 
     public static final String MODEL = "/model";
     public static final String MODEL_PROPERTY = "/modelproperty";
