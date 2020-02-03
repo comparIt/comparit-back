@@ -3,6 +3,7 @@ package com.pepit.controllers;
 import com.pepit.constants.Routes;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+@Api(value = "CRUD operation for Compagny")
 @RestController
 @RequestMapping(Routes.COMPANY)
 public class CompanyController {

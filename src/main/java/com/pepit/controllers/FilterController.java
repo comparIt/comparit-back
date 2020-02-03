@@ -3,12 +3,14 @@ package com.pepit.controllers;
 import com.pepit.business.FilterBusiness;
 import com.pepit.constants.Routes;
 import com.pepit.dto.FilterCriteriaDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationEntryPoint;
 import org.springframework.web.bind.annotation.*;
 
+@Api(value = "CRUD operation for Alert")
 @RestController
 @RequestMapping(Routes.FILTER)
 public class FilterController {

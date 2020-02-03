@@ -5,10 +5,12 @@ import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.WebsiteConfiguration;
 import com.pepit.constants.Routes;
 import com.pepit.service.WebsiteConfigurationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Api(value = "CRUD operation for Website Configuration")
 @RestController
 @RequestMapping(Routes.WEBSITE_CONFIG)
 public class WebsiteConfigurationController {

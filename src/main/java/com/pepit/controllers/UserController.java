@@ -3,11 +3,13 @@ package com.pepit.controllers;
 import com.pepit.constants.Routes;
 import com.pepit.dto.UserDto;
 import com.pepit.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Api(value = "CRUD operation for User")
 @RestController
 @RequestMapping(Routes.USER)
 public class UserController {

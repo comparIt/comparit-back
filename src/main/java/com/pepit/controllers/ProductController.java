@@ -5,6 +5,7 @@ import com.pepit.constants.Routes;
 import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
 import com.pepit.service.ProductService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Api(value = "CRUD operation for Product")
 @RestController
 @RequestMapping(value = Routes.PRODUCT, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
