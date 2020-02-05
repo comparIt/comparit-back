@@ -44,16 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
-        User user = userConverter.dtoToEntity(userDto);
-        user.setPassword(this.bCryptPasswordEncoder.encode(Hashing.sha256(userDto.getPassword())));
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            user.setCreatedAt(LocalDateTime.now());
-            user.setRoles(Collections.singletonList(
-                    Roles.ROLE_CUSTOMER
-            ));
-        }
-        this.userRepository.save(user);
-        return userConverter.entityToDto(user);
+        return createUser(userDto,Roles.ROLE_CUSTOMER);
     }
 
     @Override
@@ -67,9 +58,39 @@ public class UserServiceImpl implements UserService {
         return userConverter.entityToDto(getUserByToken());
     }
 
+    @Override
+    public User updateToSupplier(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Can't find user"));
+        user.getRoles().add(Roles.ROLE_SUPPLIER);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public UserDto createSupplier(UserDto userDto) {
+        return createUser(userDto,Roles.ROLE_SUPPLIER);
+    }
+
+    @Override
+    public User getUserById(Integer userId) {
+        return userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("Can't find user"));
+    }
+
 
     private String fromRoleListToCommaSeparatedRoles(User user){
         return user.getRoles().stream().map(Enum::name).collect(Collectors.joining(","));
+    }
+
+    private UserDto createUser(UserDto userDto, Roles roles){
+        User user = userConverter.dtoToEntity(userDto);
+        user.setPassword(this.bCryptPasswordEncoder.encode(Hashing.sha256(userDto.getPassword())));
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            user.setCreatedAt(LocalDateTime.now());
+            user.setRoles(Collections.singletonList(
+                    roles
+            ));
+        }
+        this.userRepository.save(user);
+        return userConverter.entityToDto(user);
     }
 
 
