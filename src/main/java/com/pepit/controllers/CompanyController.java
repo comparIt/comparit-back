@@ -1,6 +1,8 @@
 package com.pepit.controllers;
 
 import com.pepit.constants.Routes;
+import com.pepit.dto.CompanyDto;
+import com.pepit.model.Company;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +57,10 @@ public class CompanyController {
 front :
 - lors de l'accès à une fiche produit, GET du contactFournisseur by id fournisseur, et affichage des infos bien formatées comme il faut
      */
+
+    @PutMapping("/save")
+    public ResponseEntity<CompanyDto> create(@RequestBody CompanyDto companyDto) {
+        return ResponseEntity.status(200).body(companyService.create(companyDto));
+    }
 
 }
