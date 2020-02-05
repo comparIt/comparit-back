@@ -4,7 +4,6 @@ import com.pepit.dto.CompanyDto;
 import com.pepit.model.Company;
 import com.pepit.model.User;
 import com.pepit.repository.UserRepository;
-import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,7 @@ public class CompanyConverter extends GenericsConverter<Company, CompanyDto> {
                 .adress(company.getAdress())
                 .telephone(company.getTelephone())
                 .presentation(company.getPresentation())
-                .members(company.getMembers().stream().map(User::getId).collect(Collectors.toList()))
+                .members(company.getMembers().stream().map(user -> new Long(user.getId())).collect(Collectors.toList()))
                 .build();
     }
 
@@ -36,10 +35,8 @@ public class CompanyConverter extends GenericsConverter<Company, CompanyDto> {
     public Company dtoToEntity(CompanyDto companyDto) {
 
         List<User> userList = new ArrayList<>();
-
-        //TODO faire une jolie lambda
         userRepository.findAll().forEach(user -> {
-            if(companyDto.getMembers().contains(user.getId())) userList.add(user);
+            if (companyDto.getMembers().contains(user.getId())) userList.add(user);
         });
 
         return Company.builder()
