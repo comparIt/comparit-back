@@ -2,7 +2,6 @@ package com.pepit.controllers;
 
 import com.pepit.constants.Routes;
 import com.pepit.dto.CompanyDto;
-import com.pepit.model.Company;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,14 +48,6 @@ public class CompanyController {
         String supplierId = "1";
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
-
-    /* TODO
-    - un endpoint fournisseur POST : création d'un user avec le role Fournisseur
-- un endpoint fournisseur/contact POST : upsert d'un contactFournisseur, avec comme userID l'id du token
-- lors de l'insertion de produits, l'id fournisseur est le userID du token
-front :
-- lors de l'accès à une fiche produit, GET du contactFournisseur by id fournisseur, et affichage des infos bien formatées comme il faut
-     */
 
     @PutMapping("/save")
     public ResponseEntity<CompanyDto> create(@RequestBody CompanyDto companyDto) {

@@ -5,7 +5,6 @@ import com.pepit.dto.UserDto;
 import com.pepit.model.User;
 import com.pepit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,12 +35,12 @@ public class UserController {
     }
 
     @GetMapping("/currentUser")
-    public ResponseEntity<UserDto> getCurrentUserByToken(){
+    public ResponseEntity<UserDto> getCurrentUserByToken() {
         return ResponseEntity.status(200).body(userService.getUserDtoByToken());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Integer userId) {
         return ResponseEntity.status(200).body(userService.getUserById(userId));
     }
 }
