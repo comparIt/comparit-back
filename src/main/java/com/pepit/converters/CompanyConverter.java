@@ -38,7 +38,9 @@ public class CompanyConverter extends GenericsConverter<Company, CompanyDto> {
         List<User> userList = new ArrayList<>();
 
         //TODO faire une jolie lambda
-        userRepository.findAll().forEach(userList::add);
+        userRepository.findAll().forEach(user -> {
+            if(companyDto.getMembers().contains(user.getId())) userList.add(user);
+        });
 
         return Company.builder()
                 .id(companyDto.getId())
