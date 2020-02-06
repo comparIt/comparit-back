@@ -10,7 +10,6 @@ import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Model;
 import com.pepit.model.WebsiteConfiguration;
-import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
@@ -27,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -175,9 +177,9 @@ public class CompanyServiceImpl implements CompanyService {
             WebsiteConfiguration wsc = websiteConfigurationService.findOneById(1);
             wsc.getModelByTechnicalName(typeProduit).getModelProperties().forEach(prop -> {
                 if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
-                    productRepository.updateBornes(prop.getTechnicalName());
+                    productRepository.updateBornes(wsc.getModelByTechnicalName(typeProduit), prop.getTechnicalName());
                 else
-                    prop.setValues(productRepository.listeDistinct(prop.getTechnicalName()));
+                    prop.setValues(productRepository.listeDistinct(typeProduit, prop.getTechnicalName()));
             });
             websiteConfigurationService.save(wsc);
         } catch (ReferentielRequestException e) {
