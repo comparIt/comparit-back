@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
+import com.pepit.model.Model;
 import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,17 +69,18 @@ public class ProductRepositoryCustom {
         return productDtos;
     }
 
-    public Iterator<Warning> updateBornes(String technicalName) {
+    public Iterator<Warning> updateBornes(Model model, String technicalName) {
         //On passe une query sur la database pour setter les minmax
-        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties." + technicalName + "'  AS DECIMAL(10,2))) FROM produit)" +
+        String query = "UPDATE model_property SET min = (SELECT min(CAST(doc->'$.properties." + technicalName + "' AS DECIMAL(10,2))) FROM produit where doc->'$.type' ='" + model.getTechnicalName() + "' )" +
                 ", max = (SELECT max(CAST(doc->'$.properties." + technicalName + "' AS DECIMAL(10,2))) " +
-                "FROM produit) where technical_name = '" + technicalName + "';";
+                "FROM produit where doc->'$.type' ='" + model.getTechnicalName() + "' ) where id IN (select model_properties_id from compareIt.model_model_properties where model_id = '" + model.getId() + "')" +
+                "and technical_name = '" + technicalName + "';";
         return productDB.getSession().sql(query).execute().getWarnings();
 
     }
 
-    public List<String> listeDistinct(String technicalName) {
-        String query = "SELECT distinct(doc->'$.properties." + technicalName + "') as list  FROM compareIt.produit;";
+    public List<String> listeDistinct(String typeProduit, String technicalName) {
+        String query = "SELECT distinct(doc->'$.properties." + technicalName + "') as list  FROM compareIt.produit where doc->'$.type' ='" + typeProduit + "' and doc->'$.properties.name' is not NULL;";
         SqlResult myResult = productDB.getSession().sql(query).execute();
         List<String> result = new ArrayList<>();
         // Gets the row and prints the first column
