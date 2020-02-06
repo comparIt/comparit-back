@@ -100,6 +100,9 @@ public class CompanyServiceImpl implements CompanyService {
 
         // configure to grab headers from file. We want to use these names to get values from each record.
         settings.setHeaderExtractionEnabled(true);
+        settings.setSkipEmptyLines(true);
+        settings.setEmptyValue("");
+        settings.setNullValue("");
         // creates a CSV parser
         CsvParser parser = new CsvParser(settings);
         // parses all records in one go.
