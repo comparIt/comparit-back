@@ -55,6 +55,12 @@ public class WebsiteConfiguration {
     @Column(name = "featAlerte")
     boolean featAlerte;
 
+    @Column(name = "featSupplier")
+    boolean featSupplier;
+
+    @Column(name = "featSupplierContact")
+    boolean featSupplierContact;
+
     @OneToMany
     private List<Model> models;
 

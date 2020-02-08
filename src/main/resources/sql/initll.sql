@@ -113,7 +113,7 @@ VALUES (1, 1),
        (3, 29);
 
 INSERT INTO `website_configuration`
-VALUES (1, '#c26d6d', '#50459c', '#82bd2a', '2020-02-04 16:31:07.062000', _binary '', _binary '', _binary '',
+VALUES (1, '#c26d6d', '#50459c', '#82bd2a', '2020-02-04 16:31:07.062000', _binary '', _binary '', _binary '', _binary '', _binary '',
         _binary '',
         'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/UKF_basic_logo.svg/1024px-UKF_basic_logo.svg.png',
         'UKF', '2020-02-04 16:31:07.062000');
