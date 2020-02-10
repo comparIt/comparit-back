@@ -16,7 +16,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
     @Override
     public UserDto entityToDto(User user) {
         return UserDto.builder()
-                .id(Long.valueOf(user.getId()))
+                .id(user.getId())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -30,7 +30,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
     @Override
     public User dtoToEntity(UserDto userDto) {
         return User.builder()
-                .id(Math.toIntExact(userDto.getId()))
+                .id(userDto.getId())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .firstName(userDto.getFirstName())

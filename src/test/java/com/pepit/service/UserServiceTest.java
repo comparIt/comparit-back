@@ -48,7 +48,7 @@ public class UserServiceTest extends CompareITBackApplicationTests {
         roles = Collections.singletonList(Roles.ROLE_CUSTOMER);
 
         user = User.builder()
-                .id(1)
+                .id(1L)
                 .email("test@test.fr")
                 .password(passwordNotEncrypted)
                 .lastName("lastName")

@@ -43,7 +43,6 @@ public class CompanyController {
 
     @PostMapping("/byCsvUpload/{typeProduit}")
     public ResponseEntity<String> uploadData(@RequestParam("files") MultipartFile file, @PathVariable("typeProduit") String typeProduit) throws Exception {
-
         //TODO a recuperer a partir du token
         String supplierId = "1";
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
