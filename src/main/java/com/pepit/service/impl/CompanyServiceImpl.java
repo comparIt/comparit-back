@@ -14,6 +14,7 @@ import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Company;
 import com.pepit.model.Model;
 import com.pepit.model.WebsiteConfiguration;
+import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
