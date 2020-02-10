@@ -5,11 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
+import com.pepit.converters.CompanyConverter;
+import com.pepit.converters.UserConverter;
+import com.pepit.dto.CompanyDto;
 import com.pepit.exception.DataProvidedException;
 import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
+import com.pepit.model.Company;
 import com.pepit.model.Model;
 import com.pepit.model.WebsiteConfiguration;
+import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
@@ -37,11 +42,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     private ProductRepositoryCustom productRepository;
     private WebsiteConfigurationService websiteConfigurationService;
+    private CompanyRepository companyRepository;
+    private CompanyConverter companyConverter;
+
 
     @Autowired
-    public CompanyServiceImpl(ProductRepositoryCustom productRepository, WebsiteConfigurationService websiteConfigurationService) {
+    public CompanyServiceImpl(ProductRepositoryCustom productRepository, WebsiteConfigurationService websiteConfigurationService, CompanyRepository companyRepository, CompanyConverter companyConverter) {
         this.productRepository = productRepository;
         this.websiteConfigurationService = websiteConfigurationService;
+        this.companyRepository = companyRepository;
+        this.companyConverter = companyConverter;
     }
 
     public String fromUrlToDb(String url, String supplierId, String type) {
@@ -230,5 +240,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .add("type", new JsonString().setValue(typeProduit))
                 .add("properties", properties);
         return outerObject;
+    }
+
+    @Override
+    public CompanyDto create(CompanyDto companyDto) {
+        Company company = companyConverter.dtoToEntity(companyDto);
+        return companyConverter.entityToDto(this.companyRepository.save(company));
     }
 }

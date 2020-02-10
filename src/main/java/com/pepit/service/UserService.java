@@ -12,4 +12,9 @@ public interface UserService extends UserDetailsService {
 
     UserDto getUserDtoByToken();
 
+    User updateToSupplier(Integer userId);
+
+    UserDto createSupplier(UserDto userDto);
+
+    User getUserById(Integer userId);
 }
