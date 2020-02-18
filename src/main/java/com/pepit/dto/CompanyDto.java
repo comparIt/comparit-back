@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CompanyDto {
 
-    int id;
+    Long id;
 
     String providerName;
 

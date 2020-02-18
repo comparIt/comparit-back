@@ -20,8 +20,8 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .role(user.getRoles().stream().sorted(Comparator.reverseOrder()).findFirst().get())
-                .companyId(Long.valueOf(user.getCompany().getId()))
+                .role(user.getRoles().stream().max(Comparator.naturalOrder()).get())
+                .companyId((user.getCompany() == null) ? null : user.getCompany().getId())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
