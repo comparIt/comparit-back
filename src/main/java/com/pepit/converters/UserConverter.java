@@ -6,6 +6,7 @@ import com.pepit.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Comparator;
 
 @Component
@@ -35,7 +36,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .password(userDto.getPassword())
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
-                .company(companyRepository.findById(userDto.getCompanyId().intValue()).get())
+                .roles(Collections.singletonList(userDto.getRole()))
                 .createdAt(userDto.getCreatedAt())
                 .updatedAt(userDto.getUpdatedAt()).build();
     }

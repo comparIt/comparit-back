@@ -24,7 +24,7 @@ public class UserConverterTest extends CompareITBackApplicationTests {
     private UserDto getUserDto(){
         return UserDto
                 .builder()
-                .id(1L)
+                .id(1)
                 .password(RandomStringUtils.randomAlphabetic(10))
                 .email(RandomStringUtils.randomAlphabetic(10))
                 .firstName(RandomStringUtils.randomAlphabetic(10))
@@ -36,7 +36,7 @@ public class UserConverterTest extends CompareITBackApplicationTests {
     private User getUser(){
         return User
                 .builder()
-                .id(1L)
+                .id(1)
                 .password(RandomStringUtils.randomAlphabetic(10))
                 .email(RandomStringUtils.randomAlphabetic(10))
                 .firstName(RandomStringUtils.randomAlphabetic(10))

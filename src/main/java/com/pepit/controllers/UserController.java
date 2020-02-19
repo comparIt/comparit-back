@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(Routes.USER)
 public class UserController {
@@ -22,6 +24,11 @@ public class UserController {
     @PutMapping("/saveUser")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.status(200).body(userService.create(userDto));
+    }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.status(200).body(userService.update(userDto));
     }
 
     @PutMapping("/saveSupplier")
@@ -42,5 +49,16 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Integer userId) {
         return ResponseEntity.status(200).body(userService.getUserById(userId));
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<UserDto>> getAllUsers(){
+        return ResponseEntity.status(200).body(userService.getAllUsers());
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Integer> deleteUser(@PathVariable("userId") Integer userId){
+        return ResponseEntity.status(204).body(userService.deleteUser(userId));
+
     }
 }
