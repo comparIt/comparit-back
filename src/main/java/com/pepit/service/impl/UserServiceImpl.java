@@ -3,6 +3,7 @@ package com.pepit.service.impl;
 import com.pepit.constants.Roles;
 import com.pepit.converters.UserConverter;
 import com.pepit.dto.UserDto;
+import com.pepit.exception.NoResultException;
 import com.pepit.model.User;
 import com.pepit.repository.UserRepository;
 import com.pepit.security.Hashing;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,6 +77,32 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("Can't find user"));
     }
 
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(userConverter::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer deleteUser(Integer userId) {
+        userRepository.deleteById(userId);
+        return 1;
+    }
+
+    @Override
+    public UserDto update(UserDto userDto) {
+        User user = this.userRepository.findById(userDto.getId()).orElseThrow(NoResultException::new);
+        User newUser = userConverter.dtoToEntity(userDto);
+
+        user.setFirstName(newUser.getFirstName());
+        user.setLastName(newUser.getLastName());
+        user.getRoles().clear();
+        user.getRoles().addAll(newUser.getRoles());
+        user.setEmail(newUser.getEmail());
+        user.setUpdatedAt(LocalDateTime.now());
+
+        User entity = this.userRepository.save(user);
+        return userConverter.entityToDto(entity);
+    }
 
     private String fromRoleListToCommaSeparatedRoles(User user){
         return user.getRoles().stream().map(Enum::name).collect(Collectors.joining(","));
