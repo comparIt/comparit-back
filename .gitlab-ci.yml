@@ -58,6 +58,7 @@ job_deploy_prod:
     name: production
   only: 
   - develop
+  - master
 
 
 
