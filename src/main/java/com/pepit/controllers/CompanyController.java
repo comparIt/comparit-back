@@ -48,4 +48,12 @@ public class CompanyController {
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
+    /* TODO
+    - un endpoint fournisseur POST : création d'un user avec le role Fournisseur
+- un endpoint fournisseur/contact POST : upsert d'un contactFournisseur, avec comme userID l'id du token
+- lors de l'insertion de produits, l'id fournisseur est le userID du token
+front :
+- lors de l'accès à une fiche produit, GET du contactFournisseur by id fournisseur, et affichage des infos bien formatées comme il faut
+     */
+
 }

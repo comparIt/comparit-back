@@ -1,8 +1,12 @@
 package com.pepit.converters;
 
+import com.pepit.constants.Roles;
 import com.pepit.dto.UserDto;
 import com.pepit.model.User;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 @Component
 public class UserConverter extends GenericsConverter<User, UserDto> {
@@ -14,6 +18,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .role(user.getRoles().stream().sorted(Comparator.reverseOrder()).findFirst().get())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

@@ -12,4 +12,12 @@ public class Routes {
     public static final String MODEL = "/model";
     public static final String MODEL_PROPERTY = "/modelproperty";
     public static final String WEBSITE_CONFIG = "/websiteconfig";
+
+    // SWAGGER
+    public static final String SWAGGER_DOCS = "/v2/api-docs";
+    public static final String SWAGGER_DOCS_INTERFACE = "/configuration/ui";
+    public static final String SWAGGER_RESSOURCES = "/swagger-resources/**";
+    public static final String SWAGGER_SECURITY = "/configuration/security";
+    public static final String SWAGGER_HTML = "/swagger-ui.html";
+    public static final String SWAGGER_WEBJAR = "/webjars/**";
 }

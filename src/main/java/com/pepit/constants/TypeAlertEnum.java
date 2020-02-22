@@ -1,5 +1,5 @@
 package com.pepit.constants;
 
 public enum TypeAlertEnum {
-    QUOTIDIENNE, HEBDOMADAIRE, MENSUELLE
+    QUOTIDIENNE, HEBDOMADAIRE, MENSUELLE, AUCUNE, MINUTES
 }

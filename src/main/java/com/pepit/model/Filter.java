@@ -7,11 +7,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@FieldDefaults(level = AccessLevel.PUBLIC)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,6 +21,7 @@ import java.util.Map;
 @Builder
 @Entity
 @Table(name = "Filter")
+@Transactional
 public class Filter {
 
     @Id
@@ -33,18 +35,21 @@ public class Filter {
     @Column(name = "alertType")
     TypeAlertEnum alertType;
 
+    @Column(name = "category")
+    String category;
+
     @ElementCollection
     @Column(name = "criterias")
     Map<ModelProperty, String> criterias;
 
-    @OneToMany
-    List<Alert> alerts;
+    @Column(name = "orderBy")
+    String orderBy;
 
     @Column(name = "isEmail")
     boolean isEmail;
 
     @Column(name = "isAlert")
-    boolean isAlert;
+    boolean alert;
 
     @CreatedDate
     @Column(name = "createdat")

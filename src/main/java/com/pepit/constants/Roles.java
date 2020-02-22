@@ -2,6 +2,8 @@ package com.pepit.constants;
 
 import lombok.Getter;
 
+import javax.management.relation.Role;
+
 @Getter
 public enum Roles {
     ROLE_CUSTOMER(3),

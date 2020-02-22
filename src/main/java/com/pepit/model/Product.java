@@ -17,16 +17,14 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Builder
-@Entity
 @TypeDefs({
         @TypeDef(name = "json", typeClass = JsonStringType.class)
 })
-@Table(name = "Product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    String id;
 
     @Type(type = "json")
     @Column(columnDefinition = "json")

@@ -17,7 +17,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <sonar.url>http://35.181.152.198:9000</sonar.url>
+        <sonar.url>http://52.47.182.250:9000</sonar.url>
     </properties>
 
     <profiles>
@@ -27,18 +27,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <sonar.coverage.exclusions>
-                    **/security/*.java,
-                    **/controllers/*.java,
-                    **/dto/*.java,
-                    **/model/*.java,
-                    **/config/*.java,
-                    **/constants/*.java,
-                    **/exception/*.java,
-                    **/converters/*.java,
-                    **/exceptionHandler/*.java,
-                    **/repository/*.java
-                </sonar.coverage.exclusions>
                 <sonar.host.url>
                     ${sonar.url}
                 </sonar.host.url>
@@ -47,6 +35,16 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -107,6 +105,16 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.univocity</groupId>
             <artifactId>univocity-parsers</artifactId>
             <version>2.8.3</version>
@@ -135,16 +143,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.5</version>
-                <configuration>
-                    <excludes>
-                        <exclude>com/pepit/security/*.class</exclude>
-                        <exclude>com/pepit/exception/*.class</exclude>
-                        <exclude>com/pepit/exceptionHandler/*.class</exclude>
-                        <exclude>com/pepit/dto/*.class</exclude>
-                        <exclude>com/pepit/converters/*.class</exclude>
-                        <exclude>com/pepit/controllers/*.class</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>

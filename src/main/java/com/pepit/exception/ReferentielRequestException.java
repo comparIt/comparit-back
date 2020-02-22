@@ -12,4 +12,9 @@ public class ReferentielRequestException extends BusinessException {
         super(message);
     }
 
+
+    public ReferentielRequestException(Exception exception) {
+        super(exception);
+    }
+
 }

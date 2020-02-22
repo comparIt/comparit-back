@@ -24,7 +24,7 @@ public class ModelProperty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "name")
     String name;
@@ -48,10 +48,10 @@ public class ModelProperty {
     boolean activated;
 
     @Column(name = "min", columnDefinition = "int default 0", nullable=false)
-    Integer min;
+    Integer min = 0;
 
     @Column(name = "max", columnDefinition = "int default 0", nullable=false)
-    Integer max;
+    Integer max = 0;
 
     @ElementCollection
     @CollectionTable(

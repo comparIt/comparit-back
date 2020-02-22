@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@FieldDefaults(level = AccessLevel.PUBLIC)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @Builder
 @EqualsAndHashCode
@@ -28,6 +28,6 @@ public class UserDto {
     Long companyId;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-    Collection<Roles> roles;
+    Roles role;
 
 }

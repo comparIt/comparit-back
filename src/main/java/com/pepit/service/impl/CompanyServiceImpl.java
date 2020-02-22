@@ -10,7 +10,6 @@ import com.pepit.exception.InputException;
 import com.pepit.exception.ReferentielRequestException;
 import com.pepit.model.Model;
 import com.pepit.model.WebsiteConfiguration;
-import com.pepit.repository.CompanyRepository;
 import com.pepit.repository.ProductRepositoryCustom;
 import com.pepit.service.CompanyService;
 import com.pepit.service.WebsiteConfigurationService;
@@ -27,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -98,6 +100,9 @@ public class CompanyServiceImpl implements CompanyService {
 
         // configure to grab headers from file. We want to use these names to get values from each record.
         settings.setHeaderExtractionEnabled(true);
+        settings.setSkipEmptyLines(true);
+        settings.setEmptyValue("");
+        settings.setNullValue("");
         // creates a CSV parser
         CsvParser parser = new CsvParser(settings);
         // parses all records in one go.
@@ -175,9 +180,9 @@ public class CompanyServiceImpl implements CompanyService {
             WebsiteConfiguration wsc = websiteConfigurationService.findOneById(1);
             wsc.getModelByTechnicalName(typeProduit).getModelProperties().forEach(prop -> {
                 if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
-                    productRepository.updateBornes(prop.getTechnicalName());
+                    productRepository.updateBornes(wsc.getModelByTechnicalName(typeProduit), prop.getTechnicalName());
                 else
-                    prop.setValues(productRepository.listeDistinct(prop.getTechnicalName()));
+                    prop.setValues(productRepository.listeDistinct(typeProduit, prop.getTechnicalName()));
             });
             websiteConfigurationService.save(wsc);
         } catch (ReferentielRequestException e) {
@@ -219,14 +224,7 @@ public class CompanyServiceImpl implements CompanyService {
                 parsedObject.put(prop.getTechnicalName(), parsedObject.get(prop.getTechnicalName()).asInt());
         });
 
-        parsedObject.put("doors", parsedObject.get("doors").asInt());
-        //TODO a voir si on laisse prix, pour l'instant on l'ajoute comme properties pour mocker les intervals de prix
-        Random random = new Random();
-        int min = 1;
-        int max = 10;
-        Integer randomInt = random.nextInt(max - min + 1) + min;
-
-        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString())).add("prix", new JsonNumber().setValue(randomInt.toString()));
+        DbDoc properties = JsonParser.parseDoc(new StringReader(parsedObject.toString()));
 
         DbDoc outerObject = new DbDocImpl().add("supplierId", new JsonNumber().setValue(supplierId))
                 .add("type", new JsonString().setValue(typeProduit))

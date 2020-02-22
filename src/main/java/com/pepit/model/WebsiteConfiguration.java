@@ -38,9 +38,28 @@ public class WebsiteConfiguration {
     @Nullable
     @Column(name="logo")
     String logo;
+
+    @Nullable
+    @Column(name="name")
+    String name;
     
     @Column(name = "featAnalytic")
     boolean featAnalytic;
+
+    @Column(name = "featUser")
+    boolean featUser;
+
+    @Column(name = "featSaveFilter")
+    boolean featSaveFilter;
+
+    @Column(name = "featAlerte")
+    boolean featAlerte;
+
+    @Column(name = "featSupplier")
+    boolean featSupplier;
+
+    @Column(name = "featSupplierContact")
+    boolean featSupplierContact;
 
     @OneToMany
     private List<Model> models;
