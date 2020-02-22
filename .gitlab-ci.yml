@@ -38,7 +38,7 @@ job_deploy_staging:
   - echo "deploy the app into test (valserver)"
   - pwd
   - ls
-  - chmod 600 ../compare-it-front.tmp/SSH_PEM_KEY
+  - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
   - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@compit.ddns.net './start_project'
   environment: 
     name: staging
@@ -52,7 +52,7 @@ job_deploy_prod:
   - echo "deploy the app into prod"
   - pwd
   - ls
-  - chmod 600 ../compare-it-front.tmp/SSH_PEM_KEY
+  - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
   - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null msn@compit2.northeurope.cloudapp.azure.com './start_project'
   environment: 
     name: production
