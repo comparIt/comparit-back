@@ -8,7 +8,7 @@ INSERT IGNORE INTO `roles`
 VALUES (1, 'ROLE_CUSTOMER'),
        (2, 'ROLE_ADMIN');
 
-INSERT INTO `model` VALUES (1,_binary '0','2020-02-24 08:06:16.745000','https://upload.wikimedia.org/wikipedia/commons/5/56/FardierdeCugnot20050111.jpg','Vehicules','cars','2020-02-24 08:06:16.745000'),
+INSERT IGNORE INTO `model` VALUES (1,_binary '0','2020-02-24 08:06:16.745000','https://upload.wikimedia.org/wikipedia/commons/5/56/FardierdeCugnot20050111.jpg','Vehicules','cars','2020-02-24 08:06:16.745000'),
 (2,_binary '1','2020-02-24 08:06:16.840000','https://images.samsung.com/is/image/samsung/p5/fr/home/curation/S10_488x488_hp.png','Telephones','phones','2020-02-24 08:06:16.840000'),
 (3,_binary '1','2020-02-24 08:06:17.030000','https://dyw7ncnq1en5l.cloudfront.net/optim/comparison/46/46017/063dd344-quel-lave-linge-choisir__300_170.jpeg','Lave Linge','lavelinge','2020-02-24 08:06:17.030000'),
 (4,_binary '1','2020-02-24 08:06:17.232000','https://img-4.linternaute.com/858VfT_qzUeAMJUlkiZynPJ05JE=/540x/smart/f1edbe1fabd24a388a8b17fd8df2a71d/ccmcms-linternaute/10656724.jpg','Auto Mandataire','carsmand','2020-02-24 08:06:17.232000');
