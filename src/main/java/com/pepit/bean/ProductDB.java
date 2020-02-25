@@ -14,13 +14,26 @@ public class ProductDB {
     private Schema db;
 
     public ProductDB(){
-        this.session = new SessionFactory().getSession("mysqlx://" + Conf.getInstance().getHOST() + ":" + Conf.getInstance().getXPORT() + "/compareIt?user=root&password=" + Conf.getInstance().getPASSWORD());
+
+        //Pool de connexions
+        //Obtain new ClientFactory
+        ClientFactory cf = new ClientFactory();
+
+        //Obtain Client from ClientFactory
+        Client cli = cf.getClient("mysqlx://" + Conf.getInstance().getHOST() + ":" + Conf.getInstance().getXPORT() + "/compareIt?user=root&password=" + Conf.getInstance().getPASSWORD(),
+                "{\"pooling\":{\"enabled\":true, \"maxSize\":8,\"maxIdleTime\":30000, \"queueTimeout\":10000} }");
+        this.session = cli.getSession();
+
+        //this.session = new SessionFactory().getSession("mysqlx://" + Conf.getInstance().getHOST() + ":" + Conf.getInstance().getXPORT() + "/compareIt?user=root&password=" + Conf.getInstance().getPASSWORD());
         this.db = session.getSchema(Conf.getInstance().getNAME());
         try {
             this.collection = this.db.getCollection("produit", true);
         } catch (WrongArgumentException e) {
             this.collection = this.db.createCollection("produit");
         }
+
+        //Close Client after use
+        //cli.close();
     }
 
     public DocResult find(Query query){
