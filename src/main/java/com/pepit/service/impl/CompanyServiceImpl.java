@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
 import com.pepit.converters.CompanyConverter;
-import com.pepit.converters.UserConverter;
 import com.pepit.dto.CompanyDto;
 import com.pepit.exception.DataProvidedException;
 import com.pepit.exception.InputException;
@@ -31,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -140,15 +136,18 @@ public class CompanyServiceImpl implements CompanyService {
                 dbDocList.add(outerObject);
             }
         }
-        //on le convertit en tableau car dependance du add mysql
-        DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
 
-        //TODO Utiliser le generateur de QUERY
-        productRepository.removeDoc("supplierId = " + supplierId + " and type = '" + typeProduit.replace("\"", "") + "'");
-        productRepository.addDoc(docs);
+        if (!dbDocList.isEmpty()) {
+            //on le convertit en tableau car dependance du add mysql
+            DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
 
-        //On évalue les bornes et valeurs des proprietes du modele selon les données en base
-        recalculMinMaxValue(typeProduit);
+            //TODO Utiliser le generateur de QUERY
+            productRepository.removeDoc("supplierId = " + supplierId + " and type = '" + typeProduit.replace("\"", "") + "'");
+            Iterator<Warning> result = productRepository.addDoc(docs);
+
+            //On évalue les bornes et valeurs des proprietes du modele selon les données en base
+            recalculMinMaxValue(typeProduit);
+        } else throw new DataProvidedException("FAILED : Aucun produit ajouté");
 
         if (!refusedRecords.isEmpty()) {
             log.info("Lignes rejettées: " + refusedRecords.toString());
@@ -189,10 +188,12 @@ public class CompanyServiceImpl implements CompanyService {
         try {
             WebsiteConfiguration wsc = websiteConfigurationService.findOneById(1);
             wsc.getModelByTechnicalName(typeProduit).getModelProperties().forEach(prop -> {
-                if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
-                    productRepository.updateBornes(wsc.getModelByTechnicalName(typeProduit), prop.getTechnicalName());
-                else
-                    prop.setValues(productRepository.listeDistinct(typeProduit, prop.getTechnicalName()));
+                if (prop.filtrable || prop.filtrableAdvanced) {
+                    if (prop.getType().equals(TypeModelPropertyEnum.NUMERIC))
+                        productRepository.updateBornes(wsc.getModelByTechnicalName(typeProduit), prop.getTechnicalName());
+                    else
+                        prop.setValues(productRepository.listeDistinct(typeProduit, prop.getTechnicalName()));
+                }
             });
             websiteConfigurationService.save(wsc);
         } catch (ReferentielRequestException e) {
