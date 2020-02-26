@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+@Slf4j
 @Configuration
 public class MysqlxConfig {
     @Bean("mysqlX")
@@ -18,6 +19,7 @@ public class MysqlxConfig {
 
     @Bean("clientFactory")
     public ClientFactory cFact() {
+        log.debug("using bean clientFactory");
         return new ClientFactory();
     }
 
@@ -35,6 +37,7 @@ public class MysqlxConfig {
     @DependsOn({"client"})
     @Bean("session")
     public Session sess(Client client) {
+        log.debug("using bean session");
         return client.getSession();
     }
 
@@ -47,6 +50,7 @@ public class MysqlxConfig {
     @DependsOn({"schema"})
     @Bean("collection")
     public Collection collection(Schema schema) {
+        log.debug("using bean collection");
 
         Collection collection;
         try {
