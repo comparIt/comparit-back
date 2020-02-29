@@ -17,41 +17,41 @@ public class MysqlxConfig {
     @Bean("mysqlX")
     @ConfigurationProperties(prefix = "mysqlx.datasource")
     public Mysqlx mysqlx() {
-        log.debug("using bean Mysqlx");
+        log.debug("[XDEVAPI]using bean Mysqlx");
         return new Mysqlx();
     }
 
     @Bean("clientFactory")
     public ClientFactory cFact() {
-        log.debug("using bean clientFactory");
+        log.debug("[XDEVAPI]using bean clientFactory");
         return new ClientFactory();
     }
 
     @DependsOn({"clientFactory", "mysqlX"})
     @Bean("client")
     public Client client(ClientFactory clientFactory, Mysqlx mysqlX) {
-        log.debug("using bean Client");
+        log.debug("[XDEVAPI]using bean Client");
         return clientFactory.getClient(mysqlX.getUrl(), mysqlX.getSettings());
     }
 
     @DependsOn({"client"})
     @Bean("session")
     public Session sess(Client client) {
-        log.debug("using bean Session");
+        log.debug("[XDEVAPI]using bean Session");
         return client.getSession();
     }
 
     @DependsOn({"session", "mysqlX"})
     @Bean("schema")
     public Schema schema(Session session, Mysqlx mysqlX) {
-        log.debug("using bean Schema");
+        log.debug("[XDEVAPI]using bean Schema");
         return session.getSchema(mysqlX.getSchema());
     }
 
     @DependsOn({"schema"})
     @Bean("collection")
     public Collection collection(Schema schema) {
-        log.debug("using bean collection");
+        log.debug("[XDEVAPI]using bean collection");
 
         Collection collection;
         try {

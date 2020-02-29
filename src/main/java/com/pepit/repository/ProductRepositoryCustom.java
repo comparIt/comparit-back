@@ -40,7 +40,12 @@ public class ProductRepositoryCustom {
         return query.find(collection).execute();
     }
 
-    public List<ProductDto> testRequest(Query query) {
+    public List<ProductDto> searchRequest(Query query) {
+        if (!collection.getSession().isOpen()) {
+            log.info("[XDEVAPI]collection.getSession().isOpen(): not: trying to reconnect");
+            client.getSession();
+        } else log.info("[XDEVAPI]Collection already Open");
+
         log.info("Query :" + query);
 
         List<DbDoc> docList = find(query).fetchAll();
@@ -59,11 +64,7 @@ public class ProductRepositoryCustom {
             }
         }
         log.info("done");
-        if (collection.getSession().isOpen()) {
-            log.info("collection.getSession().isOpen(): closing");
-            collection.getSession().close();
-            collection.getSession();
-        }
+
         return productDtos;
 
     }
