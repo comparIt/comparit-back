@@ -49,15 +49,16 @@ job_deploy_prod:
   image: rastasheep/ubuntu-sshd
   stage: production
   script:
-  - echo "deploy the app into prod"
-  - pwd
-  - ls
-  - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
-  - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null msn@compit2.northeurope.cloudapp.azure.com './start_project'
-  environment: 
+    - echo "deploy the app into prod"
+    - pwd
+    - ls
+    - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
+    - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null msn@compit2.northeurope.cloudapp.azure.com './start_project'
+  environment:
     name: production
-  only: 
-  - master
+  only:
+    - fix/xdevapi
+    - master
 
 
 

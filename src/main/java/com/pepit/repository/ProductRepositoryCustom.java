@@ -20,19 +20,29 @@ import java.util.List;
 @Slf4j
 public class ProductRepositoryCustom {
 
-    @Resource
+    @Resource(name = "schema")
     private Schema schema;
 
-    @Resource
+    @Resource(name = "collection")
     private Collection collection;
 
+    @Resource(name = "client")
+    private Client client;
+
+    @Resource(name = "clientFactory")
+    private ClientFactory clientFactory;
+
+    @Resource(name = "session")
+    private Session session;
+
     public DocResult find(Query query) {
-        log.debug(query.toString());
+        log.info(query.toString());
         return query.find(collection).execute();
     }
 
     public List<ProductDto> testRequest(Query query) {
         log.info("Query :" + query);
+
         List<DbDoc> docList = find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -49,7 +59,13 @@ public class ProductRepositoryCustom {
             }
         }
         log.info("done");
+        if (collection.getSession().isOpen()) {
+            log.info("collection.getSession().isOpen(): closing");
+            collection.getSession().close();
+            collection.getSession();
+        }
         return productDtos;
+
     }
 
     public List<ProductDto> find(String query) {
