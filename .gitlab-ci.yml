@@ -57,7 +57,7 @@ job_deploy_prod:
   environment:
     name: production
   only:
-    - fix/xdevapi
+    - develop
     - master
 
 

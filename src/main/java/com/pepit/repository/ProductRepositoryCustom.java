@@ -42,9 +42,9 @@ public class ProductRepositoryCustom {
 
     public List<ProductDto> searchRequest(Query query) {
         if (!collection.getSession().isOpen()) {
-            log.info("[XDEVAPI]collection.getSession().isOpen(): not: trying to reconnect");
+            log.debug("[XDEVAPI]collection.getSession().isOpen(): not: trying to reconnect");
             client.getSession();
-        } else log.info("[XDEVAPI]Collection already Open");
+        } else log.debug("[XDEVAPI]Collection already Open");
 
         log.info("Query :" + query);
 
