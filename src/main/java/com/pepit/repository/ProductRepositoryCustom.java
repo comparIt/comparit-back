@@ -20,19 +20,34 @@ import java.util.List;
 @Slf4j
 public class ProductRepositoryCustom {
 
-    @Resource
+    @Resource(name = "schema")
     private Schema schema;
 
-    @Resource
+    @Resource(name = "collection")
     private Collection collection;
 
+    @Resource(name = "client")
+    private Client client;
+
+    @Resource(name = "clientFactory")
+    private ClientFactory clientFactory;
+
+    @Resource(name = "session")
+    private Session session;
+
     public DocResult find(Query query) {
-        log.debug(query.toString());
+        log.info(query.toString());
         return query.find(collection).execute();
     }
 
-    public List<ProductDto> testRequest(Query query) {
+    public List<ProductDto> searchRequest(Query query) {
+        if (!collection.getSession().isOpen()) {
+            log.debug("[XDEVAPI]collection.getSession().isOpen(): not: trying to reconnect");
+            client.getSession();
+        } else log.debug("[XDEVAPI]Collection already Open");
+
         log.info("Query :" + query);
+
         List<DbDoc> docList = find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -49,7 +64,9 @@ public class ProductRepositoryCustom {
             }
         }
         log.info("done");
+
         return productDtos;
+
     }
 
     public List<ProductDto> find(String query) {
