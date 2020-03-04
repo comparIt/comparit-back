@@ -140,4 +140,12 @@ public class ProductRepositoryCustom {
         }
         return productDto;
     }
+
+    public List<ProductDto> getProductByListId(String[] values) {
+        List<ProductDto> outputList = new ArrayList<>();
+        for (String value : values) {
+            outputList.add(getProductById(value));
+        }
+        return outputList;
+    }
 }

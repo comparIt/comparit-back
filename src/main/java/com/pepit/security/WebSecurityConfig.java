@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(Routes.HEARTBEAT).permitAll()
                 .antMatchers(Routes.USER + "/saveUser").permitAll()
                 .antMatchers(Routes.USER + "/currentUser").authenticated()
-                .antMatchers(Routes.PRODUCT + "/*").permitAll()
+                .antMatchers(Routes.PRODUCT + "/**").permitAll()
                 .antMatchers(Routes.SWAGGER_DOCS).permitAll()
                 .antMatchers(Routes.FAVICON).permitAll()
                 .antMatchers(Routes.SWAGGER_DOCS_INTERFACE).permitAll()

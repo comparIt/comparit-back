@@ -49,4 +49,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto searchProductById(String productId) {
         return productRepositoryCustom.getProductById(productId);
     }
+
+    @Override
+    public List<ProductDto> searchProductByListId(String[] values) {
+        return productRepositoryCustom.getProductByListId(values);
+    }
 }
