@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertTrue;
-
 public class ProductServiceTest extends CompareITBackApplicationTests {
 
     @Autowired
@@ -140,36 +138,36 @@ public class ProductServiceTest extends CompareITBackApplicationTests {
 
     @Test
     public void searchOK(){
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
-        Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,1,"1","cars"));
+        Mockito.when(productRepositoryCustom.searchRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
+        Assert.assertEquals(productPagineDTOAll, productService.search(new HashMap<>(), null, 1, "1", "cars"));
     }
 
     @Test(expected = Exception.class)
     public void searchKO(){
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenThrow(new Exception());
+        Mockito.when(productRepositoryCustom.searchRequest(Mockito.any(Query.class))).thenThrow(new Exception());
     }
 
     @Test
     public void searchOkButNoPage(){
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
-        Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,null,"1","cars"));
+        Mockito.when(productRepositoryCustom.searchRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
+        Assert.assertEquals(productPagineDTOAll, productService.search(new HashMap<>(), null, null, "1", "cars"));
     }
 
     @Test
     public void searchOkPageIncoherente(){
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
-        Assert.assertEquals(productPagineDTOAll,productService.search(new HashMap<>(),null,1000,"1","cars"));
+        Mockito.when(productRepositoryCustom.searchRequest(Mockito.any(Query.class))).thenReturn(productDtoListAll);
+        Assert.assertEquals(productPagineDTOAll, productService.search(new HashMap<>(), null, 1000, "1", "cars"));
     }
 
     @Test
     public void searchSupplier1(){
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListSupplier1);
-        Assert.assertEquals(productPagineDTOSuplier1,productService.search(new HashMap<>(),null,1,"1",null));
+        Mockito.when(productRepositoryCustom.searchRequest(Mockito.any(Query.class))).thenReturn(productDtoListSupplier1);
+        Assert.assertEquals(productPagineDTOSuplier1, productService.search(new HashMap<>(), null, 1, "1", null));
     }
 
     @Test
     public void searchTypeCars(){
-        Mockito.when(productRepositoryCustom.testRequest(Mockito.any(Query.class))).thenReturn(productDtoListTypeCars   );
-        Assert.assertEquals(productPagineDTOTypeCars,productService.search(new HashMap<>(),null,1,null,"cars"));
+        Mockito.when(productRepositoryCustom.searchRequest(Mockito.any(Query.class))).thenReturn(productDtoListTypeCars);
+        Assert.assertEquals(productPagineDTOTypeCars, productService.search(new HashMap<>(), null, 1, null, "cars"));
     }
 }

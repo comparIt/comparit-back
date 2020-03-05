@@ -2,15 +2,14 @@ package com.pepit.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
-import com.pepit.bean.ProductDB;
 import com.pepit.dto.ProductDto;
 import com.pepit.model.Model;
 import com.pepit.util.Query;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,13 +20,35 @@ import java.util.List;
 @Slf4j
 public class ProductRepositoryCustom {
 
-    @Autowired
-    ProductDB productDB;
+    @Resource(name = "schema")
+    private Schema schema;
 
+    @Resource(name = "collection")
+    private Collection collection;
 
-    public List<ProductDto> testRequest(Query query) {
+    @Resource(name = "client")
+    private Client client;
+
+    @Resource(name = "clientFactory")
+    private ClientFactory clientFactory;
+
+    @Resource(name = "session")
+    private Session session;
+
+    public DocResult find(Query query) {
+        log.info(query.toString());
+        return query.find(collection).execute();
+    }
+
+    public List<ProductDto> searchRequest(Query query) {
+        if (!collection.getSession().isOpen()) {
+            log.debug("[XDEVAPI]collection.getSession().isOpen(): not: trying to reconnect");
+            client.getSession();
+        } else log.debug("[XDEVAPI]Collection already Open");
+
         log.info("Query :" + query);
-        List<DbDoc> docList = productDB.find(query).fetchAll();
+
+        List<DbDoc> docList = find(query).fetchAll();
 
         List<ProductDto> productDtos = new ArrayList<>();
         log.info("passed");
@@ -43,12 +64,13 @@ public class ProductRepositoryCustom {
             }
         }
         log.info("done");
+
         return productDtos;
+
     }
 
-
     public List<ProductDto> find(String query) {
-        DocResult docs = productDB.getCollection().find(query).execute();
+        DocResult docs = collection.find(query).execute();
 
         List<DbDoc> docList = docs.fetchAll();
 
@@ -75,13 +97,13 @@ public class ProductRepositoryCustom {
                 ", max = (SELECT max(CAST(doc->'$.properties." + technicalName + "' AS DECIMAL(10,2))) " +
                 "FROM produit where doc->'$.type' ='" + model.getTechnicalName() + "' ) where id IN (select model_properties_id from compareIt.model_model_properties where model_id = '" + model.getId() + "')" +
                 "and technical_name = '" + technicalName + "';";
-        return productDB.getSession().sql(query).execute().getWarnings();
+        return schema.getSession().sql(query).execute().getWarnings();
 
     }
 
     public List<String> listeDistinct(String typeProduit, String technicalName) {
         String query = "SELECT distinct(doc->'$.properties." + technicalName + "') as list  FROM compareIt.produit where doc->'$.type' ='" + typeProduit + "' and doc->'$.properties.name' is not NULL;";
-        SqlResult myResult = productDB.getSession().sql(query).execute();
+        SqlResult myResult = schema.getSession().sql(query).execute();
         List<String> result = new ArrayList<>();
         // Gets the row and prints the first column
         List<Row> rowList = myResult.fetchAll();
@@ -91,7 +113,7 @@ public class ProductRepositoryCustom {
 
     public Iterator<Warning> addDoc(DbDoc[] dbDocs) {
 
-        AddResult result = productDB.getCollection().add(dbDocs).execute();
+        AddResult result = collection.add(dbDocs).execute();
         //Mettre a jour le fournisseur pour stocker qu'il a mis a jour son referentiel de produits
         return result.getWarnings();
 
@@ -99,16 +121,16 @@ public class ProductRepositoryCustom {
 
     public void removeDoc(String query) {
         log.info("sending RemoveDoc Query: " + query);
-        Result res = productDB.getCollection().remove(query).execute();
+        Result res = collection.remove(query).execute();
         log.info("removeResult: " + res.getAffectedItemsCount() + " Warnings: " + res.getWarnings().toString() + " Warningscount: " + res.getWarningsCount());
     }
 
     public Long count() {
-        return productDB.getDb().getCollection("produit", true).count();
+        return collection.count();
     }
 
     public ProductDto getProductById(String productId) {
-        DbDoc doc = productDB.getCollection().getOne(productId);
+        DbDoc doc = collection.getOne(productId);
         ProductDto productDto = new ProductDto();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -117,5 +139,13 @@ public class ProductRepositoryCustom {
             log.error("error : ", e);
         }
         return productDto;
+    }
+
+    public List<ProductDto> getProductByListId(String[] values) {
+        List<ProductDto> outputList = new ArrayList<>();
+        for (String value : values) {
+            outputList.add(getProductById(value));
+        }
+        return outputList;
     }
 }

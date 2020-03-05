@@ -3,7 +3,6 @@ package com.pepit.service.impl;
 import com.pepit.dto.ProductDto;
 import com.pepit.dto.ProductPagineDTO;
 import com.pepit.repository.ProductRepositoryCustom;
-import com.pepit.util.Query;
 import com.pepit.service.ProductService;
 import com.pepit.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
                 .addAllCriterias(params)
                 .addSorting(order)
                 .page(page);
-        List<ProductDto> productList = productRepositoryCustom.testRequest(query);
+        List<ProductDto> productList = productRepositoryCustom.searchRequest(query);
         ProductPagineDTO productPagine = new ProductPagineDTO();
         productPagine.setProductsToDisplay(productList);
         Integer nbPagesTotal = (int) Math.ceil((double) productList.size() / (double) nbProductParPage);
@@ -49,5 +48,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto searchProductById(String productId) {
         return productRepositoryCustom.getProductById(productId);
+    }
+
+    @Override
+    public List<ProductDto> searchProductByListId(String[] values) {
+        return productRepositoryCustom.getProductByListId(values);
     }
 }

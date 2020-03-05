@@ -31,7 +31,7 @@ public class Model {
     @Column(name = "technicalName")
     String technicalName;
 
-    @Column(name = "activated")
+    @Column(name = "activated", columnDefinition = "BOOLEAN")
     boolean activated;
 
     @Column(name = "imageURL")

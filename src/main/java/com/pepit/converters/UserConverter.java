@@ -1,8 +1,9 @@
 package com.pepit.converters;
 
-import com.pepit.constants.Roles;
 import com.pepit.dto.UserDto;
 import com.pepit.model.User;
+import com.pepit.repository.CompanyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -10,6 +11,8 @@ import java.util.Comparator;
 
 @Component
 public class UserConverter extends GenericsConverter<User, UserDto> {
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Override
     public UserDto entityToDto(User user) {
@@ -18,7 +21,8 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .role(user.getRoles().stream().sorted(Comparator.reverseOrder()).findFirst().get())
+                .role(user.getRoles().stream().max(Comparator.naturalOrder()).get())
+                .companyId((user.getCompany() == null) ? null : user.getCompany().getId())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
@@ -32,6 +36,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .password(userDto.getPassword())
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
+                .roles(Collections.singletonList(userDto.getRole()))
                 .createdAt(userDto.getCreatedAt())
                 .updatedAt(userDto.getUpdatedAt()).build();
     }

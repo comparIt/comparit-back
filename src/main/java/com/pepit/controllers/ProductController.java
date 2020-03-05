@@ -8,9 +8,9 @@ import com.pepit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,6 +39,11 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDto> searchProductById(@PathVariable String productId) {
         return ResponseEntity.status(200).body(productService.searchProductById(productId));
+    }
+
+    @GetMapping("/list/{values}")
+    public ResponseEntity<List<ProductDto>> searchProductByListId(@PathVariable String[] values) {
+        return ResponseEntity.status(200).body(productService.searchProductByListId(values));
     }
 
 }
