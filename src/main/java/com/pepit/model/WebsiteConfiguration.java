@@ -52,6 +52,9 @@ public class WebsiteConfiguration {
     @Column(name = "featSaveFilter")
     boolean featSaveFilter;
 
+    @Column(name = "featAvis")
+    boolean featAvis;
+
     @Column(name = "featAlerte")
     boolean featAlerte;
 
