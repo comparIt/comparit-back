@@ -29,6 +29,7 @@ docker-build-develop:
     - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
     - docker push comparit/compare-it-back:develop
   only:
+    - feat/dockerhub
     - develop
 
 docker-build-master:
