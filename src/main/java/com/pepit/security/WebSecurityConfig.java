@@ -78,6 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(Routes.SWAGGER_RESSOURCES).permitAll()
                 .antMatchers(Routes.SWAGGER_SECURITY).permitAll()
                 .antMatchers(Routes.SWAGGER_WEBJAR).permitAll()
+                .antMatchers(HttpMethod.GET, Routes.REVIEW + "/**").permitAll()
+                .antMatchers(HttpMethod.GET, Routes.USER + "/**").permitAll()
                 .antMatchers(HttpMethod.GET, Routes.WEBSITE_CONFIG+"/*").permitAll()
                 .antMatchers(HttpMethod.PUT, Routes.WEBSITE_CONFIG+"/saveWebsiteConfiguration").hasRole("ADMIN")
                 .anyRequest().authenticated()

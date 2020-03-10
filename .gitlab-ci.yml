@@ -22,24 +22,34 @@ maven-build:
     paths:
       - target/*.jar
 
-docker-build:
+docker-build-develop:
   stage: package
   script:
-    - docker build -t registry.gitlab.com/compare-it/compare-it-back .
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker push registry.gitlab.com/compare-it/compare-it-back
+    - docker build -t comparit/compare-it-back:develop .
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+    - docker push comparit/compare-it-back:develop
   only:
+    - feat/dockerhub
     - develop
+
+docker-build-master:
+  stage: package
+  script:
+    - docker build -t comparit/compare-it-back:master .
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+    - docker push comparit/compare-it-back:master
+  only:
+    - master
 
 job_deploy_staging:
   image: rastasheep/ubuntu-sshd
   stage: staging
   script:
-  - echo "deploy the app into test (valserver)"
-  - pwd
-  - ls
-  - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
-  - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@compit.ddns.net './start_project'
+    - echo "deploy the app into test (valserver)"
+    - pwd
+    - ls
+    - chmod 600 ../compare-it-back.tmp/SSH_PEM_KEY
+    - ssh -i $SSH_PEM_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@compit.ddns.net './start_project'
   environment: 
     name: staging
   only:
@@ -57,7 +67,6 @@ job_deploy_prod:
   environment:
     name: production
   only:
-    - develop
     - master
 
 
