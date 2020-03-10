@@ -25,9 +25,7 @@ maven-build:
 docker-build-develop:
   stage: package
   script:
-    - docker build -t registry.gitlab.com/compare-it/compare-it-back:develop .
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker push registry.gitlab.com/compare-it/compare-it-back:develop
+    - docker build -t comparit/compare-it-back:develop .
     - docker push comparit/compare-it-back:develop
   only:
     - develop
@@ -35,9 +33,7 @@ docker-build-develop:
 docker-build-master:
   stage: package
   script:
-    - docker build -t registry.gitlab.com/compare-it/compare-it-back:master .
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker push registry.gitlab.com/compare-it/compare-it-back:master
+    - docker build -t comparit/compare-it-back:master .
     - docker push comparit/compare-it-back:master
   only:
     - master
