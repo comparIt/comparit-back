@@ -42,6 +42,10 @@ public class WebsiteConfiguration {
     @Nullable
     @Column(name="name")
     String name;
+
+    @Nullable
+    @Column(name="mail")
+    String mail;
     
     @Column(name = "featAnalytic")
     boolean featAnalytic;

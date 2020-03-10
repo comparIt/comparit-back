@@ -174,7 +174,7 @@ VALUES (1, '#c26d6d', '#50459c', '#82bd2a', '2020-02-04 16:31:07.062000', _binar
         _binary '', _binary '',
         _binary '',
         'https://img.freepik.com/vecteurs-libre/vs-contre-texte-logo-pour-jeu-bataille-combat-symbole-dessin-anime-plat_101884-738.jpg?size=626&ext=jpg',
-        'ComparIt', '2020-02-24 16:31:07.062000');
+        'noreply@compareit.fr', 'ComparIt','2020-02-24 16:31:07.062000');
 
 INSERT IGNORE INTO `website_configuration_models`
 VALUES (1, 1),

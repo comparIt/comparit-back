@@ -55,7 +55,7 @@ public class AlertScheduledGenerator {
                     .limit(5)
                     .collect(Collectors.toList());
             if (!productDtos.isEmpty())
-                MailSender.sendMessage(productDtos, filter.getUsers().email);
+                MailSender.sendGridMail(productDtos, filter.getUsers().email);
         });
     }
 
