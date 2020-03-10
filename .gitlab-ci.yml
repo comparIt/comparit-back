@@ -26,6 +26,7 @@ docker-build-develop:
   stage: package
   script:
     - docker build -t comparit/compare-it-back:develop .
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
     - docker push comparit/compare-it-back:develop
   only:
     - develop
@@ -34,6 +35,7 @@ docker-build-master:
   stage: package
   script:
     - docker build -t comparit/compare-it-back:master .
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
     - docker push comparit/compare-it-back:master
   only:
     - master
