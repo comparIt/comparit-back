@@ -1,13 +1,13 @@
 package com.pepit.service.impl;
 
 import com.pepit.exception.NoResultException;
+import com.pepit.exception.UnauthorizedException;
 import com.pepit.model.Review;
 import com.pepit.repository.ReviewRepository;
 import com.pepit.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,19 +24,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review create(Review review) {
+        Review reviewInDB = reviewRepository.findByUserIdAndProductId(review.getUserId(), review.getProductId());
+        if (reviewInDB != null){
+            review.setId(reviewInDB.getId());
+        }
         return reviewRepository.save(review);
     }
 
     @Override
     public Review update(Review review) {
-        Review reviewToUpdate = reviewRepository.findById(review.getUserId()).orElseThrow(NoResultException::new);
-
-        reviewToUpdate.setUserId(review.getUserId());
-        reviewToUpdate.setProductId(review.getProductId());
-        reviewToUpdate.setComment(review.getComment());
-        reviewToUpdate.setRate(review.getRate());
-        reviewToUpdate.update();
-        return reviewRepository.save(reviewToUpdate);
+        return reviewRepository.save(review);
     }
 
     @Override
