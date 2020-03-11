@@ -31,11 +31,6 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.update(userDto));
     }
 
-    @PutMapping("/saveSupplier")
-    public ResponseEntity<UserDto> createSupplier(@RequestBody UserDto userDto) {
-        return ResponseEntity.status(200).body(userService.createSupplier(userDto));
-    }
-
     @PostMapping("/updateToSupplier")
     public ResponseEntity<User> UpdateToSupplier(@RequestParam Integer userId) {
         return ResponseEntity.status(200).body(userService.updateToSupplier(userId));
