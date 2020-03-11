@@ -7,7 +7,6 @@ import com.pepit.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<Review> getAllReviewByProductId(String productId) {
-        return reviewRepository.findAllByProductId(productId);
+        return reviewRepository.findAllByProductId(productId).orElseThrow(NoResultException::new);
     }
 
     @Override
@@ -69,6 +68,6 @@ public class ReviewServiceImpl implements ReviewService {
     public Double getAvgByProductId(String productId) {
         List<Double> reviewList = getAllReviewByProductId(productId).stream().map(Review::getRate).collect(Collectors.toList());
         double averageNeedCheck = reviewList.stream().mapToDouble(val -> val).average().orElse(0.0);
-        return Math.round(averageNeedCheck * 2) / 2.0;
+        return averageNeedCheck == 0.00 ? averageNeedCheck : Math.round(averageNeedCheck * 2) / 2.0;
     }
 }
