@@ -4,6 +4,7 @@ import com.pepit.constants.Roles;
 import com.pepit.converters.UserConverter;
 import com.pepit.dto.UserDto;
 import com.pepit.exception.NoResultException;
+import com.pepit.exception.UnauthorizedException;
 import com.pepit.model.User;
 import com.pepit.repository.UserRepository;
 import com.pepit.security.Hashing;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +45,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
-        return createUser(userDto,Roles.ROLE_CUSTOMER);
+        Optional<User> user = this.userRepository.findByEmail(userDto.getEmail());
+        if (!user.isPresent())
+            return createUser(userDto,Roles.ROLE_CUSTOMER);
+        else
+            throw new UnauthorizedException("Email already used, try with an other email or contact your administrator");
     }
 
     @Override
