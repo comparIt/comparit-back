@@ -2,6 +2,7 @@ package com.pepit.service.impl;
 
 import com.pepit.constants.Roles;
 import com.pepit.converters.UserConverter;
+import com.pepit.dto.SupplierDto;
 import com.pepit.dto.UserDto;
 import com.pepit.exception.NoResultException;
 import com.pepit.exception.UnauthorizedException;
@@ -71,8 +72,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createSupplier(UserDto userDto) {
-        return createUser(userDto,Roles.ROLE_SUPPLIER);
+    public UserDto createSupplier(SupplierDto supplierDto) {
+        return createUser(supplierDto, Roles.ROLE_SUPPLIER);
     }
 
     @Override

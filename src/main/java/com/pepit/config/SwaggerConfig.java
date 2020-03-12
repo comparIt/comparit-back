@@ -56,7 +56,7 @@ public class SwaggerConfig {
                 "Rest API for supplier",
                 "API V1",
                 "Terms of service",
-                new Contact("Compare'IT Team", "http://demo.comparit.fr/", "comparite@gmail.com"),
+                new Contact("Compar-IT Team", "http://demo.comparit.fr/", "comparit@gmail.com"),
                 "License of API", "API license URL", Collections.emptyList());
     }
 }

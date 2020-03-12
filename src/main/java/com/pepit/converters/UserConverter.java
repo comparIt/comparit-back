@@ -1,6 +1,7 @@
 package com.pepit.converters;
 
 import com.pepit.constants.Roles;
+import com.pepit.dto.SupplierDto;
 import com.pepit.dto.UserDto;
 import com.pepit.model.User;
 import com.pepit.repository.CompanyRepository;
@@ -18,7 +19,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
     @Override
     public UserDto entityToDto(User user) {
         return UserDto.builder()
-                .id(user.getId())
+                //.id(user.getId())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -29,10 +30,20 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .build();
     }
 
+    public UserDto entityToDto(SupplierDto supplierDto) {
+        return UserDto.builder()
+                .email(supplierDto.getEmail())
+                .firstName(supplierDto.getFirstName())
+                .lastName(supplierDto.getLastName())
+                .role(Roles.ROLE_SUPPLIER)
+                .companyId(supplierDto.getCompanyId())
+                .build();
+    }
+
     @Override
     public User dtoToEntity(UserDto userDto) {
         return User.builder()
-                .id(userDto.getId())
+                //.id(userDto.getId())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .firstName(userDto.getFirstName())

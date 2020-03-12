@@ -1,5 +1,6 @@
 package com.pepit.service;
 
+import com.pepit.dto.SupplierDto;
 import com.pepit.dto.UserDto;
 import com.pepit.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +17,7 @@ public interface UserService extends UserDetailsService {
 
     User updateToSupplier(Integer userId);
 
-    UserDto createSupplier(UserDto userDto);
+    UserDto createSupplier(SupplierDto supplierDto);
 
     User getUserById(Integer userId);
 
