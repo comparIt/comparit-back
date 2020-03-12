@@ -31,10 +31,12 @@ public class CompanyController {
     @GetMapping("/byUrl/{typeProduit}")
     @ResponseBody
     public ResponseEntity<String> sendUrlToGet(@RequestParam("url") String url, @PathVariable("typeProduit") String typeProduit) {
-        String supplierId = "1";
+        //TODO S'assurer que type reçu est coherent avec un des Model existant
+        //TODO MAsquer le resultat qd c'est conforme result http only
+
+        String supplierId = userService.getUserByToken().getId().toString();
         return new ResponseEntity<String>(companyService.fromUrlToDb(url, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
-
 
     public static <T> T findByProperty(Collection<T> col, Predicate<T> filter) {
         return col.stream().filter(filter).findFirst().orElse(null);
@@ -42,7 +44,6 @@ public class CompanyController {
 
     @PostMapping("/byCsvUpload/{typeProduit}")
     public ResponseEntity<String> uploadData(@RequestParam("files") MultipartFile file, @PathVariable("typeProduit") String typeProduit) throws Exception {
-        //TODO a recuperer a partir du token
         String supplierId = userService.getUserByToken().getId().toString();
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
