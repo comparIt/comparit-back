@@ -14,4 +14,6 @@ public interface ReviewRepository extends CrudRepository<Review, Integer> {
     List<Review> findAllByUserId(Integer userId);
 
     List<Review> findAllByProductId(String productId);
+
+    Review findByUserIdAndProductId(Integer userId, String productId);
 }

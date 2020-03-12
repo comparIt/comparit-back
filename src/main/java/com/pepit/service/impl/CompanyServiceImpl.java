@@ -2,6 +2,7 @@ package com.pepit.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.xdevapi.*;
 import com.pepit.constants.TypeModelPropertyEnum;
@@ -22,7 +23,8 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,26 +52,22 @@ public class CompanyServiceImpl implements CompanyService {
         this.companyConverter = companyConverter;
     }
 
-    public String fromUrlToDb(String url, String supplierId, String type) {
+    public String fromUrlToDb(String targetUrl, String supplierId, String typeProduit) {
         log.info("DEB fromUrlToDb");
         List<DbDoc> dbDocList = new ArrayList<>();
         try {
-            //Ajout d'un header http
             RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-            // TODO : générer des headers
-            headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-            HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode parsedArray = mapper.readTree(response.getBody());
-            Model model = null;
+            HttpHeaders entete = new HttpHeaders();
+            entete.setContentLanguage(LocaleContextHolder.getLocale());
+
+            ArrayNode resources = restTemplate.getForObject(targetUrl, ArrayNode.class);
+            //On vérifie la coherence du fichier avec le model
+            Model model = websiteConfigurationService.findOneById(1).getModelByTechnicalName(typeProduit);
 
             //pour tous les elements retournés par l'API on construit l'objet json enrichi
-            for (JsonNode parsedJson : parsedArray) {
-                DbDoc outerObject = updateJsonNode(supplierId, type, parsedJson, model);
+            for (JsonNode parsedJson : resources) {
+                DbDoc outerObject = updateJsonNode(supplierId, typeProduit, parsedJson, model);
                 dbDocList.add(outerObject);
             }
 
@@ -78,11 +76,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         }
 
-        DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
-
-        //TODO Utiliser le generateur de QUERY
-        productRepository.removeDoc("supplierId = " + supplierId + " and type = '" + type.replace("\"", "") + "'");
-        productRepository.addDoc(docs);
+        addToDb(supplierId, typeProduit, dbDocList);
         log.info("FIN fromUrlToDb");
         return dbDocList.toString();
     }
@@ -137,6 +131,19 @@ public class CompanyServiceImpl implements CompanyService {
             }
         }
 
+        addToDb(supplierId, typeProduit, dbDocList);
+
+        if (!refusedRecords.isEmpty()) {
+            log.info("Lignes rejettées: " + refusedRecords.toString());
+            throw new DataProvidedException(refusedRecords.size() + " ligne(s) rejetées: \n" + refusedRecords.toString());
+        }
+
+        log.info("FIN fromCsvToDb");
+
+        return refusedRecords.toString();
+    }
+
+    private void addToDb(String supplierId, String typeProduit, List<DbDoc> dbDocList) {
         if (!dbDocList.isEmpty()) {
             //on le convertit en tableau car dependance du add mysql
             DbDoc[] docs = dbDocList.toArray(new DbDoc[dbDocList.size()]);
@@ -148,15 +155,6 @@ public class CompanyServiceImpl implements CompanyService {
             //On évalue les bornes et valeurs des proprietes du modele selon les données en base
             recalculMinMaxValue(typeProduit);
         } else throw new DataProvidedException("FAILED : Aucun produit ajouté");
-
-        if (!refusedRecords.isEmpty()) {
-            log.info("Lignes rejettées: " + refusedRecords.toString());
-            throw new DataProvidedException(refusedRecords.size() + " ligne(s) rejetées: \n" + refusedRecords.toString());
-        }
-
-        log.info("FIN fromCsvToDb");
-
-        return refusedRecords.toString();
     }
 
     /**
