@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -25,7 +24,7 @@ public class UserDto {
     String lastName;
     String firstName;
     List<Long> filters;
-    Long companyId;
+    //Long companyId;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
     Roles role;

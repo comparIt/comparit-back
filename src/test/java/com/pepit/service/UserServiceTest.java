@@ -67,7 +67,7 @@ public class UserServiceTest extends CompareITBackApplicationTests {
                 .firstName("test")
                 .lastName("lastName")
                 .filters(new ArrayList<>())
-                .companyId(null)
+                //.companyId(null)
                 .role(null)
                 .createdAt(null)
                 .updatedAt(null)
