@@ -1,7 +1,6 @@
 package com.pepit.controllers;
 
 import com.pepit.constants.Routes;
-import com.pepit.dto.CompanyDto;
 import com.pepit.dto.UserDto;
 import com.pepit.model.Model;
 import com.pepit.service.CompanyService;
@@ -48,13 +47,19 @@ public class CompanyController {
         return new ResponseEntity<String>(companyService.fromCsvToDb(file, supplierId.replace("\"", ""), typeProduit.replace("\"", "")), HttpStatus.OK);
     }
 
+    /* deprecié, les produit sont associée au userId on considere qu'une société ne dispose que d'un interlocuteur
+    @PutMapping("/addCompagny")
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto) {
+        return ResponseEntity.status(200).body(companyService.create(companyDto));
+    }*/
+
     @PutMapping("/supplier")
     public ResponseEntity<UserDto> createSupplier(@RequestBody UserDto userDto) {
         return ResponseEntity.status(200).body(userService.createSupplier(userDto));
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<Model>> getCategories(){
+    public ResponseEntity<List<Model>> getCategories() {
         return ResponseEntity.status(200).body(websiteConfigurationService.getModelsOfData());
     }
 

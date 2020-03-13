@@ -2,7 +2,6 @@ package com.pepit.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -27,8 +26,4 @@ public class CompanyDto {
     String presentation;
 
     List<Long> members;
-
-    LocalDateTime createdAt;
-
-    LocalDateTime updatedAt;
 }

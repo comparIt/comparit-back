@@ -1,5 +1,6 @@
 package com.pepit.converters;
 
+import com.pepit.constants.Roles;
 import com.pepit.dto.UserDto;
 import com.pepit.model.User;
 import com.pepit.repository.CompanyRepository;
@@ -21,8 +22,8 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .role(user.getRoles().stream().max(Comparator.naturalOrder()).get())
-                .companyId((user.getCompany() == null) ? null : user.getCompany().getId())
+                .role(user.getRoles().stream().max(Comparator.naturalOrder()).orElse(Roles.ROLE_CUSTOMER))
+                //.companyId((user.getCompany() == null) ? null : user.getCompany().getId())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
